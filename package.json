@@ -4,8 +4,11 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
+    "cross-env": "^5.1.1",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
+    "material-ui": "^1.0.0-beta.20",
+    "material-ui-icons": "^1.0.0-beta.17",
     "prop-types": "^15.5.10",
     "query-string": "^5.0.0",
     "react": "^15.6.1",
@@ -49,10 +52,11 @@
     "fix":
       "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" --fix .",
     "relay":
-      "node ./setup --download-schema && relay-compiler --src ./src --schema ./src/schema.graphql",
+      "cross-env REACT_APP_API=http://localhost:8080 node ./setup --download-schema && relay-compiler --src ./src --schema ./src/schema.graphql",
     "build": "node ./setup && react-scripts build && node ./render",
     "test": "node ./setup && react-scripts test --env=jsdom",
     "deploy": "node ./setup && react-scripts build && gh-pages -d build",
-    "start": "node ./setup && react-scripts start"
+    "start":
+      "cross-env REACT_APP_API=http://localhost:8080 node ./setup && cross-env REACT_APP_API=http://localhost:8080 react-scripts start"
   }
 }

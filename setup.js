@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
+const http = require('http');
 
 let file, text;
 
@@ -67,7 +67,7 @@ if (!text.includes('babel-plugin-transform-export-extensions')) {
 // -----------------------------------------------------------------------------
 if (process.argv.includes('--download-schema')) {
   file = fs.createWriteStream('./src/schema.graphql');
-  https.get('https://graphql-demo.kriasoft.com/schema', resp => {
+  http.get(`${process.env.REACT_APP_API}/graphql/schema`, resp => {
     if (resp.statusCode === 200) {
       resp.pipe(file);
     } else {

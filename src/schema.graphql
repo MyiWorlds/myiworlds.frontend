@@ -1,50 +1,182 @@
-type Comment implements Node {
+# Every circle you see can be placed inside a circle.
+type Circle implements Node {
   # The ID of an object
   id: ID!
-  story: Story!
-  parent: Comment!
-  author: User!
-  comments: [Comment]
-  text: String
-  pointsCount: Int!
-  createdAt: String!
-  updatedAt: String!
-}
 
-input CreateCommentInput {
-  storyId: ID!
-  parentId: ID
-  text: String
-  clientMutationId: String
-}
+  # A unique id used to instantly locate this inside the database
+  _id: ID
 
-type CreateCommentPayload {
-  story: Comment
-  clientMutationId: String
-}
+  # If a user interface is not set
+  ui: Circle
 
-input CreateStoryInput {
+  # The full slug (after domain name) to this piece of content
+  slug: String
+
+  # The name of this slug without creators name before it. This allows shared
+  # Users to edit the title, but not the root path.  This is stored incase the
+  # creators name changes
+  slugName: String
+
+  # Is this circle visable to the public?
+  public: Boolean
+
+  # Does it require a password to view?
+  passwordRequired: Boolean
+
+  # The type of data this node is holding, it allows the frontend to choose the perfect component to show you.
+  type: String!
+
+  # The settings of this circle.  Will be used as an object.
+  settings: String
+  rating: Circle
+  styles: [Circle]
+  tags: [String]
   title: String
+  subtitle: String
+  description: String
+
+  # A piece of media (image/gif/video) that helps identify this piece of content.
+  media: Circle
+
+  # Who is allowed to see this node?
+  viewers: [User]
+
+  # The User who created this piece of content
+  creator: User
+
+  # Users that can edit this circle
+  editors: [User]
+  dateCreated: String
+  dateUpdated: String
+  string: String
   text: String
-  url: String
+  blob: JSON
+  number: Int
+  boolean: Boolean
+  date: String
+  geoPoint: String
+
+  # When you want to point to a single circle type.  Normally used for changing a node but without actually changing it.
+  line: Circle
+
+  # When you want to connect lots of Circles, but don't need pagination (used for TONS of results) 
+  lines: [Circle]
+
+  # When you need to connect lots of Circles together, but you only want to show a certain amount at a time
+  linesMany(after: String, first: Int, before: String, last: Int): CircleConnection
+}
+
+# A connection to a list of items.
+type CircleConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [CircleEdge]
+}
+
+# An edge in a connection.
+type CircleEdge {
+  # The item at the end of the edge
+  node: Circle
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input createCircleInput {
+  _id: String
+  slug: String
+  slugName: String
+  public: Boolean
+  passwordRequired: Boolean
+  password: String
+  viewers: [String]
+  type: String!
+  styles: [String]
+  tags: [String]
+  title: String
+  subtitle: String
+  description: String
+  media: String
+  creator: String!
+  editors: [String]
+  dateCreated: String
+  dateUpdated: String
+  string: String
+  blob: JSON
+  number: Int
+  boolean: Boolean
+  line: String
+  lines: [String]
+  linesMany: [String]
   clientMutationId: String
 }
 
-type CreateStoryPayload {
-  story: Story
+type createCirclePayload {
+  message: String
+  createdCircle: Circle
   clientMutationId: String
 }
 
-type Email {
+input createUserInput {
+  username: String!
   email: String!
-  verified: Boolean!
+  password: String!
+  dateCreated: String!
+  dateUpdated: String!
+  clientMutationId: String
 }
+
+type createUserPayload {
+  message: String
+  createdUser: User
+  clientMutationId: String
+}
+
+input deleteCircleInput {
+  _id: String!
+  clientMutationId: String
+}
+
+type deleteCirclePayload {
+  message: String
+  idToDelete: String
+  wasDeleted: Boolean
+  numberOfClones: Int
+  clonesDeleted: Boolean
+  clientMutationId: String
+}
+
+input deleteUserInput {
+  _id: String!
+  clientMutationId: String
+}
+
+type deleteUserPayload {
+  message: String
+  idToDelete: String
+  wasDeleted: Boolean
+  numberOfClones: Int
+  clonesDeleted: Boolean
+  clientMutationId: String
+}
+
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
 
 type Mutation {
-  createStory(input: CreateStoryInput!): CreateStoryPayload
-  updateStory(input: UpdateStoryInput!): UpdateStoryPayload
-  createComment(input: CreateCommentInput!): CreateCommentPayload
-  updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  createCircle(input: createCircleInput!): createCirclePayload
+  updateCircle(input: updateCircleInput!): updateCirclePayload
+  updateCirclePassword(input: updateCirclePasswordInput!): updateCirclePasswordPayload
+  deleteCircle(input: deleteCircleInput!): deleteCirclePayload
+  createUser(input: createUserInput!): createUserPayload
+  updateUserPassword(input: updateUserPasswordInput!): updateUserPasswordPayload
+  updateEmailConfirmed(input: updateEmailConfirmedInput!): updateEmailConfirmedPayload
+  updateUsername(input: updateUsernameInput!): updateUsernamePayload
+  updateEmail(input: updateEmailInput!): updateEmailPayload
+  deleteUser(input: deleteUserInput!): deleteUserPayload
+  updateUiEnabled(input: updateUiEnabledInput!): updateUiEnabledPayload
 }
 
 # An object with an ID
@@ -69,6 +201,10 @@ type PageInfo {
 }
 
 type Query {
+  user(_id: String): User
+  getCircleBySlug(slug: String): Circle
+  getCircleByKey(_id: String): Circle
+
   # Fetches an object given its ID
   node(
     # The ID of an object
@@ -80,71 +216,160 @@ type Query {
     # The IDs of objects
     ids: [ID!]!
   ): [Node]!
-  me: User
-  stories(after: String, first: Int): StoryConnection
 }
 
-type Story implements Node {
-  # The ID of an object
-  id: ID!
-  author: User!
-  title: String!
-  url: String
-  text: String
-  comments: [Comment]
-  pointsCount: Int!
-  commentsCount: Int!
-  createdAt: String!
-  updatedAt: String!
-}
-
-# A connection to a list of items.
-type StoryConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [StoryEdge]
-  totalCount: Int!
-}
-
-# An edge in a connection.
-type StoryEdge {
-  # The item at the end of the edge
-  node: Story
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-input UpdateCommentInput {
-  id: ID!
-  text: ID
-  clientMutationId: String
-}
-
-type UpdateCommentPayload {
-  story: Comment
-  clientMutationId: String
-}
-
-input UpdateStoryInput {
-  id: ID!
+input updateCircleInput {
+  _id: String!
+  slug: String
+  slugName: String
+  public: Boolean
+  passwordRequired: Boolean
+  viewers: [String]
+  type: String!
+  styles: [String]
+  tags: [String]
+  order: Int
   title: String
-  text: String
-  url: String
+  subtitle: String
+  description: String
+  media: String
+  creator: String!
+  editors: [String]
+  dateCreated: String
+  dateUpdated: String
+  string: String
+  blob: JSON
+  number: Int
+  boolean: Boolean
+  line: String
+  lines: [String]
+  linesMany: [String]
   clientMutationId: String
 }
 
-type UpdateStoryPayload {
-  story: Story
+input updateCirclePasswordInput {
+  _id: String!
+  password: String
+  dateUpdated: String!
   clientMutationId: String
 }
 
+type updateCirclePasswordPayload {
+  message: String
+  updatedCircle: Circle
+  latestVersionOfCircle: Circle
+  clientMutationId: String
+}
+
+type updateCirclePayload {
+  message: String
+  updatedCircle: Circle
+  latestVersionOfCircle: Circle
+  clientMutationId: String
+}
+
+input updateEmailConfirmedInput {
+  _id: String!
+  dateUpdated: String!
+  clientMutationId: String
+}
+
+type updateEmailConfirmedPayload {
+  message: String
+  updatedUser: User
+  latestVersionOfUser: User
+  clientMutationId: String
+}
+
+input updateEmailInput {
+  _id: String!
+  email: String!
+  dateUpdated: String!
+  clientMutationId: String
+}
+
+type updateEmailPayload {
+  message: String
+  updatedUser: User
+  latestVersionOfUser: User
+  clientMutationId: String
+}
+
+input updateUiEnabledInput {
+  _id: String!
+  dateUpdated: String!
+  uiEnabled: Boolean!
+  clientMutationId: String
+}
+
+type updateUiEnabledPayload {
+  message: String
+  updatedUser: User
+  latestVersionOfUser: User
+  clientMutationId: String
+}
+
+input updateUsernameInput {
+  _id: String!
+  username: String!
+  dateUpdated: String!
+  clientMutationId: String
+}
+
+type updateUsernamePayload {
+  message: String
+  updatedUser: User
+  latestVersionOfUser: User
+  clientMutationId: String
+}
+
+input updateUserPasswordInput {
+  _id: String!
+  password: String!
+  dateUpdated: String!
+  clientMutationId: String
+}
+
+type updateUserPasswordPayload {
+  message: String
+  updatedUser: User
+  latestVersionOfUser: User
+  clientMutationId: String
+}
+
+# user who can create and interact with circles.
 type User implements Node {
   # The ID of an object
   id: ID!
-  displayName: String
-  imageUrl: String
-  emails: [Email]
+  _id: ID!
+  username: String!
+  email: String!
+  emailConfirmed: Boolean
+  dateCreated: String
+  dateUpdated: String
+  level: Circle
+
+  # The users currently oweing balance
+  balance: Circle
+
+  # The Users rating
+  rating: Circle
+  uiEnabled: Boolean
+
+  # How the user wants to view the system.
+  ui: Circle
+
+  # The home circle of myiworlds.com/user/userName.
+  homePublic: Circle
+
+  # The home circle of myiworlds.com/user/userName.
+  homePrivate: Circle
+
+  # All circles created by this user, they are not stored on the user object but
+  # its own node in the graph to prevent overloading this.  No concepts of
+  # friends, just things you follow, it could be a friends page though.
+  following: Circle
+
+  # Contains a list of notifications.
+  notifications: Circle
 }

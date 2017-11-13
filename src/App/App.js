@@ -16,8 +16,23 @@ import AppRenderer from './AppRenderer';
 
 // eslint-disable-next-line no-unused-expressions
 graphql`
-  fragment App_me on User {
-    ...AppToolbar_me
+  fragment App_user on User {
+    username
+    uiEnabled
+    ui {
+      id
+      lines {
+        id
+        type
+        string
+      }
+    }
+    homePublic {
+      id
+      _id
+      title
+      type
+    }
   }
 `;
 

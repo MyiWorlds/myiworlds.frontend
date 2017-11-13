@@ -15,34 +15,6 @@ import { graphql } from 'relay-runtime';
 // For more information visit https://github.com/kriasoft/universal-router
 const routes = [
   {
-    path: '/',
-    query: graphql`query routerHomeQuery {
-      me { ...App_me }
-      stories(first: 50) { ...Home_stories }
-    }`, // prettier-ignore
-    components: () => [
-      import(/* webpackChunkName: 'home' */ './Home'),
-      import(/* webpackChunkName: 'home' */ './Home/Hero'),
-    ],
-    render: ([Home, Hero], data) => ({
-      title: 'Home page',
-      hero: <Hero />,
-      body: <Home stories={data.stories} />,
-    }),
-  },
-  {
-    path: '/story-:id',
-    query: graphql`query routerStoryQuery($id: ID!) {
-      me { ...App_me }
-      story: node(id: $id) { ...Story_story }
-    }`, // prettier-ignore
-    components: () => [import(/* webpackChunkName: 'home' */ './Story')],
-    render: ([Story], data) => ({
-      title: data.title,
-      body: <Story story={data.story} />,
-    }),
-  },
-  {
     path: '/error',
     components: () => [import(/* webpackChunkName: 'main' */ './ErrorPage')],
     render: ([ErrorPage]) => ({
@@ -50,32 +22,64 @@ const routes = [
       body: <ErrorPage />,
     }),
   },
+
+  // {
+  //   path: '/create',
+  //   query: graphql`query routerCreateQuery($slug: String) {
+  //     getCircleBySlug (slug: $slug) {
+  //       ...CreateCircle_getCircleBySlug
+  //     }
+  //   }`, // prettier-ignore
+  //   components: () => [
+  //     import(/* webpackChunkName: 'createCircle' */ './Circle/CreateCircle'),
+  //   ],
+  //   render: ([CreateCircle], data) => ({
+  //     title: 'Create Circle',
+  //     body: <CreateCircle />,
+  //   }),
+  // },
+  // {
+  //   path: '/update/:_id',
+  //   query: graphql`query routerEditQuery($_id: String) {
+  //     getCircleByKey (_id: $_id) {
+  //       type
+  //       ...UpdateCircle_getCircleByKey
+  //     }
+  //   }`, // prettier-ignore
+  //   components: () => [
+  //     import(/* webpackChunkName: 'updateCircle' */ './Circle/UpdateCircle'),
+  //   ],
+  //   render: ([UpdateCircle], data) => ({
+  //     title: 'Update Circle',
+  //     body: <UpdateCircle />,
+  //   }),
+  // },
   {
-    path: '/getting-started',
-    query: graphql`query routerGettingStartedQuery { me { ...App_me } }`, // prettier-ignore
+    path: '/signup',
     components: () => [
-      import(/* webpackChunkName: 'start' */ './GettingStarted'),
+      import(/* webpackChunkName: 'home' */ './User/CreateUser'),
     ],
-    render: ([GettingStarted]) => ({
-      title: 'Getting Started',
-      body: <GettingStarted />,
+    render: ([CreateUser], data) => ({
+      title: 'Create User',
+      body: <CreateUser />,
     }),
   },
   {
-    path: '/about',
-    query: graphql`query routerAboutQuery { me { ...App_me } }`, // prettier-ignore
-    components: () => [import(/* webpackChunkName: 'about' */ './About')],
-    render: ([About]) => ({
-      title: 'About Us',
-      body: <About />,
-    }),
-  },
-  {
-    path: '/tasks/:status(pending|completed)?',
-    components: () => [import(/* webpackChunkName: 'home' */ './Home')],
-    render: ([Home]) => ({
-      title: 'Untitled Page',
-      body: <Home />,
+    path: '/:slug',
+    query: graphql`query routerHomeQuery($slug: String) {
+      user (_id: "davey") {
+        ...App_user
+      }
+      getCircleBySlug (slug: $slug) {
+        ...GetCircleBySlug_getCircleBySlug
+      }
+    }`, // prettier-ignore
+    components: () => [
+      import(/* webpackChunkName: 'home' */ './relayContainers/GetCircleBySlug'),
+    ],
+    render: ([GetCircleBySlug], data) => ({
+      title: data.title,
+      body: <GetCircleBySlug getCircleBySlug={data.getCircleBySlug} />,
     }),
   },
 ];
