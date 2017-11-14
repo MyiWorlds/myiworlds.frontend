@@ -7,8 +7,33 @@
 
 import React from 'react';
 import isEqual from 'lodash/isEqual';
+import { withStyles } from 'material-ui/styles';
+import { CircularProgress } from 'material-ui/Progress';
 
 import ErrorPage from '../ErrorPage';
+import AppBar from '../reactComponents/AppBar';
+import Navigation from '../reactComponents/Navigation';
+import Actions from '../reactComponents/Actions';
+import Content from '../reactComponents/Content';
+
+const styles = theme => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+    position: 'relative',
+    display: 'flex',
+    height: 'calc(100% - 56px)',
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      height: 'calc(100% - 64px)',
+    },
+  },
+  progress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
+});
 
 type Props = {
   error: ?Error,
@@ -31,14 +56,24 @@ type State = {
 
 const defaults = {
   error: null,
-  title: 'React Static Boilerplate',
+  title: 'MyiWorlds',
   description: '',
   hero: null,
   body: null,
+  navigation: {
+    width: 240,
+    open: true,
+  },
 };
 
 class AppRenderer extends React.Component<any, Props, State> {
-  state = { ...defaults };
+  state = {
+    ...defaults,
+  };
+
+  handleNavigationToggle = () => {
+    this.setState({ navigation: { open: !this.state.navigation.open } });
+  };
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.error && this.props.error !== nextProps.error) {
@@ -90,17 +125,40 @@ class AppRenderer extends React.Component<any, Props, State> {
       this.props.error !== nextState.error ||
       this.state.title !== nextState.title ||
       this.state.description !== nextState.description ||
-      this.state.body !== nextState.body
+      this.state.body !== nextState.body ||
+      this.state.navigation.open !== nextState.navigation.open
     );
   }
 
   render() {
+    const { classes } = this.props;
+
     return this.state.error ? (
       <ErrorPage error={this.state.error} />
     ) : (
-      <div>{this.state.body || <p>Loading...</p>}</div>
+      <div style={{ height: '100%', width: '100%' }}>
+        <AppBar
+          handleNavigationToggle={this.handleNavigationToggle}
+          title={this.state.title}
+        />
+        <div className={classes.root}>
+          <Navigation
+            navOpen={this.state.navigation.open}
+            handleNavigationToggle={this.handleNavigationToggle}
+          />
+          <Content
+            navOpen={this.state.navigation.open}
+            navWidth={this.state.navigation.width}
+          >
+            {this.state.body || (
+              <CircularProgress className={classes.progress} size={50} />
+            )}
+          </Content>
+          <Actions actions={['createUser']} />
+        </div>
+      </div>
     );
   }
 }
 
-export default AppRenderer;
+export default withStyles(styles, { withTheme: true })(AppRenderer);

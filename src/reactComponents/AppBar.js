@@ -1,19 +1,24 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
+import PropTypes from 'prop-types';
+import MDAppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 
-class AccountBar extends React.Component {
-  static propTypes = {};
+class AppBar extends React.Component {
+  static propTypes = {
+    handleNavigationToggle: PropTypes.func.isRequired,
+    title: PropTypes.string,
+  };
   render() {
     return (
-      <AppBar position="static">
+      <MDAppBar position="fixed" style={{ zIndex: 1301 }}>
         <Toolbar>
           <IconButton
             color="contrast"
+            onClick={this.props.handleNavigationToggle}
             aria-label="Menu"
             style={{
               marginLeft: -12,
@@ -29,14 +34,18 @@ class AccountBar extends React.Component {
               flex: 1,
             }}
           >
-            Title
+            {this.props.title}
           </Typography>
-          <Button color="contrast">Signup</Button>
-          <Button color="contrast">Login</Button>
+          <Button href="/signup" color="contrast">
+            Signup
+          </Button>
+          <Button href="/login" color="contrast">
+            Login
+          </Button>
         </Toolbar>
-      </AppBar>
+      </MDAppBar>
     );
   }
 }
 
-export default AccountBar;
+export default AppBar;

@@ -9,9 +9,6 @@ import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
 import type { GetCircleBySlug_getCircleBySlug } from './__generated__/GetCircleBySlug_getCircleBySlug.graphql';
 import ContainerBuilder from '../ContainerBuilder';
-import AccountBar from '../../reactComponents/AccountBar';
-import Navigation from '../../reactComponents/Navigation';
-import Actions from '../../reactComponents/Actions';
 
 class GetCircleBySlug extends React.Component {
   props: {
@@ -20,14 +17,7 @@ class GetCircleBySlug extends React.Component {
 
   render() {
     const circle = this.props.getCircleBySlug || {};
-    return (
-      <div>
-        <AccountBar />
-        <Navigation />
-        <ContainerBuilder getCircleBySlug={circle} />
-        <Actions actions={['createUser']} />
-      </div>
-    );
+    return <ContainerBuilder getCircleBySlug={circle} />;
   }
 }
 

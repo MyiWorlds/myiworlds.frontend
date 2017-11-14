@@ -1,3 +1,9 @@
+
+## Want to talk about contributing or ask questions? Best place is on our Discord Channel
+https://discord.gg/28Gjv7S
+
+
+
 # React Static Boilerplate &nbsp; <a href="https://travis-ci.org/kriasoft/react-static-boilerplate"><img src="https://img.shields.io/circleci/project/github/kriasoft/react-static-boilerplate/master.svg?style=flat-square" height="20" /></a> <a href="https://github.com/kriasoft/react-static-boilerplate/stargazers"><img src="https://img.shields.io/github/stars/kriasoft/react-static-boilerplate.svg?style=social&label=Star&maxAge=3600" height="20"></a> <a href="https://twitter.com/ReactStatic"><img src="https://img.shields.io/twitter/follow/ReactStatic.svg?style=social&label=Follow&maxAge=3600" height="20"></a>
 
 [**React Static Boilerplate**](https://github.com/kriasoft/react-static-boilerplate) (RSB) is a

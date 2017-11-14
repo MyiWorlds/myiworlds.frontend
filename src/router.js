@@ -56,12 +56,30 @@ const routes = [
   // },
   {
     path: '/signup',
-    components: () => [
-      import(/* webpackChunkName: 'home' */ './User/CreateUser'),
-    ],
+    query: graphql`query routerCreateUserQuery {
+      user (_id: "davey") {
+        id
+        ...CreateUser_user
+      }
+    }`, // prettier-ignore
+    components: () => [import(/* webpackChunkName: 'signup' */ './CreateUser')],
     render: ([CreateUser], data) => ({
-      title: 'Create User',
-      body: <CreateUser />,
+      title: 'CreateUser',
+      body: <CreateUser user={data.user} />,
+    }),
+  },
+  {
+    path: '/login',
+    query: graphql`query routerCreateUserQuery {
+      user (_id: "davey") {
+        id
+        ...Login_user
+      }
+    }`, // prettier-ignore
+    components: () => [import(/* webpackChunkName: 'login' */ './Login')],
+    render: ([Login], data) => ({
+      title: 'Login',
+      body: <Login user={data.user} />,
     }),
   },
   {

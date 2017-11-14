@@ -8,6 +8,8 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 import { graphql, QueryRenderer } from 'react-relay';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { blue, red, grey } from 'material-ui/colors';
 
 import relay from '../relay';
 import router from '../router';
@@ -52,6 +54,18 @@ type State = {
   components: ?Array<React.Element<*>> | Promise<Array<React.Element<*>>>,
   render: ?Render,
 };
+
+const theme = createMuiTheme({
+  palette: {
+    primary: blue,
+    darkPrimary: blue,
+    lightPrimary: blue,
+    accent: red,
+    primaryText: grey,
+    secondaryText: grey,
+    divider: grey,
+  },
+});
 
 class App extends React.Component<any, any, State> {
   state = {
@@ -99,12 +113,14 @@ class App extends React.Component<any, any, State> {
 
   render() {
     return (
-      <QueryRenderer
-        environment={relay}
-        query={this.state.query}
-        variables={this.state.variables}
-        render={this.renderState}
-      />
+      <MuiThemeProvider theme={theme}>
+        <QueryRenderer
+          environment={relay}
+          query={this.state.query}
+          variables={this.state.variables}
+          render={this.renderState}
+        />
+      </MuiThemeProvider>
     );
   }
 }
