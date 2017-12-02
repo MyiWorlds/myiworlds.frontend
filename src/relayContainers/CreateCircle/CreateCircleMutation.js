@@ -1,15 +1,15 @@
 // @flow
 import { graphql, commitMutation, Environment } from 'react-relay';
-import history from '../history';
+import history from '../../history';
 
 const mutation = graphql`
-  mutation CreateUserMutation($input: createUserInput!) {
-    createUser(input: $input) {
+  mutation CreateCircleMutation($input: createCircleInput!) {
+    createCircle(input: $input) {
       message
-      createdUser {
+      createdCircle {
         id
         _id
-        username
+        slug
       }
     }
   }
@@ -29,13 +29,10 @@ function getConfigs(viewerId) {
   ];
 }
 
-function getOptimisticResponse(optimisticUserObject, viewerId) {
+function getOptimisticResponse(optimisticCircleObject, viewerId) {
   return {
-    createUser: {
-      createdUser: optimisticUserObject,
-      // user: {
-      //   id: viewerId,
-      // },
+    createCircle: {
+      createdCircle: optimisticCircleObject,
     },
   };
 }
@@ -45,13 +42,14 @@ function commit(environment: Environment, data: Object, viewerId: number) {
     mutation,
     variables: { input: data },
     onCompleted: store => {
-      if (store.createUser.createdUser.username != null) {
-        history.push(`${store.createUser.createdUser.username}`);
+      if (store.createCircle.createdCircle.slug != null) {
+        const slug = store.createCircle.createdCircle.slug;
+        return history.push(`/${slug}`);
       } else {
-        return { status: 'User was not created' };
+        return { status: 'Circle was not created' };
       }
     },
-    onError: err => console.error('CreateUserMutation onError: ', err),
+    onError: err => console.error('CreateCircleMutation onError: ', err),
     optimisticResponse: getOptimisticResponse(data, viewerId),
     configs: getConfigs(viewerId),
   });

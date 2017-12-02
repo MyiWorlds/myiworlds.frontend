@@ -15,6 +15,8 @@ import relay from '../relay';
 import router from '../router';
 import history from '../history';
 import AppRenderer from './AppRenderer';
+import 'typeface-roboto';
+import createPalette from 'material-ui/styles/createPalette';
 
 // eslint-disable-next-line no-unused-expressions
 graphql`
@@ -56,7 +58,7 @@ type State = {
 };
 
 const theme = createMuiTheme({
-  palette: {
+  palette: createPalette({
     primary: blue,
     darkPrimary: blue,
     lightPrimary: blue,
@@ -64,7 +66,7 @@ const theme = createMuiTheme({
     primaryText: grey,
     secondaryText: grey,
     divider: grey,
-  },
+  }),
 });
 
 class App extends React.Component<any, any, State> {

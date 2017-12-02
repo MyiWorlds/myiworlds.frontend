@@ -25,6 +25,7 @@ export default createFragmentContainer(
   GetCircleBySlug,
   graphql`
     fragment GetCircleBySlug_getCircleBySlug on Circle {
+      id
       type
       ui {
         lines {

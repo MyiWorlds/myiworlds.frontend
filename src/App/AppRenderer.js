@@ -18,7 +18,7 @@ import Content from '../reactComponents/Content';
 
 const styles = theme => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: 'white',
     position: 'relative',
     display: 'flex',
     height: 'calc(100% - 56px)',

@@ -38,6 +38,7 @@ class CreateUser extends React.Component {
       this.props.user.id,
     );
   };
+
   render() {
     return (
       <div style={{ padding: 24 }}>

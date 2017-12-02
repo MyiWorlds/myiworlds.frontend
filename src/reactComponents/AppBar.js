@@ -6,6 +6,8 @@ import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
+import Hidden from 'material-ui/Hidden';
+import Link from '../Link';
 
 class AppBar extends React.Component {
   static propTypes = {
@@ -16,17 +18,19 @@ class AppBar extends React.Component {
     return (
       <MDAppBar position="fixed" style={{ zIndex: 1301 }}>
         <Toolbar>
-          <IconButton
-            color="contrast"
-            onClick={this.props.handleNavigationToggle}
-            aria-label="Menu"
-            style={{
-              marginLeft: -12,
-              marginRight: 20,
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Hidden only="xs">
+            <IconButton
+              color="contrast"
+              onClick={this.props.handleNavigationToggle}
+              aria-label="Menu"
+              style={{
+                marginLeft: -12,
+                marginRight: 20,
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Hidden>
           <Typography
             type="title"
             color="inherit"
@@ -36,10 +40,16 @@ class AppBar extends React.Component {
           >
             {this.props.title}
           </Typography>
-          <Button href="/signup" color="contrast">
+          <Button
+            color="contrast"
+            component={({ ...props }) => <Link href="/signup" {...props} />}
+          >
             Signup
           </Button>
-          <Button href="/login" color="contrast">
+          <Button
+            color="contrast"
+            component={({ ...props }) => <Link href="/login" {...props} />}
+          >
             Login
           </Button>
         </Toolbar>

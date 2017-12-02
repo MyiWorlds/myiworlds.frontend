@@ -22,22 +22,22 @@ const routes = [
       body: <ErrorPage />,
     }),
   },
-
-  // {
-  //   path: '/create',
-  //   query: graphql`query routerCreateQuery($slug: String) {
-  //     getCircleBySlug (slug: $slug) {
-  //       ...CreateCircle_getCircleBySlug
-  //     }
-  //   }`, // prettier-ignore
-  //   components: () => [
-  //     import(/* webpackChunkName: 'createCircle' */ './Circle/CreateCircle'),
-  //   ],
-  //   render: ([CreateCircle], data) => ({
-  //     title: 'Create Circle',
-  //     body: <CreateCircle />,
-  //   }),
-  // },
+  {
+    path: '/create',
+    query: graphql`query routerCreateQuery {
+      user (_id: "davey") {
+        ...App_user
+        ...CreateCircle_user
+      }
+    }`, // prettier-ignore
+    components: () => [
+      import(/* webpackChunkName: 'createCircle' */ './relayContainers/CreateCircle'),
+    ],
+    render: ([CreateCircle], data) => ({
+      title: 'Create Circle',
+      body: <CreateCircle user={data.user} />,
+    }),
+  },
   // {
   //   path: '/update/:_id',
   //   query: graphql`query routerEditQuery($_id: String) {
@@ -59,10 +59,13 @@ const routes = [
     query: graphql`query routerCreateUserQuery {
       user (_id: "davey") {
         id
+        ...App_user
         ...CreateUser_user
       }
     }`, // prettier-ignore
-    components: () => [import(/* webpackChunkName: 'signup' */ './CreateUser')],
+    components: () => [
+      import(/* webpackChunkName: 'signup' */ './relayContainers/CreateUser'),
+    ],
     render: ([CreateUser], data) => ({
       title: 'CreateUser',
       body: <CreateUser user={data.user} />,
@@ -70,25 +73,29 @@ const routes = [
   },
   {
     path: '/login',
-    query: graphql`query routerCreateUserQuery {
+    query: graphql`query routerLoginUserQuery {
       user (_id: "davey") {
         id
+        ...App_user
         ...Login_user
       }
     }`, // prettier-ignore
-    components: () => [import(/* webpackChunkName: 'login' */ './Login')],
+    components: () => [
+      import(/* webpackChunkName: 'login' */ './relayContainers/Login'),
+    ],
     render: ([Login], data) => ({
       title: 'Login',
       body: <Login user={data.user} />,
     }),
   },
   {
-    path: '/:slug',
-    query: graphql`query routerHomeQuery($slug: String) {
+    path: '/',
+    query: graphql`query routerHomeQuery {
       user (_id: "davey") {
         ...App_user
       }
-      getCircleBySlug (slug: $slug) {
+      getCircleBySlug (slug: "/") {
+        title
         ...GetCircleBySlug_getCircleBySlug
       }
     }`, // prettier-ignore
@@ -96,7 +103,29 @@ const routes = [
       import(/* webpackChunkName: 'home' */ './relayContainers/GetCircleBySlug'),
     ],
     render: ([GetCircleBySlug], data) => ({
-      title: data.title,
+      title: data.getCircleBySlug.title,
+      body: <GetCircleBySlug getCircleBySlug={data.getCircleBySlug} />,
+    }),
+  },
+  {
+    path: '/:slug(.*)',
+    query: graphql`query routerGetCircleBySlugQuery($slug: String) {
+      user (_id: "davey") {
+        ...App_user
+      }
+      getCircleBySlug (slug: $slug) {
+        title
+        ...GetCircleBySlug_getCircleBySlug
+      }
+    }`, // prettier-ignore
+    components: () => [
+      import(/* webpackChunkName: 'home' */ './relayContainers/GetCircleBySlug'),
+    ],
+    render: ([GetCircleBySlug], data) => ({
+      title:
+        data.getCircleBySlug && data.getCircleBySlug.title
+          ? data.getCircleBySlug.title
+          : 'Untitled',
       body: <GetCircleBySlug getCircleBySlug={data.getCircleBySlug} />,
     }),
   },

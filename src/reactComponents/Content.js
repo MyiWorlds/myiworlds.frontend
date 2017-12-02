@@ -2,45 +2,38 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
-import Paper from 'material-ui/Paper';
+import styled from 'styled-components';
 
-const styles = theme => ({
-  content: {
-    width: '100%',
-    zIndex: 1,
-    flexGrow: 1,
-    padding: 24,
-    marginLeft: 0,
-    marginTop: 64,
-    height: 'calc(100% - 56px)',
-    top: 56,
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: 240,
-      top: 64,
-      height: 'calc(100% - 64px)',
-    },
-  },
-});
+const Main = styled.main`
+  width: 100%;
+  z-index: 1;
+  flex-grow: 1;
+  margin-left: 0px;
+  margin-top: 64px;
+  top: 56px;
+  transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+  @media screen and (min-width: 600px) {
+    top: 64px;
+    margin-left: 60px;
+  }
+  @media screen and (min-width: 1000px) {
+    margin-left: ${props => (props.navOpen ? '240px' : '60px')};
+  }
+`;
 
 class Content extends React.Component {
   render() {
-    const { classes } = this.props;
     return (
-      <main className={classes.content}>
-        <Paper style={{ margin: '0 auto' }} elevation={2}>
-          {this.props.children}
-        </Paper>
-      </main>
+      <Main navOpen={this.props.navOpen}>
+        {console.log('content', this.props)}
+        {this.props.children}
+      </Main>
     );
   }
 }
 
 Content.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
   navOpen: PropTypes.bool,
 };
 
-export default withStyles(styles, { withTheme: true })(Content);
+export default Content;

@@ -6,17 +6,20 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import InboxIcon from 'material-ui-icons/Inbox';
+import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Hidden from 'material-ui/Hidden';
-import HomeIcon from 'material-ui-icons/Home';
-import SettingsIcon from 'material-ui-icons/Settings';
-import PublicIcon from 'material-ui-icons/Public';
+import withWidth from 'material-ui/utils/withWidth';
+import BottomNavigation, {
+  BottomNavigationButton,
+} from 'material-ui/BottomNavigation';
+import Link from '../Link';
+import Icon from 'material-ui/Icon';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   drawerPaper: {
+    background: theme.palette.background.default,
     position: 'fixed',
     height: '100%',
     top: '56px',
@@ -30,8 +33,8 @@ const styles = theme => ({
     }),
   },
   drawerPaperClose: {
-    width: 60,
     overflowX: 'hidden',
+    width: 60,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -41,63 +44,223 @@ const styles = theme => ({
     // Make the items inside not wrap when transitioning:
     width: drawerWidth,
   },
+  bottomNav: {
+    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+    background: theme.palette.background.default,
+    bottom: 0,
+    position: 'fixed',
+    width: '100%',
+  },
 });
 
 class Navigation extends React.Component {
+  state = {
+    value: 0,
+  };
+
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open,
     });
   };
 
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
   render() {
+    const { value } = this.state;
     const { classes } = this.props;
 
-    const drawer = (
-      <div>
-        <List>
-          <ListItem button>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItem>
+    const WrappedIcon = props => <Icon {...props} />;
+    WrappedIcon.muiName = 'Icon';
 
-          <ListItem button>
-            <ListItemIcon>
-              <PublicIcon />
-            </ListItemIcon>
-            <ListItemText primary="MyiWorlds" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Inbox" />
-          </ListItem>
-
-          <Divider />
-
-          <ListItem button>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItem>
-
-          <Divider />
-
-          <ListItem button>
-            <ListItemText inset primary="Privacy & Terms" />
-          </ListItem>
-        </List>
-      </div>
-    );
+    const navItems = [
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'home',
+        title: 'Home',
+        slug: `/private/daveyusername1`,
+      },
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'public',
+        title: 'MyiWorlds',
+        slug: '/daveyusername1',
+      },
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'inbox',
+        title: 'Inbox',
+        slug: '/daveyedwards/inbox',
+      },
+      {
+        type: 'DIVIDER',
+      },
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'settings',
+        title: 'Settings',
+        slug: '/daveyedwards/settings',
+      },
+      {
+        type: 'DIVIDER',
+      },
+      {
+        type: 'BUTTON',
+        title: 'Privacy & Terms',
+        slug: '/',
+      },
+    ];
 
     return (
       <div>
-        <Hidden smDown>
+        <Hidden smUp>
+          <BottomNavigation
+            style={{ zIndex: 1501 }}
+            className={classes.bottomNav}
+            value={value}
+            onChange={this.handleChange}
+            showLabels
+          >
+            {navItems.map(item => {
+              return item.settings && item.settings.primary ? (
+                <BottomNavigationButton
+                  key={item.title}
+                  style={{ minWidth: 40 }}
+                  component={({ ...props }) => (
+                    <Link href={item.slug} {...props} />
+                  )}
+                  label={item.title}
+                  icon={item.icon}
+                />
+              ) : null;
+            })}
+            <BottomNavigationButton
+              key="menu"
+              onClick={this.props.handleNavigationToggle}
+              label="Menu"
+              icon="menu"
+            />
+          </BottomNavigation>
+        </Hidden>
+
+        <Hidden smUp>
+          <Drawer
+            type="temporary"
+            onRequestClose={this.props.handleNavigationToggle}
+            classes={{
+              paper: classNames(
+                classes.drawerPaper,
+                !this.props.navOpen && classes.drawerPaperClose,
+              ),
+            }}
+            open={this.props.navOpen}
+          >
+            <div>This</div>
+            <div className={classes.drawerInner}>
+              {navItems.map((item, index) => {
+                switch (item.type) {
+                  case 'BUTTON': {
+                    return (
+                      <ListItem
+                        button
+                        key={item.title + index}
+                        component={({ ...props }) => (
+                          <Link href={item.slug} {...props} />
+                        )}
+                      >
+                        <ListItemIcon>
+                          <WrappedIcon>{item.icon}</WrappedIcon>
+                        </ListItemIcon>
+                        <ListItemText primary={item.title} />
+                      </ListItem>
+                    );
+                  }
+                  case 'DIVIDER': {
+                    return <Divider key={index} />;
+                  }
+                  default:
+                    return null;
+                }
+              })}
+            </div>
+          </Drawer>
+        </Hidden>
+
+        <Hidden only="xs" mdUp>
+          <div>
+            <Drawer
+              type="permanent"
+              classes={{
+                paper: classNames(
+                  classes.drawerPaper,
+                  !this.props.navOpen && classes.drawerPaperClose,
+                ),
+              }}
+              onRequestClose={this.props.handleNavigationToggle}
+              open={this.props.navOpen}
+            >
+              <div className={classes.drawerInner}>
+                {navItems.map((item, index) => {
+                  switch (item.type) {
+                    case 'BUTTON': {
+                      return (
+                        <ListItem
+                          button
+                          key={item.title + index}
+                          component={({ ...props }) => (
+                            <Link href={item.slug} {...props} />
+                          )}
+                        >
+                          <ListItemIcon>
+                            <WrappedIcon>{item.icon}</WrappedIcon>
+                          </ListItemIcon>
+                          <ListItemText primary={item.title} />
+                        </ListItem>
+                      );
+                    }
+                    case 'DIVIDER': {
+                      return <Divider key={index} />;
+                    }
+                    default:
+                      return null;
+                  }
+                })}
+              </div>
+            </Drawer>
+            {this.props.navOpen ? (
+              // Cant get it to fade in
+              <div
+                onClick={this.props.handleNavigationToggle}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  position: 'fixed',
+                  zIndex: 1000,
+                  backgroundColor: 'rgba(0, 0, 0, 0.54)',
+                  transition: 'opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                  opacity: 1,
+                  willChange: 'opactiy',
+                }}
+              />
+            ) : null}
+          </div>
+        </Hidden>
+
+        <Hidden only="xs">
           <Drawer
             type="permanent"
             classes={{
@@ -108,22 +271,33 @@ class Navigation extends React.Component {
             }}
             open={this.props.navOpen}
           >
-            <div className={classes.drawerInner}>{drawer}</div>
-          </Drawer>
-        </Hidden>
-
-        <Hidden smUp>
-          <Drawer
-            onRequestClose={this.props.handleNavigationToggle}
-            classes={{
-              paper: classNames(
-                classes.drawerPaper,
-                !this.props.navOpen && classes.drawerPaperClose,
-              ),
-            }}
-            open={this.props.navOpen}
-          >
-            <div className={classes.drawerInner}>{drawer}</div>
+            <div className={classes.drawerInner}>
+              {navItems.map((item, index) => {
+                switch (item.type) {
+                  case 'BUTTON': {
+                    return (
+                      <ListItem
+                        button
+                        key={item.title + index}
+                        component={({ ...props }) => (
+                          <Link href={item.slug} {...props} />
+                        )}
+                      >
+                        <ListItemIcon>
+                          <WrappedIcon>{item.icon}</WrappedIcon>
+                        </ListItemIcon>
+                        <ListItemText primary={item.title} />
+                      </ListItem>
+                    );
+                  }
+                  case 'DIVIDER': {
+                    return <Divider key={index} />;
+                  }
+                  default:
+                    return null;
+                }
+              })}
+            </div>
           </Drawer>
         </Hidden>
       </div>
@@ -136,4 +310,4 @@ Navigation.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(Navigation);
+export default withStyles(styles, { withTheme: true }, withWidth())(Navigation);

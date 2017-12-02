@@ -19,29 +19,29 @@ class ContainerBuilder extends React.Component {
     const circle = this.props.getCircleBySlug || {};
     return (
       <div>
-        <Typography type="body2" gutterBottom>
+        <Typography type="display4" gutterBottom>
           Title:
-          <Typography type="body1" gutterBottom>
-            {circle.title}
-          </Typography>
         </Typography>
-        <Typography type="body2" gutterBottom>
+        <Typography type="body1" gutterBottom>
+          {circle.title ? circle.title : null}
+        </Typography>
+        <Typography type="title" gutterBottom>
           Type:
-          <Typography type="body1" gutterBottom>
-            {circle.type}
-          </Typography>
         </Typography>
-        <Typography type="body2" gutterBottom>
+        <Typography type="body1" gutterBottom>
+          {circle.type}
+        </Typography>
+        <Typography type="title" gutterBottom>
           Id:
-          <Typography type="body1" gutterBottom>
-            {circle._id}
-          </Typography>
+        </Typography>
+        <Typography type="body1" gutterBottom>
+          {circle._id}
         </Typography>
         <Typography type="body2" gutterBottom>
           Slug:
-          <Typography type="body1" gutterBottom>
-            {circle.slug}
-          </Typography>
+        </Typography>
+        <Typography type="body1" gutterBottom>
+          {circle.slug}
         </Typography>
         {/* {(() => {
           switch (circle.type) {

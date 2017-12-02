@@ -1,9 +1,9 @@
 // @flow
 import { graphql, commitMutation, Environment } from 'react-relay';
-import history from '../history';
+import history from '../../history';
 
 const mutation = graphql`
-  mutation LoginMutation($input: createUserInput!) {
+  mutation CreateUserMutation($input: createUserInput!) {
     createUser(input: $input) {
       message
       createdUser {
@@ -20,7 +20,7 @@ function getConfigs(viewerId) {
     {
       type: 'RANGE_ADD',
       parentID: viewerId,
-      connectionName: 'userss',
+      connectionName: 'users',
       edgeName: 'linesMany',
       rangeBehaviors: {
         '': 'append',
@@ -33,9 +33,6 @@ function getOptimisticResponse(optimisticUserObject, viewerId) {
   return {
     createUser: {
       createdUser: optimisticUserObject,
-      // user: {
-      //   id: viewerId,
-      // },
     },
   };
 }
@@ -51,7 +48,7 @@ function commit(environment: Environment, data: Object, viewerId: number) {
         return { status: 'User was not created' };
       }
     },
-    onError: err => console.error('LoginMutation onError: ', err),
+    onError: err => console.error('CreateUserMutation onError: ', err),
     optimisticResponse: getOptimisticResponse(data, viewerId),
     configs: getConfigs(viewerId),
   });
