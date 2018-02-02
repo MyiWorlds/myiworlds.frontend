@@ -7,8 +7,10 @@
     "cross-env": "^5.1.1",
     "firebase": "^4.6.2",
     "history": "^4.7.2",
+    "immutability-helper": "^2.6.4",
+    "jss": "^9.3.3",
     "lodash": "^4.17.4",
-    "material-ui": "^1.0.0-beta.20",
+    "material-ui": "^1.0.0-beta.28",
     "material-ui-icons": "^1.0.0-beta.17",
     "prop-types": "^15.5.10",
     "query-string": "^5.0.0",
@@ -16,7 +18,10 @@
     "react-dom": "^15.6.1",
     "react-draggable": "^3.0.3",
     "react-grid-layout": "^0.16.0",
+    "react-jss": "^8.2.1",
     "react-relay": "^1.3.0",
+    "react-sizeme": "^2.3.6",
+    "react-youtube": "^7.5.0",
     "relay-runtime": "^1.3.0",
     "styled-components": "^2.1.2",
     "typeface-roboto": "^0.0.45",
@@ -47,23 +52,44 @@
     "stylelint-processor-styled-components": "^0.4.0"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --no-ignore --fix",
-      "git add"
-    ],
-    "*.json": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["eslint --no-ignore --fix", "git add"],
+    "*.json": ["prettier --write", "git add"]
   },
   "scripts": {
     "precommit": "lint-staged",
-    "lint": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" . && stylelint \"./src/**/*.js\"",
-    "fix": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" --fix .",
-    "relay": "cross-env REACT_APP_API=http://localhost:8080 node ./setup --download-schema && relay-compiler --src ./src --schema ./src/schema.graphql",
+    "lint":
+      "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" . && stylelint \"./src/**/*.js\"",
+    "fix":
+      "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" --fix .",
+    "relay":
+      "cross-env REACT_APP_API=http://localhost:8080 node ./setup --download-schema && relay-compiler --src ./src --schema ./src/schema.graphql",
     "build": "node ./setup && react-scripts build && node ./render",
     "test": "node ./setup && react-scripts test --env=jsdom",
     "deploy": "node ./setup && react-scripts build && gh-pages -d build",
-    "start": "cross-env REACT_APP_API=http://localhost:8080 node ./setup && cross-env REACT_APP_API=http://localhost:8080 react-scripts start"
+    "start":
+      "cross-env REACT_APP_API=http://localhost:8080 node ./setup && cross-env REACT_APP_API=http://localhost:8080 react-scripts start"
+  },
+  "proxy": {
+    "/graphql": {
+      "target": "http://localhost:8080",
+      "secure": false,
+      "changeOrigin": true,
+      "ws": true,
+      "xfwd": true
+    },
+    "/login": {
+      "target": "http://localhost:8080",
+      "secure": false,
+      "changeOrigin": true,
+      "ws": true,
+      "xfwd": true
+    },
+    "/login/clear": {
+      "target": "http://localhost:8080",
+      "secure": false,
+      "changeOrigin": true,
+      "ws": true,
+      "xfwd": true
+    }
   }
 }

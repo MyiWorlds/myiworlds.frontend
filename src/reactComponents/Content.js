@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Main = styled.main`
+  position: relative;
   width: 100%;
   z-index: 1;
   flex-grow: 1;
   margin-left: 0px;
-  margin-top: 64px;
   top: 56px;
   transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
   @media screen and (min-width: 600px) {
@@ -23,12 +23,7 @@ const Main = styled.main`
 
 class Content extends React.Component {
   render() {
-    return (
-      <Main navOpen={this.props.navOpen}>
-        {console.log('content', this.props)}
-        {this.props.children}
-      </Main>
-    );
+    return <Main navOpen={this.props.navOpen}>{this.props.children}</Main>;
   }
 }
 

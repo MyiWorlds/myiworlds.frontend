@@ -6,12 +6,11 @@ import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import CreateUserMutation from './CreateUserMutation';
 import { createFragmentContainer, graphql } from 'react-relay';
-import type { CreateUser_user } from './__generated__/CreateUser_user.graphql';
 
 class CreateUser extends React.Component {
-  props: {
-    user: CreateUser_user,
-  };
+  // props: {
+  //   user: CreateUser_user,
+  // };
 
   state = {
     email: '',
@@ -26,17 +25,13 @@ class CreateUser extends React.Component {
   };
 
   createUser = () => {
-    CreateUserMutation.commit(
-      this.props.relay.environment,
-      {
-        email: this.state.email,
-        username: this.state.username,
-        password: this.state.password,
-        dateCreated: Date.now(),
-        dateUpdated: Date.now(),
-      },
-      this.props.user.id,
-    );
+    CreateUserMutation.commit(this.props.relay.environment, {
+      email: this.state.email,
+      username: this.state.username,
+      password: this.state.password,
+      dateCreated: Date.now(),
+      dateUpdated: Date.now(),
+    });
   };
 
   render() {
@@ -45,6 +40,8 @@ class CreateUser extends React.Component {
         <Typography type="display2" gutterBottom>
           Signup
         </Typography>
+        <a href="/login/google">Sign In</a>
+
         <TextField
           required
           id="email"
@@ -80,11 +77,4 @@ class CreateUser extends React.Component {
   }
 }
 
-export default createFragmentContainer(
-  CreateUser,
-  graphql`
-    fragment CreateUser_user on User {
-      id
-    }
-  `,
-);
+export default CreateUser;

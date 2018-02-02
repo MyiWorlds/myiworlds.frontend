@@ -10,7 +10,7 @@ import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Hidden from 'material-ui/Hidden';
 import withWidth from 'material-ui/utils/withWidth';
 import BottomNavigation, {
-  BottomNavigationButton,
+  BottomNavigationAction,
 } from 'material-ui/BottomNavigation';
 import Link from '../Link';
 import Icon from 'material-ui/Icon';
@@ -22,7 +22,7 @@ const styles = theme => ({
     background: theme.palette.background.default,
     position: 'fixed',
     height: '100%',
-    top: '56px',
+    top: '0',
     width: drawerWidth,
     [theme.breakpoints.up('sm')]: {
       top: `64px`,
@@ -104,6 +104,15 @@ class Navigation extends React.Component {
         slug: '/daveyedwards/inbox',
       },
       {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'query_builder',
+        title: 'Recents',
+        slug: '/recents',
+      },
+      {
         type: 'DIVIDER',
       },
       {
@@ -137,7 +146,7 @@ class Navigation extends React.Component {
           >
             {navItems.map(item => {
               return item.settings && item.settings.primary ? (
-                <BottomNavigationButton
+                <BottomNavigationAction
                   key={item.title}
                   style={{ minWidth: 40 }}
                   component={({ ...props }) => (
@@ -148,7 +157,7 @@ class Navigation extends React.Component {
                 />
               ) : null;
             })}
-            <BottomNavigationButton
+            <BottomNavigationAction
               key="menu"
               onClick={this.props.handleNavigationToggle}
               label="Menu"
@@ -169,7 +178,6 @@ class Navigation extends React.Component {
             }}
             open={this.props.navOpen}
           >
-            <div>This</div>
             <div className={classes.drawerInner}>
               {navItems.map((item, index) => {
                 switch (item.type) {

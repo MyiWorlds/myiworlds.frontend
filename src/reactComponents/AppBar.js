@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MDAppBar from 'material-ui/AppBar';
+import MUIAppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
@@ -16,7 +16,7 @@ class AppBar extends React.Component {
   };
   render() {
     return (
-      <MDAppBar position="fixed" style={{ zIndex: 1301 }}>
+      <MUIAppBar position="fixed" style={{ zIndex: 1301 }}>
         <Toolbar>
           <Hidden only="xs">
             <IconButton
@@ -48,12 +48,12 @@ class AppBar extends React.Component {
           </Button>
           <Button
             color="contrast"
-            component={({ ...props }) => <Link href="/login" {...props} />}
+            component={({ ...props }) => <a href="/login/google" {...props} />}
           >
             Login
           </Button>
         </Toolbar>
-      </MDAppBar>
+      </MUIAppBar>
     );
   }
 }

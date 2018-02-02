@@ -9,14 +9,17 @@ import React from 'react';
 import isEqual from 'lodash/isEqual';
 import { graphql, QueryRenderer } from 'react-relay';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import { blue, red, grey } from 'material-ui/colors';
+import blue from 'material-ui/colors/blue';
+import red from 'material-ui/colors/red';
+import grey from 'material-ui/colors/grey';
+import { SheetsRegistry } from 'jss';
+import JssProvider from 'react-jss/lib/JssProvider';
 
 import relay from '../relay';
 import router from '../router';
 import history from '../history';
 import AppRenderer from './AppRenderer';
 import 'typeface-roboto';
-import createPalette from 'material-ui/styles/createPalette';
 
 // eslint-disable-next-line no-unused-expressions
 graphql`
@@ -57,16 +60,27 @@ type State = {
   render: ?Render,
 };
 
+const sheetsRegistry = new SheetsRegistry();
+
 const theme = createMuiTheme({
-  palette: createPalette({
-    primary: blue,
-    darkPrimary: blue,
-    lightPrimary: blue,
-    accent: red,
-    primaryText: grey,
-    secondaryText: grey,
-    divider: grey,
-  }),
+  palette: {
+    primary: {
+      light: blue[300],
+      main: blue[500],
+      dark: blue[700],
+    },
+    accent: {
+      light: red[300],
+      main: red[500],
+      dark: red[700],
+    },
+    primaryText: {
+      color: grey,
+    },
+    secondaryText: {
+      color: grey,
+    },
+  },
 });
 
 class App extends React.Component<any, any, State> {
@@ -115,14 +129,16 @@ class App extends React.Component<any, any, State> {
 
   render() {
     return (
-      <MuiThemeProvider theme={theme}>
-        <QueryRenderer
-          environment={relay}
-          query={this.state.query}
-          variables={this.state.variables}
-          render={this.renderState}
-        />
-      </MuiThemeProvider>
+      <JssProvider registry={sheetsRegistry}>
+        <MuiThemeProvider theme={theme}>
+          <QueryRenderer
+            environment={relay}
+            query={this.state.query}
+            variables={this.state.variables}
+            render={this.renderState}
+          />
+        </MuiThemeProvider>
+      </JssProvider>
     );
   }
 }

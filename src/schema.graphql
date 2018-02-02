@@ -27,7 +27,7 @@ type Circle implements Node {
   type: String!
 
   # The settings of this circle.  Will be used as an object.
-  settings: String
+  settings: JSON
   rating: Circle
   styles: [Circle]
   tags: [String]
@@ -35,8 +35,11 @@ type Circle implements Node {
   subtitle: String
   description: String
 
-  # A piece of media (image/gif/video) that helps identify this piece of content.
+  # A piece of media (font icon/image/gif/video) that helps identify this piece of content.
   media: Circle
+
+  # A piece of icon (font icon/image/gif/video) that helps identify this piece of content.  Defaults to creators display pic
+  icon: Circle
 
   # Who is allowed to see this node?
   viewers: [User]
@@ -46,10 +49,9 @@ type Circle implements Node {
 
   # Users that can edit this circle
   editors: [User]
-  dateCreated: String
-  dateUpdated: String
+  dateCreated: Int
+  dateUpdated: Int
   string: String
-  text: String
   blob: JSON
   number: Int
   boolean: Boolean
@@ -99,6 +101,7 @@ input createCircleInput {
   subtitle: String
   description: String
   media: String
+  icon: String
   creator: String!
   editors: [String]
   dateCreated: String
@@ -202,6 +205,7 @@ type PageInfo {
 
 type Query {
   user(_id: String): User
+  getCirclesByUserKey(creator: String): [Circle]
   getCircleBySlug(slug: String): Circle
   getCircleByKey(_id: String): Circle
 
@@ -342,11 +346,11 @@ type User implements Node {
   # The ID of an object
   id: ID!
   _id: ID!
-  username: String!
+  username: String
   email: String!
   emailConfirmed: Boolean
-  dateCreated: String
-  dateUpdated: String
+  dateCreated: Int
+  dateUpdated: Int
   level: Circle
 
   # The users currently oweing balance

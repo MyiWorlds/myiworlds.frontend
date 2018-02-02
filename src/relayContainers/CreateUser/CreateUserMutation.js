@@ -15,29 +15,7 @@ const mutation = graphql`
   }
 `;
 
-function getConfigs(viewerId) {
-  return [
-    {
-      type: 'RANGE_ADD',
-      parentID: viewerId,
-      connectionName: 'users',
-      edgeName: 'linesMany',
-      rangeBehaviors: {
-        '': 'append',
-      },
-    },
-  ];
-}
-
-function getOptimisticResponse(optimisticUserObject, viewerId) {
-  return {
-    createUser: {
-      createdUser: optimisticUserObject,
-    },
-  };
-}
-
-function commit(environment: Environment, data: Object, viewerId: number) {
+function commit(environment: Environment, data: Object) {
   commitMutation(environment, {
     mutation,
     variables: { input: data },
@@ -49,8 +27,6 @@ function commit(environment: Environment, data: Object, viewerId: number) {
       }
     },
     onError: err => console.error('CreateUserMutation onError: ', err),
-    optimisticResponse: getOptimisticResponse(data, viewerId),
-    configs: getConfigs(viewerId),
   });
 }
 

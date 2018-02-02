@@ -56,38 +56,54 @@ const routes = [
   // },
   {
     path: '/signup',
-    query: graphql`query routerCreateUserQuery {
-      user (_id: "davey") {
-        id
-        ...App_user
-        ...CreateUser_user
-      }
-    }`, // prettier-ignore
+    // query: graphql`query routerCreateUserQuery {
+    //   user (_id: "davey") {
+    //     id
+    //     ...App_user
+    //     ...CreateUser_user
+    //   }
+    // }`, // prettier-ignore
     components: () => [
       import(/* webpackChunkName: 'signup' */ './relayContainers/CreateUser'),
     ],
-    render: ([CreateUser], data) => ({
+    render: ([CreateUser]) => ({
       title: 'CreateUser',
-      body: <CreateUser user={data.user} />,
+      body: <CreateUser />,
     }),
   },
-  {
-    path: '/login',
-    query: graphql`query routerLoginUserQuery {
-      user (_id: "davey") {
-        id
-        ...App_user
-        ...Login_user
-      }
-    }`, // prettier-ignore
-    components: () => [
-      import(/* webpackChunkName: 'login' */ './relayContainers/Login'),
-    ],
-    render: ([Login], data) => ({
-      title: 'Login',
-      body: <Login user={data.user} />,
-    }),
-  },
+  // {
+  //   path: '/login/google',
+  //   action: req => {
+  //     if (req.user) {
+  //       `<p>${req.t('Welcome, {{user}}!', {
+  //         user: req.user.username,
+  //       })} (<a href="javascript:fetch('/login/clear', { method: 'POST', credentials: 'include' }).then(() => window.location = '/')">${req.t(
+  //         'log out',
+  //       )}</a>)</p>`;
+  //     } else {
+  //       `<p>${req.t('Welcome, guest!')} (<a href="/login/google">${req.t(
+  //         'sign in',
+  //       )}</a>)</p>`;
+  //     }
+  //   },
+  // },
+  // {
+  //   path: '/login',
+  //   query: graphql`query routerLoginUserQuery {
+  //     user (_id: "davey") {
+  //       id
+  //       ...App_user
+  //       ...Login_user
+  //     }
+  //   }`, // prettier-ignore
+  //   components: () => [
+  //     import(/* webpackChunkName: 'login' */ './relayContainers/Login'),
+  //   ],
+  //   render: ([Login], data) => ({
+  //     title: 'Login',
+  //     body: <Login user={data.user} />,
+  //   }),
+  // },
   {
     path: '/',
     query: graphql`query routerHomeQuery {
@@ -103,9 +119,33 @@ const routes = [
       import(/* webpackChunkName: 'home' */ './relayContainers/GetCircleBySlug'),
     ],
     render: ([GetCircleBySlug], data) => ({
-      title: data.getCircleBySlug.title,
+      title:
+        data.getCircleBySlug && data.getCircleBySlug.title
+          ? data.getCircleBySlug.title
+          : 'Untitled',
       body: <GetCircleBySlug getCircleBySlug={data.getCircleBySlug} />,
     }),
+  },
+  {
+    path: '/recents',
+    query: graphql`query routerGetCirclesByUserKeyQuery($creator: String) {
+      getCirclesByUserKey (creator: $creator) {
+        ...GetCirclesByUserKey_getCirclesByUserKey
+      }
+    }`, // prettier-ignore
+    components: () => [
+      import(/* webpackChunkName: 'recents' */ './relayContainers/GetCirclesByUserKey'),
+    ],
+    render: ([GetCirclesByUserKey], data) => ({
+      title: 'Untitled',
+      body: (
+        <GetCirclesByUserKey getCirclesByUserKey={data.getCirclesByUserKey} />
+      ),
+    }),
+  },
+  {
+    path: '/google/google/return',
+    action: () => `<h1>test</h1>`,
   },
   {
     path: '/:slug(.*)',
