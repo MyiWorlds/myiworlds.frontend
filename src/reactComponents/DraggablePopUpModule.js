@@ -11,7 +11,7 @@ import KeyboardArrowDown from 'material-ui-icons/KeyboardArrowDown';
 import Draggable from 'react-draggable';
 import Bar from './Bar';
 
-const styles = theme => ({
+const style = theme => ({
   paper: {
     position: 'fixed',
     display: 'flex',
@@ -86,11 +86,9 @@ class DraggablePopUpModule extends React.Component {
             elevation={5}
             className={classes.paper}
             style={
-              this.props.contentShowing ? (
-                { maxHeight: '600px' }
-              ) : (
-                { maxHeight: '72px' }
-              )
+              this.props.contentShowing
+                ? { maxHeight: '600px' }
+                : { maxHeight: '72px' }
             }
           >
             <dragHandle>
@@ -112,14 +110,16 @@ class DraggablePopUpModule extends React.Component {
                     {this.props.contentShowing ? (
                       <IconButton
                         onClick={() =>
-                          this.props.handleBooleanToggle('contentShowing')}
+                          this.props.handleBooleanToggle('contentShowing')
+                        }
                       >
                         <KeyboardArrowUp />
                       </IconButton>
                     ) : (
                       <IconButton
                         onClick={() =>
-                          this.props.handleBooleanToggle('contentShowing')}
+                          this.props.handleBooleanToggle('contentShowing')
+                        }
                       >
                         <KeyboardArrowDown />
                       </IconButton>
@@ -153,4 +153,4 @@ DraggablePopUpModule.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(DraggablePopUpModule);
+export default withStyles(style, { withTheme: true })(DraggablePopUpModule);

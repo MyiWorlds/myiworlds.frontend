@@ -24,7 +24,7 @@ const circle = {
   type: 'VIDEO_YOUTUBE',
 };
 
-const styles = theme => ({
+const style = theme => ({
   fieldsContainer: {
     margin: '0 auto',
     maxWidth: 800,
@@ -44,6 +44,7 @@ class CreateCircle extends React.Component {
     addTitle: true,
 
     _id: circle._id ? circle._id : null,
+    id: circle._id ? circle._id : null,
     type: circle.type || 'CUSTOM',
     title: '',
     subtitle: '',
@@ -60,7 +61,7 @@ class CreateCircle extends React.Component {
   };
 
   handleStateStringChange = (key, value) => {
-    this.setState(updateKeyValueString(key, value));
+    this.setState(updateKeyValueString(key, value.string));
   };
 
   toggleBoolean = name => () => {
@@ -150,7 +151,7 @@ class CreateCircle extends React.Component {
     const { classes } = this.props;
     return (
       <Card
-        styles={{
+        style={{
           margin: '12px 12px 124px 12px',
           overflow: 'hidden',
           borderRadius: 12,
@@ -190,7 +191,7 @@ class CreateCircle extends React.Component {
           </Card>
         </div>
         <Bar
-          styles={{
+          style={{
             bottom: 0,
             right: 0,
             position: 'fixed',
@@ -225,7 +226,7 @@ class CreateCircle extends React.Component {
 }
 
 export default createFragmentContainer(
-  withStyles(styles, { withTheme: true })(CreateCircle),
+  withStyles(style, { withTheme: true })(CreateCircle),
   graphql`
     fragment CreateCircle_user on User {
       id

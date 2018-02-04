@@ -6,7 +6,7 @@ import { CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import Button from '../../reactComponents/Button';
 
-const styles = {
+const style = {
   mediaContainer: {
     width: '100%',
     height: 125,
@@ -47,4 +47,4 @@ GridSmall.prototype.propTypes = {
   circle: PropTypes.object,
 };
 
-export default withStyles(styles)(GridSmall);
+export default withStyles(style)(GridSmall);

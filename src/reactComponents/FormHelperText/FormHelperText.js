@@ -4,7 +4,7 @@ import injectSheet from 'react-jss';
 // https://material-ui-next.com/api/form-helper-text/
 import MUIFormHelperText from 'material-ui/Form/FormHelperText';
 
-const styles = {};
+const style = {};
 
 const FormHelperText = props => {
   const { classes } = props;
@@ -30,4 +30,4 @@ FormHelperText.prototype.propTypes = {
   style: PropTypes.object,
 };
 
-export default injectSheet(styles)(FormHelperText);
+export default injectSheet(style)(FormHelperText);

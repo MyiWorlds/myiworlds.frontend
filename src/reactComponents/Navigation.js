@@ -17,7 +17,7 @@ import Icon from 'material-ui/Icon';
 
 const drawerWidth = 240;
 
-const styles = theme => ({
+const style = theme => ({
   drawerPaper: {
     background: theme.palette.background.default,
     position: 'fixed',
@@ -318,4 +318,4 @@ Navigation.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true }, withWidth())(Navigation);
+export default withStyles(style, { withTheme: true }, withWidth())(Navigation);

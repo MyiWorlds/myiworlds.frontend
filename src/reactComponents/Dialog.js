@@ -7,7 +7,7 @@ import Bar from './Bar';
 import MUIDialog from 'material-ui/Dialog';
 import Slide from 'material-ui/transitions/Slide';
 
-const styles = theme => ({
+const style = theme => ({
   header: {
     padding: '12px 12px 12px 12px',
     background: theme.palette.primary.dark,
@@ -114,4 +114,4 @@ class Dialog extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Dialog);
+export default withStyles(style, { withTheme: true })(Dialog);

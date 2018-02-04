@@ -6,7 +6,7 @@ import Divider from '../Divider';
 
 const circle = {
   settings: {},
-  styles: {
+  style: {
     containerStyles: {},
     fieldsStyles: {
       margin: 8,
@@ -14,31 +14,40 @@ const circle = {
   },
 };
 
-const styles = {};
+const style = {};
 
 const Header = props => {
   const { classes } = props;
   return (
-    <div style={circle.styles.containerStyles}>
+    <div style={circle.style.containerStyles}>
       {props.dividerTop ? <Divider /> : null}
-      <div style={circle.styles.fieldsStyles}>
+      <div style={circle.style.fieldsStyles}>
         {props.circle.title ? (
-          <Typography type="display1">{props.circle.title}</Typography>
+          <div>
+            <Typography type="display1">{props.circle.title}</Typography>
+            <br />
+          </div>
         ) : null}
         {props.circle.subtitle ? (
-          <Typography type="subheading">{props.circle.subtitle}</Typography>
+          <div>
+            <Typography type="subheading">{props.circle.subtitle}</Typography>
+            <br />
+          </div>
         ) : null}
         {props.circle.description ? (
-          <Typography type="body1">{props.circle.description}</Typography>
+          <div>
+            <Typography type="body1">{props.circle.description}</Typography>
+            <br />
+          </div>
         ) : null}
         {props.circle.tags ? (
           <div>
-            <b>Tags: </b>
-            <Typography type="body1">
+            <Typography type="caption">
               {typeof props.circle.tags === 'string'
                 ? props.circle.tags
                 : props.circle.tags.join(', ')}
             </Typography>
+            <br />
           </div>
         ) : null}
       </div>
@@ -51,4 +60,4 @@ Header.prototype.propTypes = {
   circle: PropTypes.obj,
 };
 
-export default injectSheet(styles)(Header);
+export default injectSheet(style)(Header);

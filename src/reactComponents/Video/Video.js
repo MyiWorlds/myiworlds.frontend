@@ -5,8 +5,9 @@ import injectSheet from 'react-jss';
 import Header from '../Header';
 
 const circle = {
+  id: 'defaultvideo',
   settings: {},
-  styles: {
+  style: {
     containerStyles: {
       // width: '100%',
       background: '#000',
@@ -33,15 +34,21 @@ const circle = {
   },
 };
 
-const styles = {
+const style = {
   containerStyles: {
     position: 'relative',
-    height: props => 9 / 16 * props.componentSize.width,
+    height: props =>
+      props.style && props.style.height
+        ? props.style.height
+        : 9 / 16 * props.componentSize.width,
+    width: props =>
+      props.style && props.style.width ? props.style.width : '100%',
     maxHeight: '80vh',
   },
   videoWrapper: {
     margin: '0 auto',
-    height: '100%',
+    height: props =>
+      props.style && props.style.height ? props.style.height : '100%',
     maxWidth: props =>
       props.componentSize.width < 1000
         ? '100%'
@@ -53,20 +60,26 @@ const styles = {
 const Video = props => {
   const { classes } = props;
   const header = (
-    <Header componentSize={props.componentSize} circle={props.circle} />
+    <Header
+      key="header"
+      componentSize={props.componentSize}
+      circle={props.circle}
+    />
   );
+
   const video = (
     <div
-      key="video"
-      style={circle.styles.containerStyles}
+      key={circle.id}
+      style={circle.style.containerStyles}
       className={classes.containerStyles}
     >
       <div className={classes.videoWrapper}>
         {(() => {
-          switch (props.type) {
+          switch (props.type || props.circle.type) {
             case 'VIDEO_YOUTUBE':
               return (
                 <YouTube
+                  key={props.circle.id}
                   videoId={
                     props.circle.string !== '' &&
                     props.circle.string !== null &&
@@ -84,7 +97,13 @@ const Video = props => {
     </div>
   );
 
-  return <div>{props.headerBot ? [header, video] : [video, header]}</div>;
+  return (
+    <div>
+      {props.hideHeader
+        ? video
+        : props.headerBot ? [header, video] : [video, header]}
+    </div>
+  );
 };
 
 Video.prototype.propTypes = {
@@ -92,4 +111,4 @@ Video.prototype.propTypes = {
   circle: PropTypes.object,
 };
 
-export default injectSheet(styles)(Video);
+export default injectSheet(style)(Video);

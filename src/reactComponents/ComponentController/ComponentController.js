@@ -6,9 +6,9 @@ import Image from '../Image';
 import Video from '../Video';
 import sizeMe from 'react-sizeme';
 import Typography from '../Typography';
-import Card from '../Card';
 import Header from '../Header';
 import PlainText from '../PlainText';
+import MediaCard from '../MediaCard';
 
 const ComponentController = props => {
   return (() => {
@@ -33,12 +33,25 @@ const ComponentController = props => {
             componentSize={props.size}
             circle={props.circle}
             type={props.circle.type}
+            {...props}
           />
         );
       case 'HERO':
         return <div>HERO</div>;
       case 'PLAIN_TEXT':
         return <PlainText circle={props.circle} />;
+      case 'MEDIA_CARD':
+        return (
+          <MediaCard
+            circle={props.circle}
+            {...props}
+            settings={props.settings}
+            selectedCircle={props.selectedCircle ? props.selectedCircle : null}
+            handleSingleSelection={
+              props.handleSingleSelection ? props.handleSingleSelection : null
+            }
+          />
+        );
       default:
         return (
           <div>

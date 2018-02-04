@@ -8,7 +8,7 @@ import { Manager, Target, Popper } from 'react-popper';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 
-const styles = {
+const style = {
   popperClose: {
     pointerEvents: 'none',
   },
@@ -53,4 +53,4 @@ Menu.prototype.propTypes = {
   classes: PropTypes.obj,
 };
 
-export default withStyles(styles)(Menu);
+export default withStyles(style)(Menu);

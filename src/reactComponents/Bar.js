@@ -6,7 +6,7 @@ import injectSheet from 'react-jss';
 import Divider from './Divider';
 import PropTypes from 'prop-types';
 
-const styles = theme => ({
+const style = theme => ({
   container: {
     width: '100%',
     display: 'inline-block',
@@ -24,7 +24,7 @@ const styles = theme => ({
 
 const Bar = props => {
   return (
-    <div className={props.classes.container} style={props.styles}>
+    <div className={props.classes.container} style={props.style}>
       {props.dividerTop ? <Divider /> : null}
       <div className={(props.className, props.classes.header)}>
         {props.children}
@@ -36,9 +36,9 @@ const Bar = props => {
 
 Bar.prototype.propTypes = {
   children: PropTypes.node,
-  styles: PropTypes.object,
+  style: PropTypes.object,
   dividerTop: PropTypes.bool,
   dividerBottom: PropTypes.bool,
 };
 
-export default injectSheet(styles, { withTheme: true })(Bar);
+export default injectSheet(style, { withTheme: true })(Bar);

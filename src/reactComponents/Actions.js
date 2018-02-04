@@ -5,7 +5,7 @@ import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import Link from '../Link';
 
-const styles = theme => ({
+const style = theme => ({
   button: {
     position: 'fixed',
     right: 24,
@@ -44,4 +44,4 @@ Actions.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Actions);
+export default withStyles(style)(Actions);

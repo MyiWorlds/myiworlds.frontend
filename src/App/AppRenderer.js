@@ -16,7 +16,7 @@ import Navigation from '../reactComponents/Navigation';
 import Actions from '../reactComponents/Actions';
 import Content from '../reactComponents/Content';
 
-const styles = theme => ({
+const style = theme => ({
   root: {
     backgroundColor: 'white',
     position: 'relative',
@@ -161,4 +161,4 @@ class AppRenderer extends React.Component<any, Props, State> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(AppRenderer);
+export default withStyles(style, { withTheme: true })(AppRenderer);

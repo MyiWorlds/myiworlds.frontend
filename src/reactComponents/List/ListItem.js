@@ -21,7 +21,7 @@ const ListItem = props => {
 
 ListItem.prototype.propTypes = {
   children: PropTypes.node,
-  styles: PropTypes.object,
+  style: PropTypes.object,
   xs: PropTypes.number,
   sm: PropTypes.number,
   md: PropTypes.number,

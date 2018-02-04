@@ -11,6 +11,7 @@ const opts = {
   },
 };
 
+// Use youtube api and thumbnails
 const YouTube = props => {
   return <ReactYouTube videoId={props.videoId} opts={opts} />;
 };

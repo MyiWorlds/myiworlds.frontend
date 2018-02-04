@@ -4,12 +4,12 @@ import MUICard from 'material-ui/Card';
 
 const Card = props => {
   const onClickStyles = props.onClick ? { cursor: 'pointer' } : {};
-  const styles = Object.assign({}, props.style, onClickStyles);
+  const style = Object.assign({}, props.style, onClickStyles);
 
   return (
     <MUICard
       raised={props.raised}
-      style={styles}
+      style={style}
       elevation={props.elevation}
       onClick={props.onClick ? props.onClick : () => {}}
     >

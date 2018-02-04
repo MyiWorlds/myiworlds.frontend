@@ -6,18 +6,18 @@ import Header from '../Header';
 
 const circle = {
   settings: {},
-  styles: {
+  style: {
     containerStyles: {},
   },
 };
 
-const styles = {};
+const style = {};
 
 const PlainText = props => {
   const { classes } = props;
 
   return (
-    <div style={circle.styles.containerStyles}>
+    <div style={circle.style.containerStyles}>
       <Header
         dividerBottom={true}
         componentSize={props.componentSize}
@@ -34,4 +34,4 @@ PlainText.prototype.propTypes = {
   circle: PropTypes.obj,
 };
 
-export default injectSheet(styles)(PlainText);
+export default injectSheet(style)(PlainText);

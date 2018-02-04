@@ -4,7 +4,7 @@ import Icon from 'material-ui/Icon';
 import { withStyles } from 'material-ui/styles';
 import Button from './Button';
 
-const styles = props => ({
+const style = props => ({
   button: {
     width: props.width || 48,
     height: props.height || 'auto',
@@ -37,4 +37,4 @@ FontIcon.prototype.propTypes = {
   height: PropTypes.number,
 };
 
-export default withStyles(styles)(FontIcon);
+export default withStyles(style)(FontIcon);

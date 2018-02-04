@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 import MUITextField from 'material-ui/TextField';
 
-const styles = {};
+const style = {};
 
 const TextField = props => {
   const { classes } = props;
@@ -38,4 +38,4 @@ TextField.prototype.propTypes = {
   multiline: PropTypes.bool,
 };
 
-export default injectSheet(styles)(TextField);
+export default injectSheet(style)(TextField);

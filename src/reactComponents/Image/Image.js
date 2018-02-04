@@ -18,7 +18,7 @@ class Image extends React.Component {
     height: PropTypes.string,
     backgroundColor: PropTypes.string,
     width: PropTypes.string,
-    styles: PropTypes.object,
+    style: PropTypes.object,
     containerStyles: PropTypes.object,
     position: PropTypes.string,
     mode: PropTypes.string,
@@ -29,7 +29,7 @@ class Image extends React.Component {
       height,
       backgroundColor,
       width,
-      styles,
+      style,
       position,
       containerStyles,
     } = this.props;
@@ -71,7 +71,7 @@ class Image extends React.Component {
       <div style={containerStyles}>
         <div
           title={this.props.title}
-          style={{ ...defaults, ...styles, ...important }}
+          style={{ ...defaults, ...style, ...important }}
         />
         {header}
       </div>

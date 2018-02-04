@@ -15,6 +15,7 @@ import toggleKeyValueBoolean from '../../functions/updateKeyValues/toggleKeyValu
 import { Menu, MenuItem } from '../../reactComponents/Menu';
 
 const creationTypes = {
+  title: 'Select a Type of content to create',
   type: 'LINES',
   settings: {
     optionsBar: {
@@ -22,410 +23,17 @@ const creationTypes = {
       background: 'none',
       padding: 4,
     },
-    listDisplayTypes: [
-      {
-        type: 'MEDIA_CARD',
-        settings: {
-          spacing: 16,
-          listIcon: 'list',
-          media: {
-            _id: '',
-            type: 'FONT_ICON',
-            styles: {
-              fontSize: '32px',
-              transform: 'rotate(90deg)',
-            },
-            string: 'view_module',
-          },
-          cardSizes: {
-            xs: 12,
-            sm: 12,
-            md: 6,
-            lg: 4,
-            xl: 4,
-          },
-        },
-        linesFlattend: {
-          card: {
-            settings: {
-              raised: false,
-              margin: props =>
-                props.type === props.circle.type ? { margin: '12px' } : '',
-            },
-          },
-          media: {
-            _id: '',
-            styles: {
-              height: 200,
-            },
-          },
-          title: {
-            settings: {
-              type: 'headline',
-              component: 'h2',
-            },
-          },
-          description: {
-            settings: {
-              component: 'p',
-            },
-          },
-          actions: {
-            styles: {
-              width: '100%',
-            },
-            lines: [
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'Select',
-              },
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'learn more',
-              },
-            ],
-          },
-        },
-      },
-      {
-        type: 'LIST_CUSTOM',
-        settings: {
-          spacing: 16,
-          media: {
-            _id: '',
-            type: 'FONT_ICON',
-            styles: {
-              fontSize: '32px',
-            },
-            string: 'view_stream',
-          },
-          cardSizes: {
-            xs: 12,
-            sm: 12,
-            md: 12,
-            lg: 6,
-            xl: 6,
-          },
-        },
-        linesFlattend: {
-          card: {
-            styles: {
-              minWidth: 345,
-            },
-            settings: {
-              raised: false,
-            },
-          },
-          media: {
-            _id: '',
-            styles: {
-              height: 300,
-            },
-          },
-          title: {
-            settings: {
-              type: 'headline',
-              component: 'h2',
-            },
-          },
-          description: {
-            settings: {
-              component: 'p',
-            },
-          },
-          actions: {
-            styles: {
-              width: '100%',
-            },
-            lines: [
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'Select',
-              },
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'learn more',
-              },
-            ],
-          },
-        },
-      },
-      {
-        type: 'MEDIA_CARD',
-        settings: {
-          spacing: 16,
-          media: {
-            _id: '',
-            type: 'FONT_ICON',
-            styles: {
-              fontSize: '32px',
-              transform: 'rotate(180deg)',
-            },
-            string: 'view_list',
-          },
-          cardSizes: {
-            xs: 12,
-            sm: 12,
-            md: 12,
-            lg: 12,
-            xl: 12,
-          },
-        },
-        linesFlattend: {
-          card: {
-            settings: {
-              raised: false,
-            },
-          },
-          media: {
-            _id: '',
-            styles: {
-              height: 400,
-            },
-          },
-          title: {
-            settings: {
-              type: 'headline',
-              component: 'h2',
-            },
-          },
-          description: {
-            settings: {
-              component: 'p',
-            },
-          },
-          actions: {
-            styles: {
-              width: '100%',
-            },
-            lines: [
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'Select',
-              },
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'learn more',
-              },
-            ],
-          },
-        },
-      },
-      {
-        type: 'MEDIA_CARD',
-        settings: {
-          spacing: 16,
-          media: {
-            _id: '',
-            type: 'FONT_ICON',
-            styles: {
-              fontSize: '32px',
-            },
-            string: 'list',
-          },
-          cardSizes: {
-            xs: 12,
-            sm: 12,
-            md: 12,
-            lg: 12,
-            xl: 12,
-          },
-        },
-        linesFlattend: {
-          card: {
-            styles: {
-              minWidth: 345,
-            },
-            settings: {
-              raised: false,
-            },
-          },
-          media: {
-            _id: '',
-            styles: {
-              height: 200,
-              width: 175,
-              float: 'right',
-              margin: '12px 12px 0px 12px',
-            },
-          },
-          title: {
-            settings: {
-              type: 'headline',
-              component: 'h2',
-            },
-          },
-          description: {
-            settings: {
-              component: 'p',
-            },
-          },
-          actions: {
-            styles: {
-              width: '100%',
-            },
-            lines: [
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'Select',
-              },
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'learn more',
-              },
-            ],
-          },
-        },
-      },
-      {
-        type: 'MEDIA_CARD',
-        settings: {
-          spacing: 16,
-          media: {
-            _id: '',
-            type: 'FONT_ICON',
-            styles: {
-              fontSize: '32px',
-            },
-            string: 'view_module',
-          },
-          cardSizes: {
-            xs: 12,
-            sm: 12,
-            md: 12,
-            lg: 12,
-            xl: 12,
-          },
-        },
-        linesFlattend: {
-          card: {
-            styles: {
-              minWidth: 345,
-              position: 'relative',
-            },
-            settings: {
-              raised: false,
-            },
-          },
-          media: {
-            _id: '',
-            styles: {
-              float: 'left',
-              height: 64,
-              width: 64,
-              margin: '8px 8px 0px 8px',
-            },
-          },
-          title: {
-            settings: {
-              type: 'headline',
-              component: 'h2',
-            },
-          },
-          description: {
-            settings: {
-              component: 'p',
-            },
-          },
-          actions: {
-            styles: {
-              width: '100%',
-            },
-            lines: [
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'Select',
-              },
-              {
-                type: 'BUTTON',
-                settings: {
-                  color: 'primary',
-                  dense: 'true',
-                },
-                string: 'learn more',
-              },
-            ],
-          },
-          // actions: {
-          //   styles: {
-          //     float: 'right',
-          //     position: 'absolute',
-          //     flexDirection: 'row-reverse',
-          //     right: 0,
-          //     top: 0,
-          //   },
-          //   lines: [
-          //     {
-          //       type: 'RADIO',
-          //       settings: {
-          //         color: 'primary',
-          //         dense: 'true',
-          //       },
-          //       styles: {},
-          //       string: 'Select',
-          //     },
-          //     {
-          //       styles: {
-          //         display: 'none',
-          //       },
-          //       settings: {
-          //         color: 'primary',
-          //         dense: 'true',
-          //       },
-          //       string: 'learn more',
-          //     },
-          //   ],
-          // },
-        },
-      },
-    ],
   },
-  styles: [],
-  title: 'Select a Type of content to create',
+  style: [],
   lines: [
     {
-      _id: '1',
-      type: 'PLAIN_TEXT',
+      id: '1',
+      type: 'TYPE',
       title: 'Text',
       description: 'A image',
+      string: 'PLAIN_TEXT',
       media: {
-        _id: '',
+        id: 'media1',
         title: 'Image Title',
         type: 'IMAGE',
         blob: {
@@ -441,12 +49,13 @@ const creationTypes = {
       },
     },
     {
-      _id: '2',
-      type: 'IMAGE',
+      id: '2',
+      type: 'TYPE',
       title: 'Image',
       description: 'A image',
+      string: 'IMAGE',
       media: {
-        _id: '',
+        id: 'media2',
         title: 'Image Title',
         type: 'IMAGE',
         blob: {
@@ -462,12 +71,13 @@ const creationTypes = {
       },
     },
     {
-      _id: '3',
-      type: 'VIDEO_YOUTUBE',
+      id: '3',
+      type: 'TYPE',
       title: 'Video',
       description: 'A video',
+      string: 'VIDEO_YOUTUBE',
       media: {
-        _id: '',
+        id: 'media3',
         title: 'Image Title',
         type: 'IMAGE',
         blob: {
@@ -483,12 +93,13 @@ const creationTypes = {
       },
     },
     {
-      _id: '4',
-      type: 'GIF',
+      id: '4',
+      type: 'TYPE',
       title: 'Gif',
       description: 'A gif',
+      string: 'GIF',
       media: {
-        _id: '',
+        id: 'media4',
         title: 'Gif Title',
         type: 'GIF',
         blob: {
@@ -504,12 +115,13 @@ const creationTypes = {
       },
     },
     {
-      _id: '5',
-      type: 'HEADER',
+      id: '5',
+      type: 'TYPE',
       title: 'Header',
       description: 'A image',
+      string: 'HEADER',
       media: {
-        _id: '',
+        id: 'media5',
         title: 'Image Title',
         type: 'IMAGE',
         blob: {
@@ -521,12 +133,13 @@ const creationTypes = {
       },
     },
     {
-      _id: '6',
-      type: 'HERO',
+      id: '6',
+      type: 'TYPE',
       title: 'Hero',
       description: 'A image',
+      string: 'HERO',
       media: {
-        _id: '',
+        id: 'media6',
         title: 'Image Title',
         type: 'IMAGE',
         blob: {
@@ -538,12 +151,13 @@ const creationTypes = {
       },
     },
     {
-      _id: '7',
-      type: 'CUSTOM',
+      id: '7',
+      type: 'TYPE',
       title: 'Custom',
       description: 'A image',
+      string: 'CUSTOM',
       media: {
-        _id: '',
+        id: 'media7',
         title: 'Image Title',
         type: 'IMAGE',
         blob: {
@@ -561,7 +175,7 @@ const creationTypes = {
   ],
 };
 
-const styles = theme => ({
+const style = theme => ({
   title: {
     fontFamily: 'Roboto',
     color: 'rgba(0, 0, 0, 0.45)',
@@ -578,7 +192,7 @@ const styles = theme => ({
     zIndex: 999,
   },
   media: {
-    _id: '',
+    id: 'media90',
     height: 200,
   },
   card: {
@@ -626,7 +240,7 @@ class Header extends React.Component {
     // Does not currently toggle due to something in MUI
     headerMenu: false,
     showSelectTypeDialog: this.props.type === '' ? true : false,
-    selectedType: this.props.type,
+    selectedCircle: this.props,
   };
 
   toggleBoolean = name => () => {
@@ -642,19 +256,23 @@ class Header extends React.Component {
   };
 
   handleTypeSelection = value => {
-    this.setState(updateKeyValueString('selectedType', value));
+    this.setState(updateKeyValueString('selectedCircle', value));
   };
 
   updateParentTypeSelection = () => {
     this.setState({ showSelectTypeDialog: false });
-    this.props.handleStateStringChange('type', this.state.selectedType);
+    this.props.handleStateStringChange('type', this.state.selectedCircle);
+  };
+
+  humanizeType = type => {
+    return type.split('_').join(' ');
   };
 
   render() {
     const user = this.props.user;
     const { classes } = this.props;
     const { headerMenu, showSelectTypeDialog } = this.state;
-
+    const humanizedType = this.humanizeType(this.props.type);
     return (
       <div>
         <Bar background="none" dividerBottom={true}>
@@ -665,10 +283,10 @@ class Header extends React.Component {
                 color="primary"
                 raised
                 aria-haspopup="true"
-                styles={{ marginLeft: 20 }}
+                style={{ marginLeft: 20 }}
                 onClick={this.keyValueTrue('showSelectTypeDialog')}
               >
-                {this.props.type === '' ? 'Choose' : this.props.type}
+                {this.props.type === '' ? 'Choose' : humanizedType}
                 <FontIcon
                   height={16}
                   aria-label="More"
@@ -774,13 +392,16 @@ class Header extends React.Component {
             handleCancel={this.keyValueFalse('showSelectTypeDialog')}
             handleSuccess={this.updateParentTypeSelection}
             contentShowing={this.props.contentShowing}
-            disablePrimary={this.state.selectedType === ''}
-            dialogTitle={`${creationTypes.title} ${this.state.selectedType}`}
+            disablePrimary={this.state.selectedCircle === ''}
+            dialogTitle={`${creationTypes.title} ${
+              this.state.selectedCircle.title
+            }`}
           >
             <List
               spacing={16}
-              circle={creationTypes}
-              selectedType={this.state.selectedType}
+              listType={'MEDIA_CARD'}
+              circles={creationTypes.lines}
+              selectedCircle={this.state.selectedCircle}
               handleSingleSelection={this.handleTypeSelection}
             />
           </Dialog>
@@ -790,4 +411,4 @@ class Header extends React.Component {
   }
 }
 
-export default withStyles(styles)(Header);
+export default withStyles(style)(Header);

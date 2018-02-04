@@ -6,7 +6,7 @@ const Button = props => {
   return (
     <MUIButton
       className={props.className}
-      style={props.styles}
+      style={props.style}
       raised={props.raised}
       color={props.color}
       onClick={props.onClick}

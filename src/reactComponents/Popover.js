@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import Popover from 'material-ui/Popover';
 import Typography from 'material-ui/Typography';
 
-const styles = theme => ({
+const style = theme => ({
   paper: {
     padding: theme.spacing.unit,
   },
@@ -68,4 +68,4 @@ Popover.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(Popover);
+export default withStyles(style, { withTheme: true })(Popover);
