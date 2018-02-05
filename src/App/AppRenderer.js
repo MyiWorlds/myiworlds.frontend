@@ -8,7 +8,7 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 import { withStyles } from 'material-ui/styles';
-import { CircularProgress } from 'material-ui/Progress';
+import LoadingIndicator from '../reactComponents/LoadingIndicator';
 
 import ErrorPage from '../ErrorPage';
 import AppBar from '../reactComponents/AppBar';
@@ -26,12 +26,6 @@ const style = theme => ({
     [theme.breakpoints.up('sm')]: {
       height: 'calc(100% - 64px)',
     },
-  },
-  progress: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
   },
 });
 
@@ -150,9 +144,7 @@ class AppRenderer extends React.Component<any, Props, State> {
             navOpen={this.state.navigation.open}
             navWidth={this.state.navigation.width}
           >
-            {this.state.body || (
-              <CircularProgress className={classes.progress} size={50} />
-            )}
+            {this.state.body || <LoadingIndicator size={50} />}
           </Content>
           <Actions actions={['createUser']} />
         </div>

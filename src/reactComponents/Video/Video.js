@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import YouTube from './YouTube';
 import injectSheet from 'react-jss';
 import Header from '../Header';
+import sizeMe from 'react-sizeme';
 
 const circle = {
   id: 'defaultvideo',
@@ -59,6 +60,7 @@ const style = {
 
 const Video = props => {
   const { classes } = props;
+
   const header = (
     <Header
       key="header"
@@ -79,6 +81,7 @@ const Video = props => {
             case 'VIDEO_YOUTUBE':
               return (
                 <YouTube
+                  componentSize={props.size}
                   key={props.circle.id}
                   videoId={
                     props.circle.string !== '' &&
@@ -111,4 +114,4 @@ Video.prototype.propTypes = {
   circle: PropTypes.object,
 };
 
-export default injectSheet(style)(Video);
+export default injectSheet(style)(sizeMe({ monitorHeight: true })(Video));

@@ -21,6 +21,7 @@ const ComponentController = props => {
         return (
           <Image
             componentSize={props.size}
+            settings={props.circle.settings}
             height="400px"
             mode="fit"
             src="https://78.media.tumblr.com/8669c1d0e5a9df130a98066540047988/tumblr_odd1b0Uulu1vp16bjo1_500.gif"

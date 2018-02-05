@@ -1,6 +1,6 @@
 import settings from '../App/settings';
 
-const toggleKeyValueBoolean = (currentWidth, returnableSizes) => {
+const getComponentSize = (currentWidth, returnableSizes) => {
   const masterContentSizes = settings.contentSizes;
   let size;
 
@@ -27,4 +27,4 @@ const toggleKeyValueBoolean = (currentWidth, returnableSizes) => {
   return size;
 };
 
-export default toggleKeyValueBoolean;
+export default getComponentSize;

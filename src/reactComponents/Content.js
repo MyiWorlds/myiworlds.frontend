@@ -11,6 +11,8 @@ const Main = styled.main`
   flex-grow: 1;
   margin-left: 0px;
   top: 56px;
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
   @media screen and (min-width: 600px) {
     top: 64px;
