@@ -46,7 +46,6 @@ const MediaCard = props => {
             componentSize={props.size}
             circle={props.circle}
             type={props.circle.type}
-            hideHeader={props.hideHeader}
           />
         </div>
       ) : null}

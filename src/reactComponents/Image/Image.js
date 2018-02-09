@@ -57,14 +57,6 @@ class Image extends React.Component {
       backgroundRepeat: 'no-repeat',
     };
 
-    const header = (
-      <Header
-        key="header"
-        componentSize={this.props.componentSize}
-        circle={this.props.circle}
-      />
-    );
-
     const image = (
       <div
         key="image"
@@ -81,11 +73,15 @@ class Image extends React.Component {
 
     return (
       <div
-        style={containerStyles}
+        style={
+          this.props.height
+            ? { height: this.props.height, position: 'relative' }
+            : containerStyles
+        }
         onClick={this.props.onClick || (() => {})}
         className={this.props.className || ''}
       >
-        {this.props.hideHeader ? image : [image, header]}
+        {image}
       </div>
     );
   }

@@ -20,6 +20,7 @@ const TextField = props => {
       fullWidth={props.fullWidth}
       style={props.style}
       multiline={props.multiline}
+      {...props}
     />
   );
 };

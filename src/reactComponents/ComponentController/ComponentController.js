@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Image from '../Image';
-import Video from '../Video';
+import YouTube from '../Video/YouTube';
 import sizeMe from 'react-sizeme';
 import Typography from '../Typography';
 import Header from '../Header';
@@ -14,12 +14,17 @@ const ComponentController = props => {
   return (() => {
     switch (props.type ? props.type : props.circle.type) {
       case 'IMAGE':
-        return <Image componentSize={props.size} circle={props.circle} />;
+        return (
+          <Image {...props} componentSize={props.size} circle={props.circle} />
+        );
       case 'HEADER':
-        return <Header componentSize={props.size} circle={props.circle} />;
+        return (
+          <Header {...props} componentSize={props.size} circle={props.circle} />
+        );
       case 'GIF':
         return (
           <Image
+            {...props}
             componentSize={props.size}
             settings={props.circle.settings}
             height="400px"
@@ -27,25 +32,31 @@ const ComponentController = props => {
             src="https://78.media.tumblr.com/8669c1d0e5a9df130a98066540047988/tumblr_odd1b0Uulu1vp16bjo1_500.gif"
           />
         );
-      case 'VIDEO_HTML':
       case 'VIDEO_YOUTUBE':
         return (
-          <Video
+          <YouTube
+            {...props}
             componentSize={props.size}
             circle={props.circle}
             type={props.circle.type}
-            {...props}
+            videoId={
+              props.circle.string !== '' &&
+              props.circle.string !== null &&
+              props.circle.string !== undefined
+                ? props.circle.string
+                : 'A4EKZRlpcIM'
+            }
           />
         );
       case 'HERO':
         return <div>HERO</div>;
       case 'PLAIN_TEXT':
-        return <PlainText circle={props.circle} />;
+        return <PlainText {...props} circle={props.circle} />;
       case 'MEDIA_CARD':
         return (
           <MediaCard
-            circle={props.circle}
             {...props}
+            circle={props.circle}
             settings={props.settings}
             selectedCircle={props.selectedCircle ? props.selectedCircle : null}
             handleSingleSelection={

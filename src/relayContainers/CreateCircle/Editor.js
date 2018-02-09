@@ -13,6 +13,8 @@ import updateKeyValueTrue from '../../functions/updateKeyValues/updateKeyValueTr
 import updateKeyValueString from '../../functions/updateKeyValues/updateKeyValueString';
 import toggleKeyValueBoolean from '../../functions/updateKeyValues/toggleKeyValueBoolean';
 import { Menu, MenuItem } from '../../reactComponents/Menu';
+import Switch from 'material-ui/Switch';
+import { FormControlLabel, FormGroup } from 'material-ui/Form';
 
 const creationTypes = {
   title: 'Select a Type of content to create',
@@ -117,7 +119,7 @@ const creationTypes = {
     {
       id: '5',
       type: 'TYPE',
-      title: 'Header',
+      title: 'Editor',
       description: 'A image',
       string: 'HEADER',
       media: {
@@ -211,29 +213,17 @@ const style = theme => ({
   },
 });
 
-const options = [
-  'None',
-  'Atria',
-  'Callisto',
-  'Dione',
-  'Ganymede',
-  'Hangouts Call',
-  'Luna',
-  'Oberon',
-  'Phobos',
-  'Pyxis',
-  'Sedna',
-  'Titania',
-  'Triton',
-  'Umbriel',
-];
+const headerPlacement = ['Above', 'Below', 'Right', 'Left', 'Custom'];
 
-class Header extends React.Component {
+class Editor extends React.Component {
   static propTypes = {
     handleStateEventChange: PropTypes.func.isRequired,
     handleStateStringChange: PropTypes.func.isRequired,
+    handleBooleanToggle: PropTypes.func.isRequired,
+    showHeader: PropTypes.bool.isRequired,
     user: PropTypes.object.isRequired,
     slugName: PropTypes.string.isRequired,
+    headerTop: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -266,6 +256,10 @@ class Header extends React.Component {
 
   humanizeType = type => {
     return type.split('_').join(' ');
+  };
+
+  handleChange = name => (event, checked) => {
+    this.setState({ [name]: checked });
   };
 
   render() {
@@ -304,7 +298,38 @@ class Header extends React.Component {
           >
             + Add Something
           </Button>
+        </Bar>
 
+        <form className={classes.fieldsContainer} noValidate>
+          <FormControlLabel
+            checked={this.props.showHeader}
+            control={
+              <Switch
+                onChange={() => this.props.handleBooleanToggle('showHeader')}
+                aria-label="showHeader"
+              />
+            }
+            label="Show Header"
+          />
+          <FormControlLabel
+            checked={this.props.headerTop}
+            control={
+              <Switch
+                onChange={() => this.props.handleBooleanToggle('headerTop')}
+                aria-label="headerTop"
+              />
+            }
+            label="Header Above"
+          />
+          {/* <Button
+            color="primary"
+            raised
+            aria-haspopup="true"
+            style={{ marginLeft: 20 }}
+            onClick={this.keyValueTrue('showSelectTypeDialog')}
+          >
+            Header styles
+          </Button>
           <Menu
             closeMenu={this.keyValueFalse('headerMenu')}
             menuState={this.state.headerMenu}
@@ -312,23 +337,26 @@ class Header extends React.Component {
             style={{ flex: 1 }}
             target={
               <FontIcon
+                height={16}
+                aria-label="More"
+                aria-owns={headerMenu ? 'menu-list' : null}
+                icon="arrow_drop_down"
+              />
+            }
+            menuItems={headerPlacement.map(option => (
+              <MenuItem key={option} onClick={this.keyValueFalse('headerMenu')}>
+                {option}
+              </MenuItem>
+            ))}
+          /> */}
+          {/* <FontIcon
                 button={true}
                 aria-label="More"
                 aria-owns={headerMenu ? 'menu-list' : null}
                 aria-haspopup="true"
                 onClick={this.toggleBoolean('headerMenu')}
                 icon="more_horiz"
-              />
-            }
-            menuItems={options.map(option => (
-              <MenuItem key={option} onClick={this.keyValueFalse('headerMenu')}>
-                {option}
-              </MenuItem>
-            ))}
-          />
-        </Bar>
-
-        <form className={classes.fieldsContainer} noValidate>
+              /> */}
           <TextField
             id="slugName"
             className={classes.textField}
@@ -343,13 +371,13 @@ class Header extends React.Component {
             <br />
             www.MyiWorlds.com/{user.username}/{this.props.slugName}
           </FormHelperText>
-
           <TextField
             className={classes.textField}
             id="title"
             label="Title"
             margin="normal"
             fullWidth={true}
+            value={this.props.circle.title}
             onChange={this.props.handleStateEventChange('title')}
           />
           <TextField
@@ -358,6 +386,7 @@ class Header extends React.Component {
             label="Subtitle"
             margin="normal"
             fullWidth={true}
+            value={this.props.circle.subtitle}
             onChange={this.props.handleStateEventChange('subtitle')}
           />
           <TextField
@@ -369,6 +398,7 @@ class Header extends React.Component {
             fullWidth={true}
             multiline={true}
             style={{ margin: 8 }}
+            value={this.props.circle.description}
             onChange={this.props.handleStateEventChange('description')}
           />
           <TextField
@@ -380,35 +410,34 @@ class Header extends React.Component {
             fullWidth={true}
             style={{ margin: 8 }}
             multiline={true}
+            value={this.props.circle.tags}
             onChange={this.props.handleStateEventChange('tags')}
           />
           <FormHelperText style={{ marginLeft: 8 }}>
             These will be terms that allow you to find this.
           </FormHelperText>
         </form>
-        {showSelectTypeDialog ? (
-          <Dialog
-            open={showSelectTypeDialog}
-            handleCancel={this.keyValueFalse('showSelectTypeDialog')}
-            handleSuccess={this.updateParentTypeSelection}
-            contentShowing={this.props.contentShowing}
-            disablePrimary={this.state.selectedCircle === ''}
-            dialogTitle={`${creationTypes.title} ${
-              this.state.selectedCircle.title
-            }`}
-          >
-            <List
-              spacing={16}
-              listType={'MEDIA_CARD'}
-              circles={creationTypes.lines}
-              selectedCircle={this.state.selectedCircle}
-              handleSingleSelection={this.handleTypeSelection}
-            />
-          </Dialog>
-        ) : null}
+        {console.log(this.props.type)}
+        <Dialog
+          open={showSelectTypeDialog}
+          handleCancel={this.keyValueFalse('showSelectTypeDialog')}
+          handleSuccess={this.updateParentTypeSelection}
+          disablePrimary={this.state.selectedCircle === ''}
+          dialogTitle={`${creationTypes.title} ${
+            this.state.selectedCircle.title
+          }`}
+        >
+          <List
+            spacing={16}
+            listType={'MEDIA_CARD'}
+            circles={creationTypes.lines}
+            selectedCircle={this.state.selectedCircle}
+            handleSingleSelection={this.handleTypeSelection}
+          />
+        </Dialog>
       </div>
     );
   }
 }
 
-export default withStyles(style)(Header);
+export default withStyles(style)(Editor);

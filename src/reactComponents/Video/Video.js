@@ -61,11 +61,25 @@ const style = {
 const Video = props => {
   const { classes } = props;
 
-  const header = (
-    <Header
-      key="header"
-      componentSize={props.componentSize}
-      circle={props.circle}
+  // const header = (
+  //   <Header
+  //     key="header"
+  //     componentSize={props.componentSize}
+  //     circle={props.circle}
+  //   />
+  // );
+
+  const youtube = (
+    <YouTube
+      componentSize={props.size}
+      key={props.circle.id}
+      videoId={
+        props.circle.string !== '' &&
+        props.circle.string !== null &&
+        props.circle.string !== undefined
+          ? props.circle.string
+          : 'A4EKZRlpcIM'
+      }
     />
   );
 
@@ -79,19 +93,7 @@ const Video = props => {
         {(() => {
           switch (props.type || props.circle.type) {
             case 'VIDEO_YOUTUBE':
-              return (
-                <YouTube
-                  componentSize={props.size}
-                  key={props.circle.id}
-                  videoId={
-                    props.circle.string !== '' &&
-                    props.circle.string !== null &&
-                    props.circle.string !== undefined
-                      ? props.circle.string
-                      : 'A4EKZRlpcIM'
-                  }
-                />
-              );
+              return youtube;
             default:
               return null;
           }
@@ -100,13 +102,7 @@ const Video = props => {
     </div>
   );
 
-  return (
-    <div>
-      {props.hideHeader
-        ? video
-        : props.headerBot ? [header, video] : [video, header]}
-    </div>
-  );
+  return <div style={{ height: '100%', width: '100%' }}>{youtube}</div>;
 };
 
 Video.prototype.propTypes = {

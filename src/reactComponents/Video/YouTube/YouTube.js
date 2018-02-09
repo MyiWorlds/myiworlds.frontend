@@ -18,10 +18,22 @@ const opts = {
 };
 
 const style = props => ({
+  containerStyles: {
+    position: 'relative',
+    height: '100%',
+    maxHeight: '80vh',
+  },
+  videoWrapper: {
+    margin: '0 auto',
+    height: props =>
+      props.style && props.style.height ? props.style.height : '100%',
+  },
   thumbnail: {
     position: 'absolute',
+    top: 0,
     left: 0,
-    width: '100%',
+    minHeight: '100%',
+    minWidth: '100%',
     cursor: 'pointer',
   },
   youtubeIconContainer: {
@@ -149,7 +161,7 @@ class YouTube extends React.Component {
         <Image
           className={classes.thumbnail}
           height={this.props.componentSize.height}
-          width={this.props.componentSize.width}
+          width={'100%'}
           src={this.state.thumbnails.standard.url}
           hideHeader={true}
           imageSize={'cover'}
@@ -201,12 +213,19 @@ class YouTube extends React.Component {
     );
     const video = <ReactYouTube videoId={this.props.videoId} opts={opts} />;
 
-    return this.state.loading ? (
-      <LoadingIndicator />
-    ) : this.state.showVideo ? (
-      video
-    ) : (
-      thumbnail
+    return (
+      <div className={classes.containerStyles}>
+        <div className={classes.videoWrapper}>
+          {this.state.loading ? (
+            <LoadingIndicator />
+          ) : this.state.showVideo ? (
+            video
+          ) : (
+            thumbnail
+          )}
+          <div />
+        </div>
+      </div>
     );
   }
 }

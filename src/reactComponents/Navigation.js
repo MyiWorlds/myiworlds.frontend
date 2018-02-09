@@ -169,7 +169,7 @@ class Navigation extends React.Component {
         <Hidden smUp>
           <Drawer
             type="temporary"
-            onRequestClose={this.props.handleNavigationToggle}
+            onClose={this.props.handleNavigationToggle}
             classes={{
               paper: classNames(
                 classes.drawerPaper,
@@ -218,7 +218,7 @@ class Navigation extends React.Component {
                   !this.props.navOpen && classes.drawerPaperClose,
                 ),
               }}
-              onRequestClose={this.props.handleNavigationToggle}
+              onClose={this.props.handleNavigationToggle}
               open={this.props.navOpen}
             >
               <div className={classes.drawerInner}>

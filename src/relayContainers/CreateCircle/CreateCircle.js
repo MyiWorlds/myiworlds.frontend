@@ -6,7 +6,7 @@ import type { CreateCircle_user } from './__generated__/CreateCircle_user.graphq
 import Button from '../../reactComponents/Button';
 import CreateCircleMutation from './CreateCircleMutation';
 import uuid from 'uuid/v1';
-import Header from './Header';
+import Editor from './Editor';
 import Snackbar from 'material-ui/Snackbar';
 import Bar from '../../reactComponents/Bar';
 import { withStyles } from 'material-ui/styles';
@@ -19,9 +19,40 @@ import updateKeyValueFalse from '../../functions/updateKeyValues/updateKeyValueF
 import Card from '../../reactComponents/Card';
 import ComponentController from '../../reactComponents/ComponentController';
 import TextField from '../../reactComponents/TextField';
+import FontIcon from '../../reactComponents/FontIcon';
 
 const circle = {
   type: 'VIDEO_YOUTUBE',
+  settings: {
+    headerEnabled: false,
+  },
+  styles: {
+    titleContainer: {
+      padding: 12,
+      marginBottom: '-8px',
+    },
+    titleText: {},
+    subtitleContainer: {
+      padding: 12,
+    },
+    subtitleText: {},
+    descriptionContainer: {
+      marginTop: '-6px',
+      padding: '0px 12px 12px 12px',
+    },
+    descriptionText: {},
+    tagsContainer: {
+      marginTop: '-6px',
+      padding: '0px 12px 12px 12px',
+    },
+    tagsText: {},
+    lines: [
+      '019e1790-cc99-11e7-be26-9784a4731e9b',
+      '0a4ad0a0-cc98-11e7-be26-9784a4731e9b',
+      '0d29b4d0-dd87-11e7-88eb-8bc241fdd2de',
+      '0dd81d40-dd87-11e7-88eb-8bc241fdd2de',
+    ],
+  },
 };
 
 const style = theme => ({
@@ -30,6 +61,9 @@ const style = theme => ({
     maxWidth: 800,
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  title: {
+    fontSize: 36,
   },
 });
 
@@ -41,7 +75,9 @@ class CreateCircle extends React.Component {
   state = {
     snackbarOpen: false,
     contentShowing: true,
+    showHeader: true,
     addTitle: true,
+    headerTop: true,
 
     _id: circle._id ? circle._id : null,
     id: circle._id ? circle._id : null,
@@ -50,6 +86,17 @@ class CreateCircle extends React.Component {
     subtitle: '',
     description: '',
     tags: '',
+    // creatorId: user.id,
+    creator: {
+      username: '',
+      media: {
+        blob: {
+          s: '',
+          m: '',
+          l: '',
+        },
+      },
+    },
     slugName: '',
     dateCreated: Date.now(),
     dateUpdated: Date.now(),
@@ -149,6 +196,89 @@ class CreateCircle extends React.Component {
   render() {
     const user = this.props.user || {};
     const { classes } = this.props;
+
+    const header = (
+      <div key="header">
+        <div style={circle.styles.titleContainer}>
+          <TextField
+            inputProps={{
+              style: {
+                fontSize: this.state.title === '' ? 16 : '3.5rem',
+                color: 'rgba(0, 0, 0, 0.74)',
+                fontFamily: 'Roboto',
+                fontWeight: 400,
+                letterSpacing: '-.02em',
+                lineHeight: '1.30357em',
+              },
+            }}
+            id="title"
+            label="Title"
+            fullWidth={true}
+            value={this.state.title}
+            onChange={this.handleStateEventChange('title')}
+          />
+        </div>
+
+        <div style={circle.styles.subtitleContainer}>
+          <TextField
+            inputProps={{
+              style: {
+                fontSize: this.state.subtitle === '' ? 16 : '1.5rem',
+                color: 'rgba(0, 0, 0, 0.54)',
+                fontFamily: 'Roboto',
+                fontWeight: 400,
+                letterSpacing: '-.02em',
+                lineHeight: '1.35417em',
+              },
+            }}
+            id="subtitle"
+            label="Subtitle"
+            fullWidth={true}
+            value={this.state.subtitle}
+            onChange={this.handleStateEventChange('subtitle')}
+          />
+        </div>
+        <div style={circle.styles.descriptionContainer}>
+          <TextField
+            inputProps={{
+              style: {
+                color: 'rgba(0, 0, 0, 0.84)',
+              },
+            }}
+            id="description"
+            label="Description"
+            type="description"
+            fullWidth={true}
+            multiline={true}
+            value={this.state.description}
+            onChange={this.handleStateEventChange('description')}
+          />
+        </div>
+        <div style={circle.styles.tagsContainer}>
+          <TextField
+            inputProps={{
+              style: {
+                color: 'rgba(0, 0, 0, 0.54)',
+              },
+            }}
+            id="tags"
+            label="Tags"
+            type="tags"
+            fullWidth={true}
+            multiline={true}
+            value={this.state.tags}
+            onChange={this.handleStateEventChange('tags')}
+          />
+        </div>
+      </div>
+    );
+
+    const content = (
+      <div key="content" style={{ height: 500 }}>
+        <ComponentController circle={this.state} />
+      </div>
+    );
+
     return (
       <Card
         style={{
@@ -157,10 +287,13 @@ class CreateCircle extends React.Component {
           borderRadius: 12,
         }}
       >
-        <Header
+        <Editor
           user={user}
+          circle={this.state}
           contentShowing={this.state.contentShowing}
           handleBooleanToggle={this.handleBooleanToggle}
+          showHeader={this.state.showHeader}
+          headerTop={this.state.headerTop}
           addTitle={this.state.addTitle}
           slugName={this.state.slugName}
           handleSlugChange={this.handleSlugChange}
@@ -186,8 +319,30 @@ class CreateCircle extends React.Component {
         <br />
         <Divider />
         <div style={{ margin: '24px 24px 124px 24px', paddingBottom: '24px' }}>
+          <Bar
+            style={{
+              width: 'calc(100%-240px)',
+            }}
+            dividerTop={true}
+            flexDirection="row-reverse"
+          >
+            <div className={classes.headerRight}>
+              <FontIcon
+                button={true}
+                style={{
+                  fontSize: '32px',
+                  transform: 'rotate(90deg)',
+                }}
+                icon={'view_module'}
+                onClick={() => {}}
+              />
+            </div>
+          </Bar>
+          <br />
           <Card>
-            <ComponentController circle={this.state} />
+            {this.state.headerTop
+              ? [this.state.showHeader ? header : null, content]
+              : [content, this.state.showHeader ? header : null]}
           </Card>
         </div>
         <Bar
@@ -214,7 +369,7 @@ class CreateCircle extends React.Component {
           }}
           open={this.state.snackbarOpen}
           autoHideDuration={4e3}
-          onRequestClose={this.keyValueFalse('snackbarOpen')}
+          onClose={this.keyValueFalse('snackbarOpen')}
           SnackbarContentProps={{
             'aria-describedby': 'message-id',
           }}
@@ -232,6 +387,7 @@ export default createFragmentContainer(
       id
       _id
       username
+      ...Lines_lines
     }
   `,
 );
