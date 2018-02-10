@@ -58,12 +58,6 @@ class Navigation extends React.Component {
     value: 0,
   };
 
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open,
-    });
-  };
-
   handleChange = (event, value) => {
     this.setState({ value });
   };

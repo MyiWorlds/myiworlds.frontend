@@ -7,27 +7,8 @@
 
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { withStyles } from 'material-ui/styles';
-import LoadingIndicator from '../reactComponents/LoadingIndicator';
-
 import ErrorPage from '../ErrorPage';
-import AppBar from '../reactComponents/AppBar';
-import Navigation from '../reactComponents/Navigation';
-import Actions from '../reactComponents/Actions';
-import Content from '../reactComponents/Content';
-
-const style = theme => ({
-  root: {
-    backgroundColor: 'white',
-    position: 'relative',
-    display: 'flex',
-    height: 'calc(100% - 56px)',
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      height: 'calc(100% - 64px)',
-    },
-  },
-});
+import AppManager from './AppManager';
 
 type Props = {
   error: ?Error,
@@ -43,30 +24,18 @@ type Props = {
 type State = {
   error: ?Error,
   title: ?string,
-  description: ?string,
-  hero: ?React.Element<*>,
   body: ?React.Element<*>,
 };
 
 const defaults = {
   error: null,
   title: 'MyiWorlds',
-  description: '',
-  hero: null,
   body: null,
-  navigation: {
-    width: 240,
-    open: true,
-  },
 };
 
 class AppRenderer extends React.Component<any, Props, State> {
   state = {
     ...defaults,
-  };
-
-  handleNavigationToggle = () => {
-    this.setState({ navigation: { open: !this.state.navigation.open } });
   };
 
   componentWillReceiveProps(nextProps: Props) {
@@ -118,39 +87,17 @@ class AppRenderer extends React.Component<any, Props, State> {
     return (
       this.props.error !== nextState.error ||
       this.state.title !== nextState.title ||
-      this.state.description !== nextState.description ||
-      this.state.body !== nextState.body ||
-      this.state.navigation.open !== nextState.navigation.open
+      this.state.body !== nextState.body
     );
   }
 
   render() {
-    const { classes } = this.props;
-
     return this.state.error ? (
       <ErrorPage error={this.state.error} />
     ) : (
-      <div style={{ height: '100%', width: '100%' }}>
-        <AppBar
-          handleNavigationToggle={this.handleNavigationToggle}
-          title={this.state.title}
-        />
-        <div className={classes.root}>
-          <Navigation
-            navOpen={this.state.navigation.open}
-            handleNavigationToggle={this.handleNavigationToggle}
-          />
-          <Content
-            navOpen={this.state.navigation.open}
-            navWidth={this.state.navigation.width}
-          >
-            {this.state.body || <LoadingIndicator size={50} />}
-          </Content>
-          <Actions actions={['createUser']} />
-        </div>
-      </div>
+      <AppManager body={this.state.body} />
     );
   }
 }
 
-export default withStyles(style, { withTheme: true })(AppRenderer);
+export default AppRenderer;

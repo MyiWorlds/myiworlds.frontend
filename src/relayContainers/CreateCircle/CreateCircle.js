@@ -22,7 +22,7 @@ import TextField from '../../reactComponents/TextField';
 import FontIcon from '../../reactComponents/FontIcon';
 
 const circle = {
-  type: 'VIDEO_YOUTUBE',
+  type: 'LINES',
   settings: {
     headerEnabled: false,
   },
@@ -31,21 +31,39 @@ const circle = {
       padding: 12,
       marginBottom: '-8px',
     },
-    titleText: {},
+    titleText: {
+      fontSize: '3.5rem',
+      color: 'rgba(0, 0, 0, 0.74)',
+      fontFamily: 'Roboto',
+      fontWeight: 400,
+      letterSpacing: '-.02em',
+      lineHeight: '1.30357em',
+    },
     subtitleContainer: {
       padding: 12,
     },
-    subtitleText: {},
+    subtitleText: {
+      fontSize: '1.5rem',
+      color: 'rgba(0, 0, 0, 0.54)',
+      fontFamily: 'Roboto',
+      fontWeight: 400,
+      letterSpacing: '-.02em',
+      lineHeight: '1.35417em',
+    },
     descriptionContainer: {
       marginTop: '-6px',
       padding: '0px 12px 12px 12px',
     },
-    descriptionText: {},
+    descriptionText: {
+      color: 'rgba(0, 0, 0, 0.84)',
+    },
     tagsContainer: {
       marginTop: '-6px',
       padding: '0px 12px 12px 12px',
     },
-    tagsText: {},
+    tagsText: {
+      color: 'rgba(0, 0, 0, 0.54)',
+    },
     lines: [
       '019e1790-cc99-11e7-be26-9784a4731e9b',
       '0a4ad0a0-cc98-11e7-be26-9784a4731e9b',
@@ -202,14 +220,7 @@ class CreateCircle extends React.Component {
         <div style={circle.styles.titleContainer}>
           <TextField
             inputProps={{
-              style: {
-                fontSize: this.state.title === '' ? 16 : '3.5rem',
-                color: 'rgba(0, 0, 0, 0.74)',
-                fontFamily: 'Roboto',
-                fontWeight: 400,
-                letterSpacing: '-.02em',
-                lineHeight: '1.30357em',
-              },
+              style: this.state.title ? circle.styles.titleText : null,
             }}
             id="title"
             label="Title"
@@ -222,14 +233,7 @@ class CreateCircle extends React.Component {
         <div style={circle.styles.subtitleContainer}>
           <TextField
             inputProps={{
-              style: {
-                fontSize: this.state.subtitle === '' ? 16 : '1.5rem',
-                color: 'rgba(0, 0, 0, 0.54)',
-                fontFamily: 'Roboto',
-                fontWeight: 400,
-                letterSpacing: '-.02em',
-                lineHeight: '1.35417em',
-              },
+              style: this.state.subtitle ? circle.styles.subtitleText : null,
             }}
             id="subtitle"
             label="Subtitle"
@@ -241,9 +245,9 @@ class CreateCircle extends React.Component {
         <div style={circle.styles.descriptionContainer}>
           <TextField
             inputProps={{
-              style: {
-                color: 'rgba(0, 0, 0, 0.84)',
-              },
+              style: this.state.description
+                ? circle.styles.descriptionText
+                : null,
             }}
             id="description"
             label="Description"
@@ -257,9 +261,7 @@ class CreateCircle extends React.Component {
         <div style={circle.styles.tagsContainer}>
           <TextField
             inputProps={{
-              style: {
-                color: 'rgba(0, 0, 0, 0.54)',
-              },
+              style: this.state.tags ? circle.styles.tagsText : null,
             }}
             id="tags"
             label="Tags"
@@ -321,6 +323,9 @@ class CreateCircle extends React.Component {
         <div style={{ margin: '24px 24px 124px 24px', paddingBottom: '24px' }}>
           <Bar
             style={{
+              // bottom: 0,
+              // right: 0,
+              // position: 'fixed',
               width: 'calc(100%-240px)',
             }}
             dividerTop={true}
@@ -355,7 +360,11 @@ class CreateCircle extends React.Component {
           dividerTop={true}
           flexDirection="row-reverse"
         >
-          <Button color="primary" raised onClick={this.createCircle}>
+          <Button
+            color="primary"
+            raised
+            onClick={this.toggleBoolean('snackbarOpen')}
+          >
             Save
           </Button>
           <Button color="primary" onClick={() => history.goBack()}>

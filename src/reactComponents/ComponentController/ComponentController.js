@@ -14,13 +14,9 @@ const ComponentController = props => {
   return (() => {
     switch (props.type ? props.type : props.circle.type) {
       case 'IMAGE':
-        return (
-          <Image {...props} componentSize={props.size} circle={props.circle} />
-        );
+        return <Image {...props} componentSize={props.size} />;
       case 'HEADER':
-        return (
-          <Header {...props} componentSize={props.size} circle={props.circle} />
-        );
+        return <Header {...props} componentSize={props.size} />;
       case 'GIF':
         return (
           <Image
@@ -37,7 +33,6 @@ const ComponentController = props => {
           <YouTube
             {...props}
             componentSize={props.size}
-            circle={props.circle}
             type={props.circle.type}
             videoId={
               props.circle.string !== '' &&
@@ -51,12 +46,11 @@ const ComponentController = props => {
       case 'HERO':
         return <div>HERO</div>;
       case 'PLAIN_TEXT':
-        return <PlainText {...props} circle={props.circle} />;
+        return <PlainText {...props} />;
       case 'MEDIA_CARD':
         return (
           <MediaCard
             {...props}
-            circle={props.circle}
             settings={props.settings}
             selectedCircle={props.selectedCircle ? props.selectedCircle : null}
             handleSingleSelection={

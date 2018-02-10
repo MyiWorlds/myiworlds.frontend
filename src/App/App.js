@@ -9,37 +9,20 @@ import React from 'react';
 import isEqual from 'lodash/isEqual';
 import { graphql, QueryRenderer } from 'react-relay';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import blue from 'material-ui/colors/blue';
-import red from 'material-ui/colors/red';
-import grey from 'material-ui/colors/grey';
+
 import { SheetsRegistry } from 'jss';
 import JssProvider from 'react-jss/lib/JssProvider';
-
 import relay from '../relay';
 import router from '../router';
 import history from '../history';
 import AppRenderer from './AppRenderer';
+import settings from './settings';
 import 'typeface-roboto';
 
 // eslint-disable-next-line no-unused-expressions
 graphql`
   fragment App_user on User {
     username
-    uiEnabled
-    ui {
-      id
-      lines {
-        id
-        type
-        string
-      }
-    }
-    homePublic {
-      id
-      _id
-      title
-      type
-    }
   }
 `;
 
@@ -61,27 +44,7 @@ type State = {
 };
 
 const sheetsRegistry = new SheetsRegistry();
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: blue[300],
-      main: blue[500],
-      dark: blue[700],
-    },
-    accent: {
-      light: red[300],
-      main: red[500],
-      dark: red[700],
-    },
-    primaryText: {
-      color: grey,
-    },
-    secondaryText: {
-      color: grey,
-    },
-  },
-});
+const theme = createMuiTheme(settings.theme);
 
 class App extends React.Component<any, any, State> {
   state = {
