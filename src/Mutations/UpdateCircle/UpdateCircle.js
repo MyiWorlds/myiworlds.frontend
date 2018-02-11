@@ -115,18 +115,8 @@ class UpdateCircle extends React.Component {
     subtitle: this.props.getCircleByKey.subtitle || '',
     description: this.props.getCircleByKey.description || '',
     tags: this.props.getCircleByKey.tags || '',
-    creatorId: this.props.getCircleByKey.creator || null,
-    creator: {
-      username: '',
-      media: {
-        blob: {
-          s: '',
-          m: '',
-          l: '',
-        },
-      },
-    },
-    slugName: '',
+    creatorId: this.props.getCircleByKey.creator._id || null,
+    slugName: this.props.getCircleByKey.slugName || '',
     dateCreated: this.props.getCircleByKey.dateCreated || Date.now(),
     dateUpdated: this.props.getCircleByKey.dateUpdated || Date.now(),
     string: this.props.getCircleByKey.string || '',
@@ -203,8 +193,9 @@ class UpdateCircle extends React.Component {
       tags: this.state.tags !== '' ? this.state.tags.split(',') : null,
       string: this.state.string,
       boolean: this.state.boolean,
-      creator: this.props.user._id,
+      creator: this.state.creatorId,
       slug: `${this.props.user.username}/${slug}`,
+      slugName: this.state.slugName,
       dateCreated: Date.now(),
       dateUpdated: Date.now(),
     };
@@ -475,6 +466,7 @@ export default createFragmentContainer(
       }
       creator {
         _id
+        username
       }
       editors {
         _id

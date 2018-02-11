@@ -32,7 +32,11 @@ const PlainText = props => {
       multiline
       margin="normal"
       value={props.circle.string}
-      onChange={props.handleStateEventChange || (() => {})}
+      onChange={
+        props.handleStateEventChange
+          ? props.handleStateEventChange('string')
+          : () => {}
+      }
     />
   );
 
@@ -69,6 +73,11 @@ const PlainText = props => {
 PlainText.prototype.propTypes = {
   circle: PropTypes.obj,
   handleStateEventChange: PropTypes.func,
+};
+
+PlainText.prototype.defaultProps = {
+  circle: {},
+  handleStateEventChange: () => {},
 };
 
 export default PlainText;
