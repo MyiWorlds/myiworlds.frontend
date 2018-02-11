@@ -16,7 +16,9 @@ import { graphql } from 'relay-runtime';
 const routes = [
   {
     path: '/error',
-    components: () => [import(/* webpackChunkName: 'main' */ './ErrorPage')],
+    components: () => [
+      import(/* webpackChunkName: 'main' */ './Components/ErrorPage'),
+    ],
     render: ([ErrorPage]) => ({
       title: 'Error',
       body: <ErrorPage />,
@@ -31,7 +33,7 @@ const routes = [
       }
     }`, // prettier-ignore
     components: () => [
-      import(/* webpackChunkName: 'createCircle' */ './relayContainers/CreateCircle'),
+      import(/* webpackChunkName: 'createCircle' */ './Mutations/CreateCircle'),
     ],
     render: ([CreateCircle], data) => ({
       title: 'Create Circle',
@@ -64,7 +66,7 @@ const routes = [
     //   }
     // }`, // prettier-ignore
     components: () => [
-      import(/* webpackChunkName: 'signup' */ './relayContainers/CreateUser'),
+      import(/* webpackChunkName: 'signup' */ './Mutations/CreateUser'),
     ],
     render: ([CreateUser]) => ({
       title: 'CreateUser',
@@ -97,7 +99,7 @@ const routes = [
   //     }
   //   }`, // prettier-ignore
   //   components: () => [
-  //     import(/* webpackChunkName: 'login' */ './relayContainers/Login'),
+  //     import(/* webpackChunkName: 'login' */ './Mutations/Login'),
   //   ],
   //   render: ([Login], data) => ({
   //     title: 'Login',
@@ -116,7 +118,7 @@ const routes = [
       }
     }`, // prettier-ignore
     components: () => [
-      import(/* webpackChunkName: 'home' */ './relayContainers/GetCircleBySlug'),
+      import(/* webpackChunkName: 'home' */ './Mutations/GetCircleBySlug'),
     ],
     render: ([GetCircleBySlug], data) => ({
       title:
@@ -134,7 +136,7 @@ const routes = [
       }
     }`, // prettier-ignore
     components: () => [
-      import(/* webpackChunkName: 'recents' */ './relayContainers/GetCirclesByUserKey'),
+      import(/* webpackChunkName: 'recents' */ './Mutations/GetCirclesByUserKey'),
     ],
     render: ([GetCirclesByUserKey], data) => ({
       title: 'Untitled',
@@ -159,7 +161,7 @@ const routes = [
       }
     }`, // prettier-ignore
     components: () => [
-      import(/* webpackChunkName: 'home' */ './relayContainers/GetCircleBySlug'),
+      import(/* webpackChunkName: 'home' */ './Mutations/GetCircleBySlug'),
     ],
     render: ([GetCircleBySlug], data) => ({
       title:

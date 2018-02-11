@@ -7,7 +7,7 @@
 
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import ErrorPage from '../ErrorPage';
+import ErrorPage from '../Components/ErrorPage';
 import AppManager from './AppManager';
 
 type Props = {

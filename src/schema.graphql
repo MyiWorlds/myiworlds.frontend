@@ -6,7 +6,7 @@ type Circle implements Node {
   # A unique id used to instantly locate this inside the database
   _id: ID
 
-  # If a user interface is not set
+  # If a user interface is not set, the user will take the default styles of the page
   ui: Circle
 
   # The full slug (after domain name) to this piece of content
@@ -25,11 +25,9 @@ type Circle implements Node {
 
   # The type of data this node is holding, it allows the frontend to choose the perfect component to show you.
   type: String!
-
-  # The settings of this circle.  Will be used as an object.
-  settings: JSON
+  settings: Circle
   rating: Circle
-  styles: [Circle]
+  styles: Circle
   tags: [String]
   title: String
   subtitle: String
@@ -42,13 +40,13 @@ type Circle implements Node {
   icon: Circle
 
   # Who is allowed to see this node?
-  viewers: [User]
+  viewers: Circle
 
   # The User who created this piece of content
   creator: User
 
   # Users that can edit this circle
-  editors: [User]
+  editors: Circle
   dateCreated: Int
   dateUpdated: Int
   string: String
@@ -376,4 +374,12 @@ type User implements Node {
 
   # Contains a list of notifications.
   notifications: Circle
+
+  # The Users search history. Will be used by their personal AI to help them in
+  # the best way possible.  Saves the last node they viewed
+  search: Circle
+
+  # The Users history of what they view. Will be used by their personal AI to help
+  # them in the best way possible.  Saves the last node they viewed
+  history: Circle
 }

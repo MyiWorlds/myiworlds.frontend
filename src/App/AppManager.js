@@ -7,11 +7,11 @@
 
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import LoadingIndicator from '../reactComponents/LoadingIndicator';
-import AppBar from '../reactComponents/AppBar';
-import Navigation from '../reactComponents/Navigation';
-import Actions from '../reactComponents/Actions';
-import Content from '../reactComponents/Content';
+import LoadingIndicator from '../Components/LoadingIndicator';
+import AppBar from '../Components/AppBar';
+import Navigation from '../Components/Navigation';
+import Actions from '../Components/Actions';
+import Content from '../Components/Content';
 
 const style = theme => ({
   root: {
