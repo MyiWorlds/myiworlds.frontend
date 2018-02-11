@@ -11,7 +11,9 @@ const defaultStyles = {
     // margin: '42px 12px 24px 12px',
     maxWidth: 800,
   },
-  string: {},
+  string: {
+    whiteSpace: 'pre',
+  },
 };
 
 const PlainText = props => {
@@ -30,7 +32,7 @@ const PlainText = props => {
       multiline
       margin="normal"
       value={props.circle.string}
-      onChange={props.handleStateEventChange('string')}
+      onChange={props.handleStateEventChange || (() => {})}
     />
   );
 

@@ -390,7 +390,7 @@ class CreateCircle extends React.Component {
           <Button
             color="primary"
             raised
-            onClick={this.toggleBoolean('snackbarOpen')}
+            onClick={this.createCircle}
           >
             Save
           </Button>
