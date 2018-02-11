@@ -14,6 +14,7 @@ import toggleKeyValueBoolean from '../../functions/updateKeyValues/toggleKeyValu
 import updateKeyValueFalse from '../../functions/updateKeyValues/updateKeyValueFalse';
 
 import CreateCircleMutation from './CreateCircleMutation';
+import DeleteCircleMutation from '../DeleteCircle';
 
 import Bar from '../../Components/Bar';
 import Button from '../../Components/Button';
@@ -21,7 +22,7 @@ import Card from '../../Components/Card';
 import ComponentController from '../../Components/ComponentController';
 import Divider from '../../Components/Divider';
 import { FormControlLabel } from 'material-ui/Form';
-import Editor from './Editor';
+import Editor from '../../Components/Editor';
 import FontIcon from '../../Components/FontIcon';
 import TextField from '../../Components/TextField';
 import Switch from 'material-ui/Switch';
@@ -105,6 +106,7 @@ class CreateCircle extends React.Component {
 
     _id: circle._id ? circle._id : null,
     id: circle._id ? circle._id : null,
+    public: circle.public || false,
     type: circle.type || 'CUSTOM',
     title: '',
     subtitle: '',
@@ -190,6 +192,7 @@ class CreateCircle extends React.Component {
 
     const circle = {
       _id: _id,
+      public: this.state.public,
       type: this.state.type,
       title: this.state.title,
       subtitle: this.state.subtitle,
@@ -320,7 +323,9 @@ class CreateCircle extends React.Component {
           handleCloseTypeSnackbar={this.keyValueFalse('snackbarOpen')}
           handleStateEventChange={this.handleStateEventChange}
           handleStateStringChange={this.handleStateStringChange}
+          public={this.state.public}
           type={this.state.type}
+          deleteCircle={this.deleteCircle}
         />
         <br />
         <br />
@@ -387,11 +392,7 @@ class CreateCircle extends React.Component {
           dividerTop={true}
           flexDirection="row-reverse"
         >
-          <Button
-            color="primary"
-            raised
-            onClick={this.createCircle}
-          >
+          <Button color="primary" raised onClick={this.createCircle}>
             Save
           </Button>
           <Button color="primary" onClick={() => history.goBack()}>
@@ -423,7 +424,6 @@ export default createFragmentContainer(
       id
       _id
       username
-      ...Lines_lines
     }
   `,
 );

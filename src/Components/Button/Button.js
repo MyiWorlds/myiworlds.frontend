@@ -1,8 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MUIButton from 'material-ui/Button';
+import { withStyles } from 'material-ui/styles';
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  input: {
+    display: 'none',
+  },
+});
 
 const Button = props => {
+  const { classes } = props;
   return (
     <MUIButton
       className={props.className}
@@ -26,4 +37,4 @@ Button.prototype.propTypes = {
   disabled: PropTypes.bool,
 };
 
-export default Button;
+export default withStyles(styles)(Button);

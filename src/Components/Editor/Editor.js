@@ -7,16 +7,17 @@ import updateKeyValueTrue from '../../functions/updateKeyValues/updateKeyValueTr
 import updateKeyValueString from '../../functions/updateKeyValues/updateKeyValueString';
 import toggleKeyValueBoolean from '../../functions/updateKeyValues/toggleKeyValueBoolean';
 
-import Bar from '../../Components/Bar';
-import Button from '../../Components/Button';
-import Dialog from '../../Components/Dialog';
-import { FormControlLabel } from 'material-ui/Form';
-import FontIcon from '../../Components/FontIcon';
-import TextField from '../../Components/TextField';
-import FormHelperText from '../../Components/FormHelperText';
-import { Menu, MenuItem } from '../../Components/Menu';
-import { List } from '../../Components/List';
 import Switch from 'material-ui/Switch';
+import Bar from '../Bar';
+import Button from '../Button';
+import Dialog from '../Dialog';
+import { FormControlLabel } from 'material-ui/Form';
+import FontIcon from '../FontIcon';
+import TextField from '../TextField';
+import FormHelperText from '../FormHelperText';
+import { Menu, MenuItem } from '../Menu';
+import { List } from '../List';
+import Typography from '../Typography';
 
 const creationTypes = {
   title: 'Select a Type of content to create',
@@ -226,12 +227,18 @@ class Editor extends React.Component {
     user: PropTypes.object.isRequired,
     slugName: PropTypes.string.isRequired,
     headerTop: PropTypes.bool.isRequired,
+    deleteCircle: PropTypes.func,
+  };
+
+  static defaultProps = {
+    deleteCircle: () => {},
   };
 
   state = {
     // Does not currently toggle due to something in MUI
     headerMenu: false,
     showSelectTypeDialog: this.props.type === '' ? true : false,
+    showDeleteDialog: false,
     selectedCircle: this.props,
   };
 
@@ -264,10 +271,16 @@ class Editor extends React.Component {
     this.setState({ [name]: checked });
   };
 
+  handleDeleteCircle = () => {
+    console.log('Handle delete called');
+    this.props.deleteCircle();
+    this.setState({ showDeleteDialog: false });
+  };
+
   render() {
     const user = this.props.user;
     const { classes } = this.props;
-    const { headerMenu, showSelectTypeDialog } = this.state;
+    const { headerMenu, showSelectTypeDialog, showDeleteDialog } = this.state;
     const humanizedType = this.humanizeType(this.props.type);
 
     const createCircleDialogActions = [
@@ -296,6 +309,50 @@ class Editor extends React.Component {
         },
       ],
     };
+
+    const typeDialog = (
+      <Dialog
+        open={showSelectTypeDialog}
+        handleCancel={this.keyValueFalse('showSelectTypeDialog')}
+        handleSuccess={this.updateParentTypeSelection}
+        disablePrimary={this.state.selectedCircle === ''}
+        dialogTitle={`${creationTypes.title} ${
+          this.state.selectedCircle.title
+        }`}
+        cancelText={'Cancel'}
+        successText={'Select'}
+        actions={[{}]}
+      >
+        <List
+          spacing={16}
+          listType={'MEDIA_CARD'}
+          circles={creationTypes.lines}
+          selectedCircle={this.state.selectedCircle}
+          handleSingleSelection={this.handleTypeSelection}
+        />
+      </Dialog>
+    );
+
+    const deleteDialog = (
+      <Dialog
+        open={showDeleteDialog}
+        handleCancel={this.keyValueFalse('showDeleteDialog')}
+        handleSuccess={this.handleDeleteCircle}
+        dialogTitle={'Delete this circle'}
+        cancelText={'Cancel'}
+        successText={'Delete'}
+        successColor={'accent'}
+        actions={[{}]}
+      >
+        <Typography
+          style={{ width: 400, height: 200, padding: 42 }}
+          type="body1"
+        >
+          Are you sure you want to delete this?
+        </Typography>
+      </Dialog>
+    );
+
     return (
       <div>
         <Bar background="none" dividerBottom={true}>
@@ -320,13 +377,11 @@ class Editor extends React.Component {
             </span>
           </div>
           <div style={{ flexGrow: 1 }} />
-          <Button
-            color="primary"
-            aria-haspopup="true"
-            onClick={this.keyValueTrue('showSelectTypeDialog')}
-          >
-            + Add Something
-          </Button>
+          <FontIcon
+            button={true}
+            icon={'delete'}
+            onClick={this.keyValueTrue('showDeleteDialog')}
+          />
         </Bar>
 
         <form className={classes.fieldsContainer} noValidate>
@@ -349,6 +404,16 @@ class Editor extends React.Component {
               />
             }
             label="Header Above"
+          />
+          <FormControlLabel
+            checked={this.props.public}
+            control={
+              <Switch
+                onChange={() => this.props.handleBooleanToggle('public')}
+                aria-label="headerTop"
+              />
+            }
+            label="Public"
           />
           {/* <Button
             color="primary"
@@ -446,24 +511,8 @@ class Editor extends React.Component {
             These will be terms that allow you to find this.
           </FormHelperText>
         </form>
-        <Dialog
-          open={showSelectTypeDialog}
-          handleCancel={this.keyValueFalse('showSelectTypeDialog')}
-          handleSuccess={this.updateParentTypeSelection}
-          disablePrimary={this.state.selectedCircle === ''}
-          dialogTitle={`${creationTypes.title} ${
-            this.state.selectedCircle.title
-          }`}
-          actions={[{}]}
-        >
-          <List
-            spacing={16}
-            listType={'MEDIA_CARD'}
-            circles={creationTypes.lines}
-            selectedCircle={this.state.selectedCircle}
-            handleSingleSelection={this.handleTypeSelection}
-          />
-        </Dialog>
+        {typeDialog}
+        {deleteDialog}
       </div>
     );
   }

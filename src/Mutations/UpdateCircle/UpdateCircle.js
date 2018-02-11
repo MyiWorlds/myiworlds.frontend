@@ -2,30 +2,36 @@
 
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
-import type { CreateCircle_user } from './__generated__/CreateCircle_user.graphql';
+import type { UpdateCircle_getCircleByKey } from './__generated__/UpdateCircle_getCircleByKey.graphql';
+import type { UpdateCircle_user } from './__generated__/UpdateCircle_user.graphql';
+
 import { withStyles } from 'material-ui/styles';
 
-import history from '../../history';
 import uuid from 'uuid/v1';
+import history from '../../history';
 
 import updateKeyValueStringEvent from '../../functions/updateKeyValues/updateKeyValueStringEvent';
 import updateKeyValueString from '../../functions/updateKeyValues/updateKeyValueString';
 import toggleKeyValueBoolean from '../../functions/updateKeyValues/toggleKeyValueBoolean';
 import updateKeyValueFalse from '../../functions/updateKeyValues/updateKeyValueFalse';
 
+import UpdateCircleMutation from './UpdateCircleMutation';
+import DeleteCircleMutation from '../DeleteCircle/DeleteCircleMutation';
+
+import { FormControlLabel } from 'material-ui/Form';
 import Snackbar from 'material-ui/Snackbar';
-import Divider from '../../Components/Divider';
+import Switch from 'material-ui/Switch';
+import Bar from '../../Components/Bar';
+import Button from '../../Components/Button';
 import Card from '../../Components/Card';
 import ComponentController from '../../Components/ComponentController';
-import TextField from '../../Components/TextField';
+import Divider from '../../Components/Divider';
+import Editor from '../../Components/Editor';
 import FontIcon from '../../Components/FontIcon';
-import Bar from '../../Components/Bar';
-import Editor from './Editor';
-import Button from '../../Components/Button';
-import CreateCircleMutation from './CreateCircleMutation';
+import TextField from '../../Components/TextField';
 
 const circle = {
-  type: 'LINES',
+  type: 'PLAIN_TEXT',
   settings: {
     headerEnabled: false,
   },
@@ -88,9 +94,10 @@ const style = theme => ({
   },
 });
 
-class CreateCircle extends React.Component {
+class UpdateCircle extends React.Component {
   props: {
-    user: CreateCircle_user,
+    circle: UpdateCircle_getCircleByKey,
+    user: UpdateCircle_user,
   };
 
   state = {
@@ -100,14 +107,15 @@ class CreateCircle extends React.Component {
     addTitle: true,
     headerTop: true,
 
-    _id: circle._id ? circle._id : null,
-    id: circle._id ? circle._id : null,
-    type: circle.type || 'CUSTOM',
-    title: '',
-    subtitle: '',
-    description: '',
-    tags: '',
-    // creatorId: user.id,
+    id: this.props.getCircleByKey.id || null,
+    _id: this.props.getCircleByKey._id || null,
+    public: this.props.getCircleByKey.public || false,
+    type: this.props.getCircleByKey.type || 'CUSTOM',
+    title: this.props.getCircleByKey.title || '',
+    subtitle: this.props.getCircleByKey.subtitle || '',
+    description: this.props.getCircleByKey.description || '',
+    tags: this.props.getCircleByKey.tags || '',
+    creatorId: this.props.getCircleByKey.creator || null,
     creator: {
       username: '',
       media: {
@@ -119,9 +127,10 @@ class CreateCircle extends React.Component {
       },
     },
     slugName: '',
-    dateCreated: Date.now(),
-    dateUpdated: Date.now(),
-    string: '',
+    dateCreated: this.props.getCircleByKey.dateCreated || Date.now(),
+    dateUpdated: this.props.getCircleByKey.dateUpdated || Date.now(),
+    string: this.props.getCircleByKey.string || '',
+    boolean: this.props.getCircleByKey.boolean || null,
   };
 
   handleStateEventChange = name => event => {
@@ -146,8 +155,10 @@ class CreateCircle extends React.Component {
 
   handleSlugChange = action => {
     const slugWithoutSpaces = action.target.value
+      .toString()
       .replace(' ', '-')
       .toLowerCase();
+
     this.setState({
       slugName: slugWithoutSpaces,
     });
@@ -184,12 +195,14 @@ class CreateCircle extends React.Component {
 
     const circle = {
       _id: _id,
+      public: this.state.public,
       type: this.state.type,
       title: this.state.title,
       subtitle: this.state.subtitle,
       description: this.state.description,
       tags: this.state.tags !== '' ? this.state.tags.split(',') : null,
       string: this.state.string,
+      boolean: this.state.boolean,
       creator: this.props.user._id,
       slug: `${this.props.user.username}/${slug}`,
       dateCreated: Date.now(),
@@ -207,13 +220,28 @@ class CreateCircle extends React.Component {
       circle,
     ][1];
 
-    CreateCircleMutation.commit(
+    UpdateCircleMutation.commit(
       this.props.relay.environment,
       buildCircle,
       this.props.user._id,
     );
   };
 
+  deleteCircle = () => {
+    DeleteCircleMutation.commit(
+      this.props.relay.environment,
+      {
+        _id: this.state._id,
+      },
+      this.props.user._id,
+    );
+    console.log('deleted');
+  };
+
+  // TODO: davey
+  // Create new modal system to select type > then it creates > then your editing it from there on out, bottom options will be delete then
+  // Create confirm delete modal (circle, settings, styles, and lines)
+  // Create select type modal from data (circle, settings, styles, and lines). Lines are options
   render() {
     const user = this.props.user || {};
     const { classes } = this.props;
@@ -280,7 +308,11 @@ class CreateCircle extends React.Component {
 
     const content = (
       <div key="content" style={{ height: 500 }}>
-        <ComponentController circle={this.state} />
+        <ComponentController
+          circle={this.state}
+          editing={true}
+          handleStateEventChange={this.handleStateEventChange}
+        />
       </div>
     );
 
@@ -305,7 +337,9 @@ class CreateCircle extends React.Component {
           handleCloseTypeSnackbar={this.keyValueFalse('snackbarOpen')}
           handleStateEventChange={this.handleStateEventChange}
           handleStateStringChange={this.handleStateStringChange}
+          public={this.state.public}
           type={this.state.type}
+          deleteCircle={this.deleteCircle}
         />
         <br />
         <br />
@@ -313,11 +347,22 @@ class CreateCircle extends React.Component {
         <div className={classes.fieldsContainer}>
           <TextField
             id="string"
-            label="string"
+            label="String"
             margin="normal"
             fullWidth={true}
+            multiline
             value={this.state.string}
             onChange={this.handleStateEventChange('string')}
+          />
+          <FormControlLabel
+            checked={this.state.boolean ? this.state.boolean : false}
+            control={
+              <Switch
+                onChange={() => this.handleBooleanToggle('boolean')}
+                aria-label="boolean"
+              />
+            }
+            label="Boolean"
           />
         </div>
         <br />
@@ -326,9 +371,6 @@ class CreateCircle extends React.Component {
         <div style={{ margin: '24px 24px 124px 24px', paddingBottom: '24px' }}>
           <Bar
             style={{
-              // bottom: 0,
-              // right: 0,
-              // position: 'fixed',
               width: 'calc(100%-240px)',
             }}
             dividerTop={true}
@@ -355,6 +397,7 @@ class CreateCircle extends React.Component {
         </div>
         <Bar
           style={{
+            paddingRight: 24,
             bottom: 0,
             right: 0,
             position: 'fixed',
@@ -363,11 +406,7 @@ class CreateCircle extends React.Component {
           dividerTop={true}
           flexDirection="row-reverse"
         >
-          <Button
-            color="primary"
-            raised
-            onClick={this.toggleBoolean('snackbarOpen')}
-          >
+          <Button color="primary" raised onClick={this.createCircle}>
             Save
           </Button>
           <Button color="primary" onClick={() => history.goBack()}>
@@ -393,13 +432,74 @@ class CreateCircle extends React.Component {
 }
 
 export default createFragmentContainer(
-  withStyles(style, { withTheme: true })(CreateCircle),
+  withStyles(style, { withTheme: true })(UpdateCircle),
   graphql`
-    fragment CreateCircle_user on User {
+    fragment UpdateCircle_user on User {
       id
       _id
       username
-      ...Lines_lines
+    }
+
+    fragment UpdateCircle_getCircleByKey on Circle {
+      id
+      _id
+      ui {
+        _id
+      }
+      slug
+      slugName
+      public
+      passwordRequired
+      type
+      settings {
+        _id
+      }
+      rating {
+        _id
+      }
+      styles {
+        _id
+      }
+      tags
+      title
+      subtitle
+      description
+      media {
+        _id
+      }
+      icon {
+        _id
+      }
+      viewers {
+        _id
+      }
+      creator {
+        _id
+      }
+      editors {
+        _id
+      }
+      dateCreated
+      dateUpdated
+      string
+      blob
+      number
+      boolean
+      date
+      geoPoint
+      line {
+        _id
+      }
+      lines {
+        _id
+      }
+      linesMany {
+        edges {
+          node {
+            _id
+          }
+        }
+      }
     }
   `,
 );

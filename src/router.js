@@ -40,22 +40,26 @@ const routes = [
       body: <CreateCircle user={data.user} />,
     }),
   },
-  // {
-  //   path: '/update/:_id',
-  //   query: graphql`query routerEditQuery($_id: String) {
-  //     getCircleByKey (_id: $_id) {
-  //       type
-  //       ...UpdateCircle_getCircleByKey
-  //     }
-  //   }`, // prettier-ignore
-  //   components: () => [
-  //     import(/* webpackChunkName: 'updateCircle' */ './Circle/UpdateCircle'),
-  //   ],
-  //   render: ([UpdateCircle], data) => ({
-  //     title: 'Update Circle',
-  //     body: <UpdateCircle />,
-  //   }),
-  // },
+  {
+    path: '/update/:_id',
+    query: graphql`query routerUpdateQuery($_id: String) {
+      user (_id: "davey") {
+        ...UpdateCircle_user
+      }
+      getCircleByKey (_id: $_id ) {
+        ...UpdateCircle_getCircleByKey
+      }
+    }`, // prettier-ignore
+    components: () => [
+      import(/* webpackChunkName: 'updateCircle' */ './Mutations/UpdateCircle'),
+    ],
+    render: ([UpdateCircle], data) => ({
+      title: 'Update Circle',
+      body: (
+        <UpdateCircle getCircleByKey={data.getCircleByKey} user={data.user} />
+      ),
+    }),
+  },
   {
     path: '/signup',
     // query: graphql`query routerCreateUserQuery {

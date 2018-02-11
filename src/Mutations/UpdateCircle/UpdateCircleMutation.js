@@ -3,10 +3,10 @@ import { graphql, commitMutation, Environment } from 'react-relay';
 import history from '../../history';
 
 const mutation = graphql`
-  mutation CopyCircleMutation($input: createCircleInput!) {
-    createCircle(input: $input) {
+  mutation UpdateCircleMutation($input: updateCircleInput!) {
+    updateCircle(input: $input) {
       message
-      createdCircle {
+      updatedCircle {
         id
         _id
         slug
@@ -31,8 +31,8 @@ function getConfigs(viewerId) {
 
 function getOptimisticResponse(optimisticCircleObject, viewerId) {
   return {
-    createCircle: {
-      createdCircle: optimisticCircleObject,
+    updateCircle: {
+      updatedCircle: optimisticCircleObject,
     },
   };
 }
@@ -42,14 +42,14 @@ function commit(environment: Environment, data: Object, viewerId: number) {
     mutation,
     variables: { input: data },
     onCompleted: store => {
-      if (store.createCircle.createdCircle.slug != null) {
-        const slug = store.createCircle.createdCircle.slug;
+      if (store.updateCircle.updatedCircle.slug != null) {
+        const slug = store.updateCircle.updatedCircle.slug;
         return history.push(`/${slug}`);
       } else {
-        return { status: 'Circle was not created' };
+        return { status: 'Circle was not updated' };
       }
     },
-    onError: err => console.error('CopyCircleMutation onError: ', err),
+    onError: err => console.error('UpdateCircleMutation onError: ', err),
     optimisticResponse: getOptimisticResponse(data, viewerId),
     configs: getConfigs(viewerId),
   });

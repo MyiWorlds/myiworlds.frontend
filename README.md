@@ -1,8 +1,8 @@
+This project is in heavy development with a few refactors to come, not quite ready for others to use. Stay tuned.
 
 ## Want to talk about contributing or ask questions? Best place is on our Discord Channel
+
 https://discord.gg/28Gjv7S
-
-
 
 # React Static Boilerplate &nbsp; <a href="https://travis-ci.org/kriasoft/react-static-boilerplate"><img src="https://img.shields.io/circleci/project/github/kriasoft/react-static-boilerplate/master.svg?style=flat-square" height="20" /></a> <a href="https://github.com/kriasoft/react-static-boilerplate/stargazers"><img src="https://img.shields.io/github/stars/kriasoft/react-static-boilerplate.svg?style=social&label=Star&maxAge=3600" height="20"></a> <a href="https://twitter.com/ReactStatic"><img src="https://img.shields.io/twitter/follow/ReactStatic.svg?style=social&label=Follow&maxAge=3600" height="20"></a>
 
@@ -43,9 +43,9 @@ This project was bootstraped with [React Static Boilerplate][rsb] by [Kriasoft][
 
 * [Create React App][cra] for development and test infrastructure (see [user guide][cradocs])
 * [React][react] + [Relay Modern][relay] for UI and declarative data fetching
-* [Styled Components][sc] for component friendly CSS styles ([docs][scdocs])
+* [Material-UI Next]Googles heavily researched UI library, this library also works well in AR/VR.
+* [JSS][sc] for component friendly CSS styles ([docs][scdocs])
 * [Universal Router][router] + [history][history] for declarative routing and client-side navigation
-
 
 ### Directory Layout
 
@@ -76,15 +76,13 @@ This project was bootstraped with [React Static Boilerplate][rsb] by [Kriasoft][
 └── setup.js                       # Customizations for create-react-app
 ```
 
-
 ### Prerequisites
 
-* [Node.js][nodejs] v8.2.1 or higher + [Yarn][yarn] v0.27.5 or higher &nbsp; (*HINT: On Mac install
-  them via [Brew][brew]*)
+* [Node.js][nodejs] v8.2.1 or higher + [Yarn][yarn] v0.27.5 or higher &nbsp; (_HINT: On Mac install
+  them via [Brew][brew]_)
 * [Watchman][wm] v4.7.0 or higher, required by the [Relay Compiler][relaycompiler]
 * [VS Code][vc] editor (preferred) + [Project Snippets][vcsnippets], [EditorConfig][vceditconfig],
   [ESLint][vceslint], [Flow][vcflow], [Prettier][vcprettier], and [Babel JavaScript][vcjs] plug-ins
-
 
 ### Getting Started
 
@@ -100,7 +98,6 @@ $ yarn start                       # Compiles the app and opens it in a browser 
 
 The app should become available at [http://localhost:3000/](http://localhost:3000/).
 
-
 ### How to Test
 
 ```bash
@@ -109,14 +106,12 @@ $ yarn fix                         # Attempt to automatically fix ESLint warning
 $ yarn test                        # Run unit tests. Or, `yarn test -- --watch`
 ```
 
-
 ### How to Deploy
 
 ```bash
 $ yarn build -- --prerender       # Build the app for production and pre-render .html pages
 $ npx gh-pages -d ./build         # Push the contents of the ./build folder to GitHub Pages
 ```
-
 
 ### How to Update
 
@@ -132,9 +127,8 @@ yarn install
 yarn relay
 ```
 
-*NOTE: Try to merge as soon as the new changes land on the master branch in React Static Boilerplate
-repository, otherwise your project may diverge too much from the base/upstream repo.*
-
+_NOTE: Try to merge as soon as the new changes land on the master branch in React Static Boilerplate
+repository, otherwise your project may diverge too much from the base/upstream repo._
 
 ### How to Contribute
 
@@ -145,14 +139,12 @@ start is by checking our [open issues](https://github.com/kriasoft/react-static-
 participate in discussions, upvote or downvote the issues you like or dislike, send [pull
 requests](CONTRIBUTING.md#pull-requests).
 
-
 ### Learn React.js and ES6
 
 :mortar_board: &nbsp; [React for Beginners](https://reactforbeginners.com/friend/konstantin) and [ES6 Training Course](https://es6.io/friend/konstantin) by Wes Bos<br>
 :green_book: &nbsp; [React: Up & Running: Building Web Applications](http://amzn.to/2bBgqhl) by Stoyan Stefanov (Aug, 2016)<br>
 :green_book: &nbsp; [Getting Started with React](http://amzn.to/2bmwP5V) by Doel Sengupta and Manu Singhal (Apr, 2016)<br>
 :green_book: &nbsp; [You Don't Know JS: ES6 & Beyond](http://amzn.to/2bBfVnp) by Kyle Simpson (Dec, 2015)<br>
-
 
 ### Related Projects
 
@@ -161,13 +153,13 @@ requests](CONTRIBUTING.md#pull-requests).
 * [Node.js API Starter Kit](https://github.com/kriasoft/nodejs-api-starter) — Boilerplate and
   tooling for building data APIs with Docker, Node.js and GraphQL
 
-
 ### License
 
 Copyright © 2015-present Kriasoft. This source code is licensed under the MIT license found in
 the [LICENSE.txt](https://github.com/kriasoft/react-static-boilerplate/blob/master/LICENSE.txt) file.
 
 ---
+
 Made with ♥ by Konstantin Tarkus ([@koistya](https://twitter.com/koistya), [blog](https://medium.com/@tarkus))
 and [contributors](https://github.com/kriasoft/react-static-boilerplate/graphs/contributors)
 

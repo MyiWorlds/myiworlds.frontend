@@ -69,6 +69,8 @@ class Dialog extends React.Component {
     classes: PropTypes.object.isRequired,
     handleCancel: PropTypes.func,
     handleSuccess: PropTypes.func,
+    cancelText: PropTypes.string,
+    successText: PropTypes.string,
   };
 
   render() {
@@ -94,18 +96,21 @@ class Dialog extends React.Component {
         <Divider />
         <div className={classes.footer}>
           <div className={classes.actionItems}>
-            <Button color="primary" onClick={this.props.handleCancel}>
-              Cancel
+            <Button
+              color={this.props.cancelColor || 'primary'}
+              onClick={this.props.handleCancel}
+            >
+              {this.props.cancelText}
             </Button>
           </div>
           <div className={classes.actionItems}>
             <Button
               disabled={this.props.disablePrimary}
               raised
-              color="primary"
+              color={this.props.successColor || 'primary'}
               onClick={this.props.handleSuccess}
             >
-              Select
+              {this.props.successText}
             </Button>
           </div>
         </div>

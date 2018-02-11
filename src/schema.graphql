@@ -1,3 +1,7 @@
+# The `BigInt` scalar type represents non-fractional signed whole numeric values.
+# BigInt can represent values between -(2^53) + 1 and 2^53 - 1. 
+scalar BigInt
+
 # Every circle you see can be placed inside a circle.
 type Circle implements Node {
   # The ID of an object
@@ -47,11 +51,12 @@ type Circle implements Node {
 
   # Users that can edit this circle
   editors: Circle
-  dateCreated: Int
-  dateUpdated: Int
+  dateCreated: BigInt
+  dateUpdated: BigInt
   string: String
   blob: JSON
   number: Int
+  bigNumber: BigInt
   boolean: Boolean
   date: String
   geoPoint: String
