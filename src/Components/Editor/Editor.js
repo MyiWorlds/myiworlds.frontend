@@ -158,6 +158,28 @@ const creationTypes = {
     {
       id: '7',
       type: 'TYPE',
+      title: 'JSON',
+      description: 'A JSON field to put object values',
+      string: 'BLOB',
+      media: {
+        id: 'media4',
+        title: 'Blob Title',
+        type: 'IMAGE',
+        blob: {
+          small:
+            'https://ourcodeworld.com/public-media/articles/articleocw-59a976d52e4b0.png',
+          medium:
+            'https://ourcodeworld.com/public-media/articles/articleocw-59a976d52e4b0.png',
+          large:
+            'https://ourcodeworld.com/public-media/articles/articleocw-59a976d52e4b0.png',
+          xlarge:
+            'https://ourcodeworld.com/public-media/articles/articleocw-59a976d52e4b0.png',
+        },
+      },
+    },
+    {
+      id: '8',
+      type: 'TYPE',
       title: 'Custom',
       description: 'A image',
       string: 'CUSTOM',
@@ -260,11 +282,17 @@ class Editor extends React.Component {
 
   updateParentTypeSelection = () => {
     this.setState({ showSelectTypeDialog: false });
-    this.props.handleStateStringChange('type', this.state.selectedCircle);
+    this.props.handleStateStringChange(
+      'type',
+      this.state.selectedCircle.string,
+    );
   };
 
   humanizeType = type => {
-    return type.split('_').join(' ');
+    if (type === '') {
+      return 'None Selected';
+    }
+    return type.isArray ? type.split('_').join(' ') : type;
   };
 
   handleChange = name => (event, checked) => {
@@ -272,7 +300,6 @@ class Editor extends React.Component {
   };
 
   handleDeleteCircle = () => {
-    console.log('Handle delete called');
     this.props.deleteCircle();
     this.setState({ showDeleteDialog: false });
   };
@@ -283,32 +310,32 @@ class Editor extends React.Component {
     const { headerMenu, showSelectTypeDialog, showDeleteDialog } = this.state;
     const humanizedType = this.humanizeType(this.props.type);
 
-    const createCircleDialogActions = [
-      {
-        type: 'BUTTON',
-        title: 'Create',
-      },
-      {
-        type: 'BUTTON',
-        title: 'Cancel',
-      },
-    ];
+    // const createCircleDialogActions = [
+    //   {
+    //     type: 'BUTTON',
+    //     title: 'Create',
+    //   },
+    //   {
+    //     type: 'BUTTON',
+    //     title: 'Cancel',
+    //   },
+    // ];
 
-    const updateCircleDialogActions = {
-      styles: {
-        flexDirection: 'row-reverse',
-      },
-      lines: [
-        {
-          type: 'BUTTON',
-          title: 'Update',
-        },
-        {
-          type: 'BUTTON',
-          title: 'Cancel',
-        },
-      ],
-    };
+    // const updateCircleDialogActions = {
+    //   styles: {
+    //     flexDirection: 'row-reverse',
+    //   },
+    //   lines: [
+    //     {
+    //       type: 'BUTTON',
+    //       title: 'Update',
+    //     },
+    //     {
+    //       type: 'BUTTON',
+    //       title: 'Cancel',
+    //     },
+    //   ],
+    // };
 
     const typeDialog = (
       <Dialog

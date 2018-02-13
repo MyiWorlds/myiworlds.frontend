@@ -2,13 +2,15 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import sizeMe from 'react-sizeme';
+
 import Image from '../Image';
 import YouTube from '../Video/YouTube';
-import sizeMe from 'react-sizeme';
 import Typography from '../Typography';
 import Header from '../Header';
 import PlainText from '../PlainText';
 import MediaCard from '../MediaCard';
+import Blob from '../Blob';
 
 const ComponentController = props => {
   return (() => {
@@ -43,6 +45,8 @@ const ComponentController = props => {
             }
           />
         );
+      case 'BLOB':
+        return <Blob {...props} componentSize={props.size} />;
       case 'HERO':
         return <div>HERO</div>;
       case 'PLAIN_TEXT':

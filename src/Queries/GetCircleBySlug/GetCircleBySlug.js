@@ -3,7 +3,7 @@
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
 import type { GetCircleBySlug_getCircleBySlug } from './__generated__/GetCircleBySlug_getCircleBySlug.graphql';
-import ContainerBuilder from '../ContainerBuilder';
+import ContainerBuilder from '../../Mutations/ContainerBuilder';
 
 class GetCircleBySlug extends React.Component {
   props: {
@@ -27,6 +27,7 @@ export default createFragmentContainer(
           type
         }
       }
+      blob
       ...ContainerBuilder_getCircleBySlug
     }
   `,

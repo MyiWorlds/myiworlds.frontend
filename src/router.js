@@ -122,7 +122,7 @@ const routes = [
       }
     }`, // prettier-ignore
     components: () => [
-      import(/* webpackChunkName: 'home' */ './Mutations/GetCircleBySlug'),
+      import(/* webpackChunkName: 'home' */ './Queries/GetCircleBySlug'),
     ],
     render: ([GetCircleBySlug], data) => ({
       title:
@@ -140,7 +140,7 @@ const routes = [
       }
     }`, // prettier-ignore
     components: () => [
-      import(/* webpackChunkName: 'recents' */ './Mutations/GetCirclesByUserKey'),
+      import(/* webpackChunkName: 'recents' */ './Queries/GetCirclesByUserKey'),
     ],
     render: ([GetCirclesByUserKey], data) => ({
       title: 'Untitled',
@@ -165,7 +165,7 @@ const routes = [
       }
     }`, // prettier-ignore
     components: () => [
-      import(/* webpackChunkName: 'home' */ './Mutations/GetCircleBySlug'),
+      import(/* webpackChunkName: 'home' */ './Queries/GetCircleBySlug'),
     ],
     render: ([GetCircleBySlug], data) => ({
       title:

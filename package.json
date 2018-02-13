@@ -15,6 +15,7 @@
     "prop-types": "^15.5.10",
     "query-string": "^5.0.0",
     "react": "^15.6.1",
+    "react-ace": "^5.9.0",
     "react-dom": "^15.6.1",
     "react-draggable": "^3.0.3",
     "react-grid-layout": "^0.16.0",
@@ -52,22 +53,24 @@
     "stylelint-processor-styled-components": "^0.4.0"
   },
   "lint-staged": {
-    "*.js": ["eslint --no-ignore --fix", "git add"],
-    "*.json": ["prettier --write", "git add"]
+    "*.js": [
+      "eslint --no-ignore --fix",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "scripts": {
     "precommit": "lint-staged",
-    "lint":
-      "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" . && stylelint \"./src/**/*.js\"",
-    "fix":
-      "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" --fix .",
-    "relay":
-      "cross-env REACT_APP_API=http://localhost:8080 node ./setup --download-schema && relay-compiler --src ./src --schema ./src/schema.graphql",
+    "lint": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" . && stylelint \"./src/**/*.js\"",
+    "fix": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" --fix .",
+    "relay": "cross-env REACT_APP_API=http://localhost:8080 node ./setup --download-schema && relay-compiler --src ./src --schema ./src/schema.graphql",
     "build": "node ./setup && react-scripts build && node ./render",
     "test": "node ./setup && react-scripts test --env=jsdom",
     "deploy": "node ./setup && react-scripts build && gh-pages -d build",
-    "start":
-      "cross-env REACT_APP_API=http://localhost:8080 node ./setup && cross-env REACT_APP_API=http://localhost:8080 react-scripts start"
+    "start": "cross-env REACT_APP_API=http://localhost:8080 node ./setup && cross-env REACT_APP_API=http://localhost:8080 react-scripts start"
   },
   "proxy": {
     "/graphql": {

@@ -95,12 +95,11 @@ class YouTube extends React.Component {
     this.getYoutubeVideoThumbnails(this.props.videoId);
   }
 
-  // Need to rerender when videoId changes
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.videoId !== this.props.videoId) {
-  //     this.getYoutubeVideoThumbnails(this.props.videoId);
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.videoId !== this.props.videoId) {
+      this.getYoutubeVideoThumbnails(nextProps.videoId);
+    }
+  }
 
   getYoutubeVideoThumbnails = async videoId => {
     const YOUR_API_KEY = process.env.REACT_APP_YOUR_API_KEY;
