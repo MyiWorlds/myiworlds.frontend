@@ -99,29 +99,51 @@ class CircleController extends React.Component {
     addTitle: true,
     headerTop: true,
 
-    id: this.props.circle ? this.props.circle.id || null : null,
-    _id: this.props.circle ? this.props.circle._id || null : null,
-    public: this.props.circle ? this.props.circle.public || false : false,
-    type: this.props.circle ? this.props.circle.type || 'CUSTOM' : '',
-    title: this.props.circle ? this.props.circle.title || '' : '',
-    subtitle: this.props.circle ? this.props.circle.subtitle || '' : '',
-    description: this.props.circle ? this.props.circle.description || '' : '',
-    tags: this.props.circle ? this.props.circle.tags.join() || '' : '',
-    creatorId: this.props.circle ? this.props.circle.creator._id || null : '',
-    slugName: this.props.circle ? this.props.circle.slugName || '' : '',
-    dateCreated: this.props.circle
-      ? this.props.circle.dateCreated || Date.now()
-      : Date.now(),
-    dateUpdated: this.props.circle
-      ? this.props.circle.dateUpdated || Date.now()
-      : Date.now(),
-    string: this.props.circle ? this.props.circle.string || '' : '',
-    boolean: this.props.circle ? this.props.circle.boolean || null : null,
-    blob: this.props.circle
-      ? JSON.stringify(this.props.circle.blob, 1, '\t') || null
-      : null,
+    id: null,
+    _id: null,
+    public: false,
+    type: '',
+    title: '',
+    subtitle: '',
+    description: '',
+    tags: '',
+    creatorId: '',
+    styles: '',
+    slugName: '',
+    dateCreated: Date.now(),
+    dateUpdated: Date.now(),
+    string: '',
+    boolean: null,
+    blob: null,
   };
 
+  componentWillMount() {
+    if (this.props.circle) {
+      this.setState({
+        id: this.props.circle.id || null,
+        _id: this.props.circle._id || null,
+        public: this.props.circle.public || false,
+        type: this.props.circle.type || 'CUSTOM',
+        title: this.props.circle.title || '',
+        subtitle: this.props.circle.subtitle || '',
+        description: this.props.circle.description || '',
+        tags:
+          this.props.circle && this.props.circle.tags
+            ? this.props.circle.tags.length ? this.props.circle.tags.join() : ''
+            : '',
+        creatorId: this.props.circle
+          ? this.props.circle.creator._id || null
+          : '',
+        styles: this.props.circle.styles || '',
+        slugName: this.props.circle.slugName || '',
+        dateCreated: this.props.circle.dateCreated || Date.now(),
+        dateUpdated: this.props.circle.dateUpdated || Date.now(),
+        string: this.props.circle.string || '',
+        boolean: this.props.circle.boolean || null,
+        blob: JSON.stringify(this.props.circle.blob, 1, '\t') || null,
+      });
+    }
+  }
   handleStateEventChange = name => event => {
     this.setState(updateKeyValueStringEvent(name, event));
   };
@@ -184,7 +206,7 @@ class CircleController extends React.Component {
 
     const circle = {
       _id: _id,
-      public: this.state.public,
+      public: this.state.public || false,
       type: this.state.type,
       title: this.state.title,
       subtitle: this.state.subtitle,
@@ -199,7 +221,7 @@ class CircleController extends React.Component {
       blob:
         this.state.blob && this.state.blob !== ''
           ? JSON.parse(this.state.blob)
-          : null,
+          : '',
       boolean: this.state.boolean,
       creator: this.props.user._id,
       slug: `${this.props.user.username}/${slug}`,
@@ -252,7 +274,7 @@ class CircleController extends React.Component {
 
     const circle = {
       _id: _id,
-      public: this.state.public,
+      public: this.state.public || false,
       type: this.state.type,
       title: this.state.title,
       subtitle: this.state.subtitle,

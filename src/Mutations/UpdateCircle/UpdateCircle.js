@@ -19,6 +19,7 @@ class UpdateCircle extends React.Component {
   render() {
     return (
       <CircleController
+        editing={true}
         relayEnvironment={this.props.relay.environment}
         updateCircleMutation={UpdateCircleMutation}
         deleteCircleMutation={DeleteCircleMutation}

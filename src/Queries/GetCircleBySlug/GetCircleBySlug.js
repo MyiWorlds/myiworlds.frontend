@@ -12,7 +12,7 @@ class GetCircleBySlug extends React.Component {
 
   render() {
     const circle = this.props.getCircleBySlug || {};
-    return <ContainerBuilder getCircleBySlug={circle} />;
+    return <ContainerBuilder getCircleBySlug={circle} editing={false} />;
   }
 }
 
@@ -27,6 +27,7 @@ export default createFragmentContainer(
           type
         }
       }
+      string
       blob
       ...ContainerBuilder_getCircleBySlug
     }

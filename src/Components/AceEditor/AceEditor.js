@@ -6,22 +6,36 @@ import PropTypes from 'prop-types';
 import brace from 'brace';
 import ReactAceEditor from 'react-ace';
 
+import 'brace/mode/css';
 import 'brace/mode/javascript';
 import 'brace/theme/monokai';
 
 class AceEditor extends React.Component {
+  static defaultProps = {
+    handleStateStringChange: () => {},
+  };
+
   static propTypes = {
     handleStateStringChange: PropTypes.func,
     circle: PropTypes.object,
+    defaultState: PropTypes.string,
+    stateProperty: PropTypes.string,
+    mode: PropTypes.string,
   };
 
   state = {
-    editorState: this.props.circle.blob,
+    editorState: this.props.defaultState,
   };
 
   onChange = newState => {
-    this.setState({ editorState: newState });
-    this.props.handleStateStringChange('blob', this.state.editorState);
+    if (this.props.editing) {
+      this.setState({ editorState: newState });
+
+      this.props.handleStateStringChange(
+        this.props.stateProperty,
+        this.state.editorState,
+      );
+    }
   };
 
   render() {
@@ -31,7 +45,8 @@ class AceEditor extends React.Component {
           ref={instance => {
             this.reactAceEditor = instance;
           }}
-          mode="javascript"
+          readOnly={!this.props.editing}
+          mode={this.props.mode}
           theme="monokai"
           editorProps={{ $blockScrolling: true }}
           name="blah2"

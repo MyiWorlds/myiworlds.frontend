@@ -10,7 +10,7 @@ import Typography from '../Typography';
 import Header from '../Header';
 import PlainText from '../PlainText';
 import MediaCard from '../MediaCard';
-import Blob from '../Blob';
+import AceEditor from '../AceEditor';
 
 const ComponentController = props => {
   return (() => {
@@ -45,8 +45,28 @@ const ComponentController = props => {
             }
           />
         );
+      case 'STYLESHEET':
+        return (
+          <AceEditor
+            {...props}
+            handleStateStringChange={props.handleStateStringChange}
+            componentSize={props.size}
+            mode="css"
+            stateProperty="string"
+            defaultState={props.circle.string}
+          />
+        );
       case 'BLOB':
-        return <Blob {...props} componentSize={props.size} />;
+        return (
+          <AceEditor
+            {...props}
+            componentSize={props.size}
+            handleStateStringChange={props.handleStateStringChange}
+            mode="javascript"
+            stateProperty="blob"
+            defaultState={props.circle.blob}
+          />
+        );
       case 'HERO':
         return <div>HERO</div>;
       case 'PLAIN_TEXT':

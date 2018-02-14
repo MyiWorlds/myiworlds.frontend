@@ -180,6 +180,28 @@ const creationTypes = {
     {
       id: '8',
       type: 'TYPE',
+      title: 'Style Sheet',
+      description: 'A Style sheet',
+      string: 'STYLESHEET',
+      media: {
+        id: 'media7',
+        title: 'Image Title',
+        type: 'IMAGE',
+        blob: {
+          small:
+            'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
+          medium:
+            'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
+          large:
+            'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
+          xlarge:
+            'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
+        },
+      },
+    },
+    {
+      id: '9',
+      type: 'TYPE',
       title: 'Custom',
       description: 'A image',
       string: 'CUSTOM',

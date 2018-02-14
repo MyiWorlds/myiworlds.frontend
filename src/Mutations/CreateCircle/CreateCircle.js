@@ -16,6 +16,7 @@ class CreateCircle extends React.Component {
   render() {
     return (
       <CircleController
+        editing={true}
         user={this.props.user}
         relayEnvironment={this.props.relay.environment}
         createCircleMutation={CreateCircleMutation}
