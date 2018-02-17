@@ -11,12 +11,20 @@ import Header from '../Header';
 import PlainText from '../PlainText';
 import MediaCard from '../MediaCard';
 import AceEditor from '../AceEditor';
+import Hero from '../Hero';
 
 const ComponentController = props => {
   return (() => {
     switch (props.type ? props.type : props.circle.type) {
       case 'IMAGE':
-        return <Image {...props} componentSize={props.size} />;
+        return (
+          <Image
+            {...props}
+            editing={props.editing}
+            handleStateEventChange={props.handleStateEventChange}
+            componentSize={props.size}
+          />
+        );
       case 'HEADER':
         return <Header {...props} componentSize={props.size} />;
       case 'GIF':
@@ -68,7 +76,7 @@ const ComponentController = props => {
           />
         );
       case 'HERO':
-        return <div>HERO</div>;
+        return <Hero {...props} />;
       case 'PLAIN_TEXT':
         return <PlainText {...props} />;
       case 'MEDIA_CARD':

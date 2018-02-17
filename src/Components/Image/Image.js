@@ -9,7 +9,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Header from '../Header';
+
+import FontIcon from '../FontIcon';
+import Button from '../Button';
+import TextField from '../TextField';
+import Card from '../Card';
 
 class Image extends React.Component {
   static propTypes = {
@@ -21,11 +25,18 @@ class Image extends React.Component {
     style: PropTypes.object,
     containerStyles: PropTypes.object,
     position: PropTypes.string,
-    mode: PropTypes.string,
     onClick: PropTypes.func,
     imageSize: PropTypes.string,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
+  };
+
+  state = {
+    showEdit: false,
+  };
+
+  handleBooleanToggle = stateName => {
+    this.setState({ [stateName]: !this.state[stateName] });
   };
 
   render() {
@@ -36,6 +47,7 @@ class Image extends React.Component {
       style,
       position,
       containerStyles,
+      editing,
     } = this.props;
 
     const src = this.props.src
@@ -72,16 +84,63 @@ class Image extends React.Component {
     );
 
     return (
-      <div
-        style={
-          this.props.height
-            ? { height: this.props.height, position: 'relative' }
-            : containerStyles
-        }
-        onClick={this.props.onClick || (() => {})}
-        className={this.props.className || ''}
-      >
-        {image}
+      <div style={{ width: '100%', height: height, position: 'relative' }}>
+        {editing ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: 12,
+              left: 12,
+              color: 'white',
+              zIndex: '999',
+            }}
+          >
+            <Button
+              color="inherit"
+              // size={'small'}
+              aria-haspopup="true"
+              onClick={() => this.handleBooleanToggle('showEdit')}
+            >
+              <FontIcon
+                style={{ marginLeft: 8 }}
+                height={16}
+                aria-label="More"
+                icon="settings"
+              />
+            </Button>
+            {this.state.showEdit ? (
+              <Card
+                style={{
+                  padding: 8,
+                  top: 0,
+                  left: this.props.size.width / 4,
+                  width: this.props.size.width / 2,
+                  position: 'absolute',
+                }}
+              >
+                <TextField
+                  id="url"
+                  label="Url"
+                  style={{}}
+                  fullWidth={true}
+                  value={this.props.circle.string}
+                  onChange={this.props.handleStateEventChange('string')}
+                />
+              </Card>
+            ) : null}
+          </div>
+        ) : null}
+        <div
+          style={
+            this.props.height
+              ? { height: this.props.height, position: 'relative' }
+              : containerStyles
+          }
+          onClick={this.props.onClick || (() => {})}
+          className={this.props.className || ''}
+        >
+          {image}
+        </div>
       </div>
     );
   }

@@ -7,10 +7,6 @@ import Divider from '../Divider';
 import PropTypes from 'prop-types';
 
 const style = theme => ({
-  container: {
-    width: '100%',
-    display: 'inline-block',
-  },
   header: {
     padding: props => props.padding || '12px',
     background: props => props.background || theme.palette.background.default,
@@ -24,9 +20,12 @@ const style = theme => ({
 
 const Bar = props => {
   return (
-    <div style={props.style} className={props.classes.container}>
+    <div style={props.containerStyles || {}}>
       {props.dividerTop ? <Divider /> : null}
-      <div className={(props.className, props.classes.header)}>
+      <div
+        style={props.style}
+        className={(props.className, props.classes.header)}
+      >
         {props.children}
       </div>
       {props.dividerBottom ? <Divider /> : null}

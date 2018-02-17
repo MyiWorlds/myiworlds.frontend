@@ -141,7 +141,7 @@ const creationTypes = {
       id: '6',
       type: 'TYPE',
       title: 'Hero',
-      description: 'A image',
+      description: 'A hero image with some custom text overlayed',
       string: 'HERO',
       media: {
         id: 'media6',
@@ -167,13 +167,13 @@ const creationTypes = {
         type: 'IMAGE',
         blob: {
           small:
-            'https://ourcodeworld.com/public-media/articles/articleocw-59a976d52e4b0.png',
+            'https://lh3.googleusercontent.com/pbXlI5GfAN40IkF1n_S5vceOF_UJ-oA51mJwNxWQcfr6ZVFNkNW62kbQvenifVHMjAOxo3stCNpYhmuPndPoUpFcBsf5G3PbQEZ8Rz8LsaWMy8mMIPwGHR1S7mf5oWpg8d4U5-yISElJpNl_mH-8ocTLN9dM25x8yOPWTV_QC9tTJQL9zn_0vqG07WoqOAJaFiointfKNeN_Jt-chF_dqcQOq9Uvv9DpbBjm7S3nULsYSnaWwJTLEJHtVaVqkynVYSynfKfxo3FsqsbXMwpeuMfhduqjOkdvIBwkmHldxbpgkV0kMA2kzS8MBliZIUSebxh4lU-g8irdUwugGkHQuDkVxp68zPL9gx5ZTsd-34zxn9SOpRCahCP2Fcp1-Lz2iC_SIM-lVmmmgiVSSnfCVtPGp_KYMgbXFsr1g4-3uQ-qzD29tnF_42LL5pzqrB1o_j4rtNXV4O3Z92J77r_3hhGDjV7vGxdgZ-exqiB3-ZHOJYQvgiCRVCbGChcFoDw8e1b2fcq-Rw2qdnMWkoLVfB3nbnf6YK62IoT61gWYhNPNSNgEP_CtT0ZbpfVjHZuEfFSNyyf6N1aJqMYQ35ByPrIUQ7NzurcUQuxVj9Gt=w470-h388-no',
           medium:
-            'https://ourcodeworld.com/public-media/articles/articleocw-59a976d52e4b0.png',
+            'https://lh3.googleusercontent.com/pbXlI5GfAN40IkF1n_S5vceOF_UJ-oA51mJwNxWQcfr6ZVFNkNW62kbQvenifVHMjAOxo3stCNpYhmuPndPoUpFcBsf5G3PbQEZ8Rz8LsaWMy8mMIPwGHR1S7mf5oWpg8d4U5-yISElJpNl_mH-8ocTLN9dM25x8yOPWTV_QC9tTJQL9zn_0vqG07WoqOAJaFiointfKNeN_Jt-chF_dqcQOq9Uvv9DpbBjm7S3nULsYSnaWwJTLEJHtVaVqkynVYSynfKfxo3FsqsbXMwpeuMfhduqjOkdvIBwkmHldxbpgkV0kMA2kzS8MBliZIUSebxh4lU-g8irdUwugGkHQuDkVxp68zPL9gx5ZTsd-34zxn9SOpRCahCP2Fcp1-Lz2iC_SIM-lVmmmgiVSSnfCVtPGp_KYMgbXFsr1g4-3uQ-qzD29tnF_42LL5pzqrB1o_j4rtNXV4O3Z92J77r_3hhGDjV7vGxdgZ-exqiB3-ZHOJYQvgiCRVCbGChcFoDw8e1b2fcq-Rw2qdnMWkoLVfB3nbnf6YK62IoT61gWYhNPNSNgEP_CtT0ZbpfVjHZuEfFSNyyf6N1aJqMYQ35ByPrIUQ7NzurcUQuxVj9Gt=w470-h388-no',
           large:
-            'https://ourcodeworld.com/public-media/articles/articleocw-59a976d52e4b0.png',
+            'https://lh3.googleusercontent.com/pbXlI5GfAN40IkF1n_S5vceOF_UJ-oA51mJwNxWQcfr6ZVFNkNW62kbQvenifVHMjAOxo3stCNpYhmuPndPoUpFcBsf5G3PbQEZ8Rz8LsaWMy8mMIPwGHR1S7mf5oWpg8d4U5-yISElJpNl_mH-8ocTLN9dM25x8yOPWTV_QC9tTJQL9zn_0vqG07WoqOAJaFiointfKNeN_Jt-chF_dqcQOq9Uvv9DpbBjm7S3nULsYSnaWwJTLEJHtVaVqkynVYSynfKfxo3FsqsbXMwpeuMfhduqjOkdvIBwkmHldxbpgkV0kMA2kzS8MBliZIUSebxh4lU-g8irdUwugGkHQuDkVxp68zPL9gx5ZTsd-34zxn9SOpRCahCP2Fcp1-Lz2iC_SIM-lVmmmgiVSSnfCVtPGp_KYMgbXFsr1g4-3uQ-qzD29tnF_42LL5pzqrB1o_j4rtNXV4O3Z92J77r_3hhGDjV7vGxdgZ-exqiB3-ZHOJYQvgiCRVCbGChcFoDw8e1b2fcq-Rw2qdnMWkoLVfB3nbnf6YK62IoT61gWYhNPNSNgEP_CtT0ZbpfVjHZuEfFSNyyf6N1aJqMYQ35ByPrIUQ7NzurcUQuxVj9Gt=w470-h388-no',
           xlarge:
-            'https://ourcodeworld.com/public-media/articles/articleocw-59a976d52e4b0.png',
+            'https://lh3.googleusercontent.com/pbXlI5GfAN40IkF1n_S5vceOF_UJ-oA51mJwNxWQcfr6ZVFNkNW62kbQvenifVHMjAOxo3stCNpYhmuPndPoUpFcBsf5G3PbQEZ8Rz8LsaWMy8mMIPwGHR1S7mf5oWpg8d4U5-yISElJpNl_mH-8ocTLN9dM25x8yOPWTV_QC9tTJQL9zn_0vqG07WoqOAJaFiointfKNeN_Jt-chF_dqcQOq9Uvv9DpbBjm7S3nULsYSnaWwJTLEJHtVaVqkynVYSynfKfxo3FsqsbXMwpeuMfhduqjOkdvIBwkmHldxbpgkV0kMA2kzS8MBliZIUSebxh4lU-g8irdUwugGkHQuDkVxp68zPL9gx5ZTsd-34zxn9SOpRCahCP2Fcp1-Lz2iC_SIM-lVmmmgiVSSnfCVtPGp_KYMgbXFsr1g4-3uQ-qzD29tnF_42LL5pzqrB1o_j4rtNXV4O3Z92J77r_3hhGDjV7vGxdgZ-exqiB3-ZHOJYQvgiCRVCbGChcFoDw8e1b2fcq-Rw2qdnMWkoLVfB3nbnf6YK62IoT61gWYhNPNSNgEP_CtT0ZbpfVjHZuEfFSNyyf6N1aJqMYQ35ByPrIUQ7NzurcUQuxVj9Gt=w470-h388-no',
         },
       },
     },
@@ -189,18 +189,18 @@ const creationTypes = {
         type: 'IMAGE',
         blob: {
           small:
-            'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
+            'https://lh3.googleusercontent.com/qRRFv6WVuupkCZTV6_7KfuH63k_EaoVqZqVWba8iOf3lS2Db835fsdDN358thx15Rcq54Yq-T_C6hfzlOqdHjTKHuUMlkg1LAkPcCGkH9dDCiL9iI-GYqJiC4rY0mdIPbfAPkT6IKzwCfElpQnwd5QtDCQcR3dJGALeYreozooCQMgowrTGA-QJdZ94-Hy-1uaztoyys-000FedCcVPFjYjf35-eJDjzmmmwJnsU5cDYyctxuna99uMOQZD5buCz338nK47MguciLpDr_8HtucT1juMAPgaNUPb5azW3sn22B2WtNhgagF0Z2JGOic27XSZTaB41_Toi5RJu_gQz2gf8UA2cYw5Y6RgHIUULVdQutSYLWX72SCaWHFztWvNN5SqmJkeRi6FCcLThx_n3XHyc1lTfgKyzwWX4UJSusp64gWCXcZPAIlqEU18-9qTxdmSDkGbw5SqtOslWzB-HyFBxxJtwzTnU1txIaT2WCFFPVvOgzL1uGOO4iKmd_gFA4dNEkRHQLCISHIHGJVxilzhcOJBSdYYFLkkBmymVWsYnelrhKQOy1nQGoTvT90_9NdjIysTguzQGp7ZRMW4-dr8JkXwpvG9WqCtgktLM=w409-h321-no',
           medium:
-            'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
+            'https://lh3.googleusercontent.com/qRRFv6WVuupkCZTV6_7KfuH63k_EaoVqZqVWba8iOf3lS2Db835fsdDN358thx15Rcq54Yq-T_C6hfzlOqdHjTKHuUMlkg1LAkPcCGkH9dDCiL9iI-GYqJiC4rY0mdIPbfAPkT6IKzwCfElpQnwd5QtDCQcR3dJGALeYreozooCQMgowrTGA-QJdZ94-Hy-1uaztoyys-000FedCcVPFjYjf35-eJDjzmmmwJnsU5cDYyctxuna99uMOQZD5buCz338nK47MguciLpDr_8HtucT1juMAPgaNUPb5azW3sn22B2WtNhgagF0Z2JGOic27XSZTaB41_Toi5RJu_gQz2gf8UA2cYw5Y6RgHIUULVdQutSYLWX72SCaWHFztWvNN5SqmJkeRi6FCcLThx_n3XHyc1lTfgKyzwWX4UJSusp64gWCXcZPAIlqEU18-9qTxdmSDkGbw5SqtOslWzB-HyFBxxJtwzTnU1txIaT2WCFFPVvOgzL1uGOO4iKmd_gFA4dNEkRHQLCISHIHGJVxilzhcOJBSdYYFLkkBmymVWsYnelrhKQOy1nQGoTvT90_9NdjIysTguzQGp7ZRMW4-dr8JkXwpvG9WqCtgktLM=w409-h321-no',
           large:
-            'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
+            'https://lh3.googleusercontent.com/qRRFv6WVuupkCZTV6_7KfuH63k_EaoVqZqVWba8iOf3lS2Db835fsdDN358thx15Rcq54Yq-T_C6hfzlOqdHjTKHuUMlkg1LAkPcCGkH9dDCiL9iI-GYqJiC4rY0mdIPbfAPkT6IKzwCfElpQnwd5QtDCQcR3dJGALeYreozooCQMgowrTGA-QJdZ94-Hy-1uaztoyys-000FedCcVPFjYjf35-eJDjzmmmwJnsU5cDYyctxuna99uMOQZD5buCz338nK47MguciLpDr_8HtucT1juMAPgaNUPb5azW3sn22B2WtNhgagF0Z2JGOic27XSZTaB41_Toi5RJu_gQz2gf8UA2cYw5Y6RgHIUULVdQutSYLWX72SCaWHFztWvNN5SqmJkeRi6FCcLThx_n3XHyc1lTfgKyzwWX4UJSusp64gWCXcZPAIlqEU18-9qTxdmSDkGbw5SqtOslWzB-HyFBxxJtwzTnU1txIaT2WCFFPVvOgzL1uGOO4iKmd_gFA4dNEkRHQLCISHIHGJVxilzhcOJBSdYYFLkkBmymVWsYnelrhKQOy1nQGoTvT90_9NdjIysTguzQGp7ZRMW4-dr8JkXwpvG9WqCtgktLM=w409-h321-no',
           xlarge:
-            'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
+            'https://lh3.googleusercontent.com/qRRFv6WVuupkCZTV6_7KfuH63k_EaoVqZqVWba8iOf3lS2Db835fsdDN358thx15Rcq54Yq-T_C6hfzlOqdHjTKHuUMlkg1LAkPcCGkH9dDCiL9iI-GYqJiC4rY0mdIPbfAPkT6IKzwCfElpQnwd5QtDCQcR3dJGALeYreozooCQMgowrTGA-QJdZ94-Hy-1uaztoyys-000FedCcVPFjYjf35-eJDjzmmmwJnsU5cDYyctxuna99uMOQZD5buCz338nK47MguciLpDr_8HtucT1juMAPgaNUPb5azW3sn22B2WtNhgagF0Z2JGOic27XSZTaB41_Toi5RJu_gQz2gf8UA2cYw5Y6RgHIUULVdQutSYLWX72SCaWHFztWvNN5SqmJkeRi6FCcLThx_n3XHyc1lTfgKyzwWX4UJSusp64gWCXcZPAIlqEU18-9qTxdmSDkGbw5SqtOslWzB-HyFBxxJtwzTnU1txIaT2WCFFPVvOgzL1uGOO4iKmd_gFA4dNEkRHQLCISHIHGJVxilzhcOJBSdYYFLkkBmymVWsYnelrhKQOy1nQGoTvT90_9NdjIysTguzQGp7ZRMW4-dr8JkXwpvG9WqCtgktLM=w409-h321-no',
         },
       },
     },
     {
-      id: '9',
+      id: '999',
       type: 'TYPE',
       title: 'Custom',
       description: 'A image',
@@ -314,7 +314,7 @@ class Editor extends React.Component {
     if (type === '') {
       return 'None Selected';
     }
-    return type.isArray ? type.split('_').join(' ') : type;
+    return type.includes('_') ? type.split('_').join(' ') : type;
   };
 
   handleChange = name => (event, checked) => {

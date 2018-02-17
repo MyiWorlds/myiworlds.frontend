@@ -102,7 +102,7 @@ class CircleController extends React.Component {
     id: null,
     _id: null,
     public: false,
-    type: '',
+    type: 'HERO',
     title: '',
     subtitle: '',
     description: '',
@@ -400,7 +400,7 @@ class CircleController extends React.Component {
       <div key="content" style={{ height: 500 }}>
         <ComponentController
           circle={this.state}
-          editing={true}
+          editing={this.props.editing}
           handleStateEventChange={this.handleStateEventChange}
           handleStateStringChange={this.handleStateStringChange}
         />
@@ -493,7 +493,7 @@ class CircleController extends React.Component {
             right: 0,
             zIndex: 999,
             position: 'fixed',
-            width: 'calc(100%-240px)',
+            width: '100%',
           }}
           dividerTop={true}
           flexDirection="row-reverse"
