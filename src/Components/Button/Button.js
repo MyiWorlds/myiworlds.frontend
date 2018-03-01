@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MUIButton from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
+import Link from '../Link';
 
 const styles = theme => ({
   button: {
@@ -14,7 +15,7 @@ const styles = theme => ({
 
 const Button = props => {
   const { classes } = props;
-  return (
+  const muiButton = (
     <MUIButton
       className={props.className}
       style={props.style}
@@ -25,6 +26,13 @@ const Button = props => {
     >
       {props.children}
     </MUIButton>
+  );
+  return props.link ? (
+    <Link href={props.circle.string} style={{ textDecoration: 'none' }}>
+      {muiButton}
+    </Link>
+  ) : (
+    muiButton
   );
 };
 

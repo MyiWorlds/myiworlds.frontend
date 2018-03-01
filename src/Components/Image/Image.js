@@ -26,7 +26,7 @@ class Image extends React.Component {
     containerStyles: PropTypes.object,
     position: PropTypes.string,
     onClick: PropTypes.func,
-    imageSize: PropTypes.string,
+    backgroundSize: PropTypes.string,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
   };
@@ -48,24 +48,30 @@ class Image extends React.Component {
       position,
       containerStyles,
       editing,
+      backgroundSize,
+      circle,
     } = this.props;
 
     const src = this.props.src
       ? this.props.src
-      : this.props.circle.string
-        ? this.props.circle.string
+      : circle.string
+        ? circle.string
         : 'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png';
 
     const defaults = {
-      height: height || '400px',
+      height: height ? height : circle.styles.height,
       width: width || '100%',
       backgroundColor: backgroundColor || 'none',
       backgroundPosition: position || 'center center',
     };
 
+    const bgSize = backgroundSize
+      ? backgroundSize
+      : circle.styles.backgroundSize ? circle.styles.backgroundSize : 'contain';
+
     const important = {
       backgroundImage: `url("${src}")`,
-      backgroundSize: this.props.imageSize ? this.props.imageSize : 'contain',
+      backgroundSize: bgSize,
       backgroundRepeat: 'no-repeat',
     };
 
@@ -123,7 +129,7 @@ class Image extends React.Component {
                   label="Url"
                   style={{}}
                   fullWidth={true}
-                  value={this.props.circle.string}
+                  value={circle.string}
                   onChange={this.props.handleStateEventChange('string')}
                 />
               </Card>
@@ -131,11 +137,7 @@ class Image extends React.Component {
           </div>
         ) : null}
         <div
-          style={
-            this.props.height
-              ? { height: this.props.height, position: 'relative' }
-              : containerStyles
-          }
+          style={containerStyles}
           onClick={this.props.onClick || (() => {})}
           className={this.props.className || ''}
         >

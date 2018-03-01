@@ -6,11 +6,19 @@ import type { GetCirclesByUserKey_getCirclesByUserKey } from './__generated__/Ge
 import history from '../../history';
 
 import { List } from '../../Components/List';
+import ComponentController from '../../Components/ComponentController';
 
-const circleList = {
-  type: 'LIST_QUERY',
+let listCircle = {
+  title: 'Recents',
+  type: 'GRID',
   slug: '/recents/daveyedwards',
+  // slug: '/daveyedwards/recents',
+  styles: {
+    blob: {},
+  },
   settings: {
+    listType: 'MEDIA_CARD',
+    // hideHeader: true,
     blob: {
       actions: [
         {
@@ -19,7 +27,7 @@ const circleList = {
           string: '/${this.circle.slug}',
         },
         {
-          type: 'FONTICON_FUNCTION',
+          // type: 'FONTICON_FUNCTION',
           blob: {},
           type: 'BUTTON',
           title: 'VIEW',
@@ -44,8 +52,10 @@ const circleList = {
       },
     ],
   },
-  linesMany: [], // results from query
+  lines: [],
+  // linesMany: [], // Need to make results from query edge and put here
 };
+
 class GetCirclesByUserKey extends React.Component {
   // props: {
   //   circle: GetCirclesByUserKey_getCirclesByUserKey,
@@ -55,15 +65,10 @@ class GetCirclesByUserKey extends React.Component {
   };
 
   render() {
-    const circles = this.props.getCirclesByUserKey || {};
-    return (
-      <List
-        circles={circles}
-        listType={'MEDIA_CARD'}
-        actions={circleList}
-        hideHeader={true}
-      />
-    );
+    const lines = this.props.getCirclesByUserKey || {};
+    listCircle.lines = lines;
+
+    return <ComponentController circle={listCircle} />;
   }
 }
 
@@ -73,6 +78,7 @@ export default createFragmentContainer(
     fragment GetCirclesByUserKey_getCirclesByUserKey on Circle
       @relay(plural: true) {
       id
+      _id
       slug
       settings {
         _id
@@ -80,6 +86,7 @@ export default createFragmentContainer(
           _id
         }
       }
+      blob
       type
       title
       subtitle

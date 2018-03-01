@@ -84,111 +84,13 @@ const circle = {
   },
 };
 
-const ARRAYTYPEDATA = {
-  type: 'ARRAY',
-  array: [
-    {
-      type: 'ARRAY',
-      styles: {
-        width: '100%',
-        height: '60vh',
-        textAlign: 'center',
-      },
-      array: [
-        {
-          type: 'IMAGE',
-          styles: {
-            width: '100%',
-            height: '60vh',
-          },
-          string:
-            'https://images.unsplash.com/photo-1513622790541-eaa84d356909?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=087adf2e02fb2f08fdaa5c791546b7df&auto=format&fit=crop&w=1267&q=80',
-        },
-        {
-          type: 'ARRAY',
-          styles: {
-            textAlign: 'center',
-            width: '70vw',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          },
-          array: [
-            {
-              type: 'DIV',
-              styles: {
-                top: 0,
-                left: 0,
-                height: '100%',
-                width: '100%',
-                position: 'absolute',
-                background: 'rgba(0, 0, 0, 0.1)',
-              },
-            },
-            {
-              // Make this how Text components are built and props passed in must be like
-              type: 'TEXT',
-              settings: {
-                type: 'display4',
-                string: 'A HERO REBORN',
-              },
-              styles: {
-                color: 'white',
-                margin: 12,
-              },
-            },
-            {
-              type: 'TEXT',
-              settings: {
-                type: 'headline',
-                string: 'Only the best for you...',
-              },
-              styles: {
-                color: 'white',
-                margin: 8,
-              },
-            },
-            {
-              type: 'TEXT',
-              settings: {
-                styles: {
-                  color: 'white',
-                  margin: 8,
-                },
-                type: 'subheading',
-                string: 'A description to really seal the deal',
-              },
-            },
-            {
-              type: 'ARRAY',
-              styles: {
-                justifyContent: 'center',
-              },
-              array: [
-                {
-                  type: 'BUTTON',
-                  boolean: true,
-                  color: 'primary',
-                  title: 'SIGN UP',
-                  string: '/contact',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 const Hero = props => {
   return (
     <div className={circle.blob.container.styles}>
       <Image
         {...props}
         editing={props.editing}
-        imageSize={'cover'}
+        backgroundSize={'cover'}
         style={circle.blob.backgroundImage.styles}
         src={props.circle.string}
       />

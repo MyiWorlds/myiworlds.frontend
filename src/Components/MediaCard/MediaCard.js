@@ -8,11 +8,95 @@ import Radio from 'material-ui/Radio';
 import Bar from '../Bar';
 import Video from '../Video/Video';
 
+const defaultCard = {
+  id: 'default-display',
+  type: 'MEDIA_CARD',
+  settings: {
+    appBar: {
+      spacing: 16,
+      listIcon: 'list',
+      media: {
+        id: 'media1',
+        type: 'FONT_ICON',
+        style: {
+          fontSize: '32px',
+          transform: 'rotate(90deg)',
+        },
+        string: 'view_module',
+      },
+      cardSizes: {
+        xs: 12,
+        sm: 12,
+        md: 6,
+        lg: 4,
+        xl: 4,
+      },
+    },
+    card: {
+      settings: {
+        raised: false,
+        margin: props =>
+          props.type === props.circle.type ? { margin: '12px' } : '',
+      },
+      style: {
+        height: '350px',
+        display: 'flex',
+        flexDirection: 'column',
+      },
+    },
+    media: {
+      id: 'media2',
+      style: {
+        height: 200,
+      },
+    },
+    title: {
+      settings: {
+        type: 'headline',
+        component: 'h2',
+      },
+    },
+    description: {
+      settings: {
+        component: 'p',
+      },
+    },
+    actions: {
+      style: {
+        width: '100%',
+      },
+      lines: [
+        {
+          type: 'BUTTON',
+          settings: {
+            color: 'primary',
+            dense: 'true',
+          },
+          string: 'Select',
+        },
+        {
+          type: 'BUTTON',
+          settings: {
+            color: 'primary',
+            dense: 'true',
+          },
+          string: 'learn more',
+        },
+      ],
+    },
+  },
+};
+
 const MediaCard = props => {
+  const cardSettings = props.settings || defaultCard.settings;
+  const cardStyles =
+    (cardSettings.card && cardSettings.card.style) ||
+    defaultCard.settings.card.style;
+
   return (
     <Card
-      style={props.settings.card.style}
-      raised={props.settings.card.settings.raised}
+      style={cardStyles}
+      raised={cardSettings.card.settings.raised}
       elevation={props.selectedCircle === props.circle ? 5 : 1}
     >
       {(props.circle.type.startsWith('IMAGE') && props.circle.string) ||

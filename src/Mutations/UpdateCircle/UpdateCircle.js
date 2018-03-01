@@ -8,6 +8,7 @@ import type { UpdateCircle_user } from './__generated__/UpdateCircle_user.graphq
 import UpdateCircleMutation from './UpdateCircleMutation';
 import DeleteCircleMutation from '../DeleteCircle/DeleteCircleMutation';
 
+import ComponentController from '../../Components/ComponentController';
 import CircleController from '../CircleController';
 
 class UpdateCircle extends React.Component {
@@ -19,6 +20,8 @@ class UpdateCircle extends React.Component {
   render() {
     return (
       <CircleController
+        {...this.props}
+        componentController={this.props.getCircleByKey}
         editing={true}
         relayEnvironment={this.props.relay.environment}
         updateCircleMutation={UpdateCircleMutation}
@@ -40,6 +43,7 @@ export default createFragmentContainer(
     }
 
     fragment UpdateCircle_getCircleByKey on Circle {
+      ...ComponentController_circle
       id
       _id
       ui {
@@ -58,6 +62,7 @@ export default createFragmentContainer(
       }
       styles {
         _id
+        blob
       }
       tags
       title
@@ -88,9 +93,6 @@ export default createFragmentContainer(
       date
       geoPoint
       line {
-        _id
-      }
-      lines {
         _id
       }
       linesMany {

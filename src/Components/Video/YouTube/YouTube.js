@@ -163,7 +163,7 @@ class YouTube extends React.Component {
           width={'100%'}
           src={this.state.thumbnails.standard.url}
           hideHeader={true}
-          imageSize={'cover'}
+          backgroundSize={'cover'}
           onMouseEnter={this.onThumbnailHover}
           onMouseLeave={this.onThumbnailLeave}
         />

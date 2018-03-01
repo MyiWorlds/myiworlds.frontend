@@ -7,7 +7,10 @@
 
 import React from 'react';
 import isEqual from 'lodash/isEqual';
+
 import { graphql, QueryRenderer } from 'react-relay';
+import { App_user } from './__generated__/App_user.graphql';
+
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 import { SheetsRegistry } from 'jss';
@@ -22,7 +25,9 @@ import 'typeface-roboto';
 // eslint-disable-next-line no-unused-expressions
 graphql`
   fragment App_user on User {
-    username
+    id
+    _id
+    ...AppRenderer_user
   }
 `;
 
@@ -47,6 +52,10 @@ const sheetsRegistry = new SheetsRegistry();
 const theme = createMuiTheme(settings.theme);
 
 class App extends React.Component<any, any, State> {
+  props: {
+    user: App_user,
+  };
+
   state = {
     location: history.location,
     params: {},
@@ -79,6 +88,7 @@ class App extends React.Component<any, any, State> {
 
   renderState = ({ error, props, retry }: ReadyState) => (
     <AppRenderer
+      {...props}
       error={error}
       data={props}
       retry={retry}

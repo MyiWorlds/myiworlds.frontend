@@ -1,9 +1,7 @@
 /* @flow */
 
 import React from 'react';
-// import { graphql, createFragmentContainer } from 'react-relay';
-// import type { UpdateCircle_circle } from './__generated__/UpdateCircle_circle.graphql';
-// import type { UpdateCircle_user } from './__generated__/UpdateCircle_user.graphql';
+import PropTypes from 'prop-types';
 
 import { withStyles } from 'material-ui/styles';
 
@@ -15,68 +13,22 @@ import updateKeyValueString from '../../functions/updateKeyValues/updateKeyValue
 import toggleKeyValueBoolean from '../../functions/updateKeyValues/toggleKeyValueBoolean';
 import updateKeyValueFalse from '../../functions/updateKeyValues/updateKeyValueFalse';
 
-import { FormControlLabel } from 'material-ui/Form';
 import Snackbar from 'material-ui/Snackbar';
-import Switch from 'material-ui/Switch';
 import Bar from '../../Components/Bar';
 import Button from '../../Components/Button';
 import Card from '../../Components/Card';
 import ComponentController from '../../Components/ComponentController';
-import Divider from '../../Components/Divider';
 import Editor from '../../Components/Editor';
 import FontIcon from '../../Components/FontIcon';
 import TextField from '../../Components/TextField';
+import defaultHeader from './types/defaultHeader';
 
 const tempVarCircle = {
-  type: 'BLOB',
-  settings: {
-    headerEnabled: false,
-  },
-  styles: {
-    titleContainer: {
-      padding: 12,
-      marginBottom: '-8px',
-    },
-    titleText: {
-      fontSize: '3.5rem',
-      color: 'rgba(0, 0, 0, 0.74)',
-      fontFamily: 'Roboto',
-      fontWeight: 400,
-      letterSpacing: '-.02em',
-      lineHeight: '1.30357em',
-    },
-    subtitleContainer: {
-      padding: 12,
-    },
-    subtitleText: {
-      fontSize: '1.5rem',
-      color: 'rgba(0, 0, 0, 0.54)',
-      fontFamily: 'Roboto',
-      fontWeight: 400,
-      letterSpacing: '-.02em',
-      lineHeight: '1.35417em',
-    },
-    descriptionContainer: {
-      marginTop: '-6px',
-      padding: '0px 12px 12px 12px',
-    },
-    descriptionText: {
-      color: 'rgba(0, 0, 0, 0.84)',
-    },
-    tagsContainer: {
-      marginTop: '-6px',
-      padding: '0px 12px 12px 12px',
-    },
-    tagsText: {
-      color: 'rgba(0, 0, 0, 0.54)',
-    },
-    lines: [
-      '019e1790-cc99-11e7-be26-9784a4731e9b',
-      '0a4ad0a0-cc98-11e7-be26-9784a4731e9b',
-      '0d29b4d0-dd87-11e7-88eb-8bc241fdd2de',
-      '0dd81d40-dd87-11e7-88eb-8bc241fdd2de',
-    ],
-  },
+  type: 'LINES',
+  lines: [
+    '3864b9f1-1537-11e8-9946-83dae007e691',
+    '45736d91-1536-11e8-aa70-dd831f7124be',
+  ],
 };
 
 const style = theme => ({
@@ -92,55 +44,71 @@ const style = theme => ({
 });
 
 class CircleController extends React.Component {
-  state = {
-    snackbarOpen: false,
-    contentShowing: true,
-    showHeader: true,
-    addTitle: true,
-    headerTop: true,
-
-    id: null,
-    _id: null,
-    public: false,
-    type: 'HERO',
-    title: '',
-    subtitle: '',
-    description: '',
-    tags: '',
-    creatorId: '',
-    styles: '',
-    slugName: '',
-    dateCreated: Date.now(),
-    dateUpdated: Date.now(),
-    string: '',
-    boolean: null,
-    blob: null,
+  static propTypes = {
+    circle: PropTypes.object,
   };
+  constructor(props) {
+    super(props);
+    this.state = {
+      snackbarOpen: false,
+      contentShowing: true,
+      showHeader: true,
+      addTitle: true,
+      headerTop: true,
+
+      circle: {
+        id: null,
+        _id: null,
+        type: tempVarCircle.type,
+        public: false,
+        creator: '',
+        slugName: '',
+        dateCreated: Date.now(),
+        dateUpdated: Date.now(),
+      },
+
+      id: null,
+      _id: null,
+      public: false,
+      type: tempVarCircle.type,
+      title: '',
+      subtitle: '',
+      description: '',
+      tags: '',
+      creatorId: '',
+      styles: '',
+      slugName: '',
+      dateCreated: Date.now(),
+      dateUpdated: Date.now(),
+      string: '',
+      boolean: null,
+      blob: tempVarCircle.blob,
+      lines: tempVarCircle.lines,
+    };
+  }
 
   componentWillMount() {
-    if (this.props.circle) {
+    const circle = this.props.circle;
+
+    if (circle) {
       this.setState({
-        id: this.props.circle.id || null,
-        _id: this.props.circle._id || null,
-        public: this.props.circle.public || false,
-        type: this.props.circle.type || 'CUSTOM',
-        title: this.props.circle.title || '',
-        subtitle: this.props.circle.subtitle || '',
-        description: this.props.circle.description || '',
-        tags:
-          this.props.circle && this.props.circle.tags
-            ? this.props.circle.tags.length ? this.props.circle.tags.join() : ''
-            : '',
-        creatorId: this.props.circle
-          ? this.props.circle.creator._id || null
-          : '',
-        styles: this.props.circle.styles || '',
-        slugName: this.props.circle.slugName || '',
-        dateCreated: this.props.circle.dateCreated || Date.now(),
-        dateUpdated: this.props.circle.dateUpdated || Date.now(),
-        string: this.props.circle.string || '',
-        boolean: this.props.circle.boolean || null,
-        blob: JSON.stringify(this.props.circle.blob, 1, '\t') || null,
+        id: circle.id || null,
+        _id: circle._id || null,
+        public: circle.public || false,
+        type: circle.type || 'CUSTOM',
+        title: circle.title || '',
+        subtitle: circle.subtitle || '',
+        description: circle.description || '',
+        tags: circle.tags ? (circle.tags.length ? circle.tags.join() : '') : '',
+        creatorId: circle.creator._id || null,
+        styles: circle.styles || '',
+        slugName: circle.slugName || '',
+        dateCreated: circle.dateCreated || Date.now(),
+        dateUpdated: circle.dateUpdated || Date.now(),
+        string: circle.string || '',
+        boolean: circle.boolean || null,
+        blob: circle.blob || null,
+        lines: circle.lines || [],
       });
     }
   }
@@ -179,8 +147,9 @@ class CircleController extends React.Component {
     this.setState({ [stateName]: !this.state[stateName] });
   };
 
-  createCircle = () => {
-    if (this.state.type === '') {
+  getCircle = () => {
+    const state = this.state;
+    if (state.type === '') {
       this.toggleBoolean('snackbarOpen');
       return;
     }
@@ -188,46 +157,61 @@ class CircleController extends React.Component {
     let slug;
     let _id;
 
-    if (this.state.slugName === '') {
+    if (state.slugName === '') {
       slug = uuid();
     } else {
-      slug = this.state.slugName;
+      slug = state.slugName;
     }
 
-    if (
-      this.state._id === '' ||
-      this.state._id === null ||
-      this.state._id === undefined
-    ) {
+    if (state._id === '' || state._id === null || state._id === undefined) {
       _id = uuid();
     } else {
-      _id = this.state._id;
+      _id = state._id;
     }
 
-    const circle = {
+    return {
       _id: _id,
-      public: this.state.public || false,
-      type: this.state.type,
-      title: this.state.title,
-      subtitle: this.state.subtitle,
-      description: this.state.description,
+      public: state.public || false,
+      type: state.type,
+      title: state.title,
+      subtitle: state.subtitle,
+      description: state.description,
       tags:
-        this.state.tags !== ''
-          ? this.state.tags.includes(',')
-            ? this.state.tags.split(',')
-            : this.state.tags
+        state.tags !== ''
+          ? state.tags.includes(',') ? state.tags.split(',') : state.tags
           : null,
-      string: this.state.string,
-      blob:
-        this.state.blob && this.state.blob !== ''
-          ? JSON.parse(this.state.blob)
-          : '',
-      boolean: this.state.boolean,
+      string: state.string,
+      blob: state.blob && state.blob !== '' ? state.blob : '',
+      boolean: state.boolean,
       creator: this.props.user._id,
       slug: `${this.props.user.username}/${slug}`,
       dateCreated: Date.now(),
       dateUpdated: Date.now(),
+      lines: state.lines,
     };
+  };
+
+  createCircle = () => {
+    // const circle = {
+    //   _id: _id,
+    //   public: state.public || false,
+    //   type: state.type,
+    //   title: state.title,
+    //   subtitle: state.subtitle,
+    //   description: state.description,
+    //   tags:
+    //     state.tags !== ''
+    //       ? state.tags.includes(',') ? state.tags.split(',') : state.tags
+    //       : null,
+    //   string: state.string,
+    //   blob: state.blob && state.blob !== '' ? state.blob : '',
+    //   boolean: state.boolean,
+    //   creator: this.props.user._id,
+    //   slug: `${this.props.user.username}/${slug}`,
+    //   dateCreated: Date.now(),
+    //   dateUpdated: Date.now(),
+    // };
+    const circle = this.getCircle();
 
     const buildCircle = [
       Object.keys(circle).forEach(
@@ -248,55 +232,7 @@ class CircleController extends React.Component {
   };
 
   updateCircle = () => {
-    if (this.state.type === '') {
-      this.toggleBoolean('snackbarOpen');
-      return;
-    }
-
-    let slug;
-    let _id;
-
-    if (this.state.slugName === '') {
-      slug = uuid();
-    } else {
-      slug = this.state.slugName;
-    }
-
-    if (
-      this.state._id === '' ||
-      this.state._id === null ||
-      this.state._id === undefined
-    ) {
-      _id = uuid();
-    } else {
-      _id = this.state._id;
-    }
-
-    const circle = {
-      _id: _id,
-      public: this.state.public || false,
-      type: this.state.type,
-      title: this.state.title,
-      subtitle: this.state.subtitle,
-      description: this.state.description,
-      tags:
-        this.state.tags !== ''
-          ? this.state.tags.includes(',')
-            ? this.state.tags.split(',')
-            : this.state.tags
-          : null,
-      string: this.state.string,
-      blob:
-        this.state.blob && this.state.blob !== ''
-          ? JSON.parse(this.state.blob)
-          : null,
-      boolean: this.state.boolean,
-      creator: this.state.creatorId,
-      slug: `${this.props.user.username}/${slug}`,
-      slugName: this.state.slugName,
-      dateCreated: Date.now(),
-      dateUpdated: Date.now(),
-    };
+    const circle = this.getCircle();
 
     const buildCircle = [
       Object.keys(circle).forEach(
@@ -327,19 +263,15 @@ class CircleController extends React.Component {
     console.log('Circle was deleted');
   };
 
-  // TODO: davey
-  // Create new modal system to select type > then it creates > then your editing it from there on out, bottom options will be delete then
-  // Create confirm delete modal (circle, settings, styles, and lines)
-  // Create select type modal from data (circle, settings, styles, and lines). Lines are options
   render() {
     const user = this.props.user || {};
     const { classes } = this.props;
     const header = (
       <div key="header">
-        <div style={tempVarCircle.styles.titleContainer}>
+        <div style={defaultHeader.styles.titleContainer}>
           <TextField
             inputProps={{
-              style: this.state.title ? tempVarCircle.styles.titleText : null,
+              style: this.state.title ? defaultHeader.styles.titleText : null,
             }}
             id="title"
             label="Title"
@@ -349,11 +281,11 @@ class CircleController extends React.Component {
           />
         </div>
 
-        <div style={tempVarCircle.styles.subtitleContainer}>
+        <div style={defaultHeader.styles.subtitleContainer}>
           <TextField
             inputProps={{
               style: this.state.subtitle
-                ? tempVarCircle.styles.subtitleText
+                ? defaultHeader.styles.subtitleText
                 : null,
             }}
             id="subtitle"
@@ -363,11 +295,11 @@ class CircleController extends React.Component {
             onChange={this.handleStateEventChange('subtitle')}
           />
         </div>
-        <div style={tempVarCircle.styles.descriptionContainer}>
+        <div style={defaultHeader.styles.descriptionContainer}>
           <TextField
             inputProps={{
               style: this.state.description
-                ? tempVarCircle.styles.descriptionText
+                ? defaultHeader.styles.descriptionText
                 : null,
             }}
             id="description"
@@ -379,10 +311,10 @@ class CircleController extends React.Component {
             onChange={this.handleStateEventChange('description')}
           />
         </div>
-        <div style={tempVarCircle.styles.tagsContainer}>
+        <div style={defaultHeader.styles.tagsContainer}>
           <TextField
             inputProps={{
-              style: this.state.tags ? tempVarCircle.styles.tagsText : null,
+              style: this.state.tags ? defaultHeader.styles.tagsText : null,
             }}
             id="tags"
             label="Tags"
@@ -401,6 +333,7 @@ class CircleController extends React.Component {
         <ComponentController
           circle={this.state}
           editing={this.props.editing}
+          componentController={this.props.componentController}
           handleStateEventChange={this.handleStateEventChange}
           handleStateStringChange={this.handleStateStringChange}
         />
@@ -408,13 +341,7 @@ class CircleController extends React.Component {
     );
 
     return (
-      <Card
-        style={{
-          margin: '12px 12px 124px 12px',
-          overflow: 'hidden',
-          borderRadius: 12,
-        }}
-      >
+      <div>
         <Editor
           user={user}
           circle={this.state}
@@ -432,34 +359,7 @@ class CircleController extends React.Component {
           type={this.state.type}
           deleteCircle={this.deleteCircle}
         />
-        <br />
-        <br />
-        <Divider />
-        <div className={classes.fieldsContainer}>
-          <TextField
-            id="string"
-            label="String"
-            margin="normal"
-            fullWidth={true}
-            multiline
-            value={this.state.string}
-            onChange={this.handleStateEventChange('string')}
-          />
-          <FormControlLabel
-            checked={this.state.boolean ? this.state.boolean : false}
-            control={
-              <Switch
-                onChange={() => this.handleBooleanToggle('boolean')}
-                aria-label="boolean"
-              />
-            }
-            label="Boolean"
-          />
-        </div>
-        <br />
-        <br />
-        <Divider />
-        <div style={{ margin: '24px 24px 124px 24px', paddingBottom: '24px' }}>
+        <div>
           <Bar
             style={{
               width: 'calc(100%-240px)',
@@ -480,7 +380,7 @@ class CircleController extends React.Component {
             </div>
           </Bar>
           <br />
-          <Card>
+          <Card style={{ marginBottom: '224px' }}>
             {this.state.headerTop
               ? [this.state.showHeader ? header : null, content]
               : [content, this.state.showHeader ? header : null]}
@@ -501,7 +401,11 @@ class CircleController extends React.Component {
           <Button
             color="primary"
             raised
-            onClick={this.props.circle ? this.updateCircle : this.createCircle}
+            onClick={
+              this.props.circle
+                ? () => this.updateCircle()
+                : () => this.createCircle()
+            }
           >
             Save
           </Button>
@@ -522,7 +426,7 @@ class CircleController extends React.Component {
           }}
           message={<span id="message-id">Please select a content Type</span>}
         />
-      </Card>
+      </div>
     );
   }
 }

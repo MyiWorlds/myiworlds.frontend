@@ -27,8 +27,9 @@ const routes = [
   {
     path: '/create',
     query: graphql`query routerCreateQuery {
-      user (_id: "davey") {
+      user {
         ...App_user
+
         ...CreateCircle_user
       }
     }`, // prettier-ignore
@@ -43,7 +44,7 @@ const routes = [
   {
     path: '/update/:_id',
     query: graphql`query routerUpdateQuery($_id: String) {
-      user (_id: "davey") {
+      user {
         ...UpdateCircle_user
       }
       getCircleByKey (_id: $_id ) {
@@ -111,11 +112,19 @@ const routes = [
   //   }),
   // },
   {
+    path: '/login/google/true',
+    render: data => ({
+      title: 'Logged in',
+      body: <div>Logged in</div>,
+    }),
+  },
+  {
     path: '/',
     query: graphql`query routerHomeQuery {
-      user (_id: "davey") {
+      user {
         ...App_user
       }
+
       getCircleBySlug (slug: "/") {
         title
         ...GetCircleBySlug_getCircleBySlug
@@ -134,8 +143,8 @@ const routes = [
   },
   {
     path: '/recents',
-    query: graphql`query routerGetCirclesByUserKeyQuery($creator: String) {
-      getCirclesByUserKey (creator: $creator) {
+    query: graphql`query routerGetCirclesByUserKeyQuery {
+      getCirclesByUserKey {
         ...GetCirclesByUserKey_getCirclesByUserKey
       }
     }`, // prettier-ignore
@@ -156,9 +165,6 @@ const routes = [
   {
     path: '/:slug(.*)',
     query: graphql`query routerGetCircleBySlugQuery($slug: String) {
-      user (_id: "davey") {
-        ...App_user
-      }
       getCircleBySlug (slug: $slug) {
         title
         ...GetCircleBySlug_getCircleBySlug

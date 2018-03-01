@@ -6,6 +6,7 @@
 /* @flow */
 
 import React from 'react';
+
 import { withStyles } from 'material-ui/styles';
 import LoadingIndicator from '../Components/LoadingIndicator';
 import AppBar from '../Components/AppBar';
@@ -41,11 +42,13 @@ class AppManager extends React.Component {
 
   render() {
     const { classes } = this.props;
+    let user = this.props.user || {};
     return (
       <div style={{ height: '100%', width: '100%' }}>
         <AppBar
           handleNavigationToggle={this.handleNavigationToggle}
           title={this.state.title}
+          user={user}
         />
         <div className={classes.root}>
           <Navigation

@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { withStyles } from 'material-ui/styles';
-import Button from './Button';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import PanToolIcon from 'material-ui-icons/PanTool';
 import KeyboardArrowUp from 'material-ui-icons/KeyboardArrowUp';
 import KeyboardArrowDown from 'material-ui-icons/KeyboardArrowDown';
+
 import Draggable from 'react-draggable';
-import Bar from './Bar';
+
+import Bar from '../Bar';
+import Button from '../Button';
 
 const style = theme => ({
   paper: {
@@ -18,14 +21,14 @@ const style = theme => ({
     flexDirection: 'column',
     margin: 24,
     top: 100,
-    right: 300,
-    minWidth: 625,
+    right: 24,
+    width: 425,
     zIndex: 2000,
     overflow: 'hidden',
     transition: 'height cubic-bezier(0.62, 0.28, 0.23, 0.99) 0.5s',
   },
   header: {
-    padding: '12px 12px 12px 12px',
+    // padding: '12px 12px 12px 12px',
     background: theme.palette.primary.dark,
     display: 'flex',
     flex: '0 0 auto',
@@ -42,6 +45,7 @@ const style = theme => ({
   },
   popup: {
     position: 'fixed',
+    pointerEvents: 'none',
     height: '100%',
     width: '100%',
     marginTop: '64px',
@@ -49,7 +53,7 @@ const style = theme => ({
   },
   headerLeft: {
     flex: 1,
-    paddingTop: '8px',
+    // paddingTop: '8px',
     overflow: 'hidden',
     marginRight: '8px',
   },
@@ -62,7 +66,7 @@ const style = theme => ({
   },
   content: {
     display: 'flex',
-    flex: '1 grow',
+    flexGrow: 1,
     overflowY: 'auto',
     zIndex: 0,
   },
@@ -77,6 +81,14 @@ const style = theme => ({
 });
 
 class DraggablePopUpModule extends React.Component {
+  state = {
+    contentShowing: true,
+  };
+
+  handleBooleanToggle = stateName => {
+    this.setState({ [stateName]: !this.state[stateName] });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -86,13 +98,13 @@ class DraggablePopUpModule extends React.Component {
             elevation={5}
             className={classes.paper}
             style={
-              this.props.contentShowing
-                ? { maxHeight: '600px' }
-                : { maxHeight: '72px' }
+              this.state.contentShowing
+                ? { maxHeight: '600px', pointerEvents: 'auto' }
+                : { maxHeight: '72px', pointerEvents: 'auto' }
             }
           >
             <dragHandle>
-              <Bar className={classes.header}>
+              <Bar className={classes.header} dividerBottom={true} padding={0}>
                 <div className={classes.headerLeft}>
                   <span className={classes.title}>
                     {this.props.dialogTitle ? this.props.dialogTitle : ' '}
@@ -101,16 +113,10 @@ class DraggablePopUpModule extends React.Component {
 
                 <div className={classes.headerRight}>
                   <div className={classes.headerAction}>
-                    <IconButton aria-label="Drag" style={{ flex: 1 }}>
-                      <PanToolIcon />
-                    </IconButton>
-                  </div>
-
-                  <div className={classes.headerAction}>
-                    {this.props.contentShowing ? (
+                    {this.state.contentShowing ? (
                       <IconButton
                         onClick={() =>
-                          this.props.handleBooleanToggle('contentShowing')
+                          this.handleBooleanToggle('contentShowing')
                         }
                       >
                         <KeyboardArrowUp />
@@ -118,7 +124,7 @@ class DraggablePopUpModule extends React.Component {
                     ) : (
                       <IconButton
                         onClick={() =>
-                          this.props.handleBooleanToggle('contentShowing')
+                          this.handleBooleanToggle('contentShowing')
                         }
                       >
                         <KeyboardArrowDown />
@@ -129,19 +135,6 @@ class DraggablePopUpModule extends React.Component {
               </Bar>
             </dragHandle>
             <div className={classes.content}>{this.props.children}</div>
-            <Divider />
-            <div className={classes.footer}>
-              <div style={{ margin: '0 4px' }}>
-                <Button color="primary" onClick={this.props.close}>
-                  Cancel
-                </Button>
-              </div>
-              <div style={{ margin: '0 4px' }}>
-                <Button raised color="primary" onClick={this.createCircle}>
-                  Create
-                </Button>
-              </div>
-            </div>
           </Paper>
         </Draggable>
       </div>

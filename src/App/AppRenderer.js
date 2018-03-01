@@ -7,6 +7,10 @@
 
 import React from 'react';
 import isEqual from 'lodash/isEqual';
+
+import { graphql, createFragmentContainer } from 'react-relay';
+import { AppRenderer_user } from './__generated__/AppRenderer_user.graphql';
+
 import ErrorPage from '../Components/ErrorPage';
 import AppManager from './AppManager';
 
@@ -34,6 +38,10 @@ const defaults = {
 };
 
 class AppRenderer extends React.Component<any, Props, State> {
+  props: {
+    user: AppRenderer_user,
+  };
+
   state = {
     ...defaults,
   };
@@ -95,9 +103,23 @@ class AppRenderer extends React.Component<any, Props, State> {
     return this.state.error ? (
       <ErrorPage error={this.state.error} />
     ) : (
-      <AppManager body={this.state.body} />
+      <AppManager user={null} body={this.state.body} />
     );
   }
 }
 
-export default AppRenderer;
+// export default AppRenderer;
+export default createFragmentContainer(
+  AppRenderer,
+  graphql`
+    fragment AppRenderer_user on User {
+      id
+      _id
+      username
+      dateUpdated
+      homePublic {
+        title
+      }
+    }
+  `,
+);

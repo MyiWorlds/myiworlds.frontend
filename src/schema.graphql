@@ -207,8 +207,8 @@ type PageInfo {
 }
 
 type Query {
-  user(_id: String): User
-  getCirclesByUserKey(creator: String): [Circle]
+  user: User
+  getCirclesByUserKey: [Circle]
   getCircleBySlug(slug: String): Circle
   getCircleByKey(_id: String): Circle
 
@@ -352,8 +352,8 @@ type User implements Node {
   username: String
   email: String!
   emailConfirmed: Boolean
-  dateCreated: Int
-  dateUpdated: Int
+  dateCreated: BigInt
+  dateUpdated: BigInt
   level: Circle
 
   # The users currently oweing balance

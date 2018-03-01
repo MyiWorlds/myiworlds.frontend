@@ -18,11 +18,14 @@ import FormHelperText from '../FormHelperText';
 import { Menu, MenuItem } from '../Menu';
 import { List } from '../List';
 import Typography from '../Typography';
+import DraggablePopUpModule from '../../Components/DraggablePopUpModule';
 
 const creationTypes = {
   title: 'Select a Type of content to create',
   type: 'LINES',
-  settings: {},
+  settings: {
+    listType: 'MEDIA_CARD',
+  },
   style: {
     optionsBar: {
       flexDirection: 'row-reverse',
@@ -36,7 +39,7 @@ const creationTypes = {
       type: 'TYPE',
       title: 'Text',
       description: 'A image',
-      string: 'PLAIN_TEXT',
+      string: 'TEXT',
       media: {
         id: 'media1',
         title: 'Image Title',
@@ -182,7 +185,7 @@ const creationTypes = {
       type: 'TYPE',
       title: 'Style Sheet',
       description: 'A Style sheet',
-      string: 'STYLESHEET',
+      string: 'STYLES',
       media: {
         id: 'media7',
         title: 'Image Title',
@@ -196,6 +199,28 @@ const creationTypes = {
             'https://lh3.googleusercontent.com/qRRFv6WVuupkCZTV6_7KfuH63k_EaoVqZqVWba8iOf3lS2Db835fsdDN358thx15Rcq54Yq-T_C6hfzlOqdHjTKHuUMlkg1LAkPcCGkH9dDCiL9iI-GYqJiC4rY0mdIPbfAPkT6IKzwCfElpQnwd5QtDCQcR3dJGALeYreozooCQMgowrTGA-QJdZ94-Hy-1uaztoyys-000FedCcVPFjYjf35-eJDjzmmmwJnsU5cDYyctxuna99uMOQZD5buCz338nK47MguciLpDr_8HtucT1juMAPgaNUPb5azW3sn22B2WtNhgagF0Z2JGOic27XSZTaB41_Toi5RJu_gQz2gf8UA2cYw5Y6RgHIUULVdQutSYLWX72SCaWHFztWvNN5SqmJkeRi6FCcLThx_n3XHyc1lTfgKyzwWX4UJSusp64gWCXcZPAIlqEU18-9qTxdmSDkGbw5SqtOslWzB-HyFBxxJtwzTnU1txIaT2WCFFPVvOgzL1uGOO4iKmd_gFA4dNEkRHQLCISHIHGJVxilzhcOJBSdYYFLkkBmymVWsYnelrhKQOy1nQGoTvT90_9NdjIysTguzQGp7ZRMW4-dr8JkXwpvG9WqCtgktLM=w409-h321-no',
           xlarge:
             'https://lh3.googleusercontent.com/qRRFv6WVuupkCZTV6_7KfuH63k_EaoVqZqVWba8iOf3lS2Db835fsdDN358thx15Rcq54Yq-T_C6hfzlOqdHjTKHuUMlkg1LAkPcCGkH9dDCiL9iI-GYqJiC4rY0mdIPbfAPkT6IKzwCfElpQnwd5QtDCQcR3dJGALeYreozooCQMgowrTGA-QJdZ94-Hy-1uaztoyys-000FedCcVPFjYjf35-eJDjzmmmwJnsU5cDYyctxuna99uMOQZD5buCz338nK47MguciLpDr_8HtucT1juMAPgaNUPb5azW3sn22B2WtNhgagF0Z2JGOic27XSZTaB41_Toi5RJu_gQz2gf8UA2cYw5Y6RgHIUULVdQutSYLWX72SCaWHFztWvNN5SqmJkeRi6FCcLThx_n3XHyc1lTfgKyzwWX4UJSusp64gWCXcZPAIlqEU18-9qTxdmSDkGbw5SqtOslWzB-HyFBxxJtwzTnU1txIaT2WCFFPVvOgzL1uGOO4iKmd_gFA4dNEkRHQLCISHIHGJVxilzhcOJBSdYYFLkkBmymVWsYnelrhKQOy1nQGoTvT90_9NdjIysTguzQGp7ZRMW4-dr8JkXwpvG9WqCtgktLM=w409-h321-no',
+        },
+      },
+    },
+    {
+      id: '9',
+      type: 'TYPE',
+      title: 'Lines',
+      description: 'Connected multiple pieces of content together',
+      string: 'LINES',
+      media: {
+        id: 'media7',
+        title: 'Image Title',
+        type: 'IMAGE',
+        blob: {
+          small:
+            'https://2.bp.blogspot.com/-V36UxAlLpyY/WWFrLX7ODeI/AAAAAAAAA9g/ToFHTGO-GHo9lSqA7nuCthwEUXNFFbPdACLcBGAs/s1600/Graph-Thingee.png',
+          medium:
+            'https://2.bp.blogspot.com/-V36UxAlLpyY/WWFrLX7ODeI/AAAAAAAAA9g/ToFHTGO-GHo9lSqA7nuCthwEUXNFFbPdACLcBGAs/s1600/Graph-Thingee.png',
+          large:
+            'https://2.bp.blogspot.com/-V36UxAlLpyY/WWFrLX7ODeI/AAAAAAAAA9g/ToFHTGO-GHo9lSqA7nuCthwEUXNFFbPdACLcBGAs/s1600/Graph-Thingee.png',
+          xlarge:
+            'https://2.bp.blogspot.com/-V36UxAlLpyY/WWFrLX7ODeI/AAAAAAAAA9g/ToFHTGO-GHo9lSqA7nuCthwEUXNFFbPdACLcBGAs/s1600/Graph-Thingee.png',
         },
       },
     },
@@ -234,7 +259,6 @@ const style = theme => ({
     marginRight: '8px',
   },
   header: {
-    padding: '12px 12px 12px 12px',
     background: theme.palette.background.default,
     display: 'flex',
     flex: '0 0 auto',
@@ -250,7 +274,7 @@ const style = theme => ({
 
   fieldsContainer: {
     margin: '0 auto',
-    maxWidth: 800,
+    maxWidth: '90%',
     display: 'flex',
     flexWrap: 'wrap',
   },
@@ -374,8 +398,7 @@ class Editor extends React.Component {
       >
         <List
           spacing={16}
-          listType={'MEDIA_CARD'}
-          circles={creationTypes.lines}
+          circle={creationTypes}
           selectedCircle={this.state.selectedCircle}
           handleSingleSelection={this.handleTypeSelection}
         />
@@ -403,39 +426,42 @@ class Editor extends React.Component {
     );
 
     return (
-      <div>
-        <Bar background="none" dividerBottom={true}>
-          <div>
-            <span className={classes.title}>
-              Create
-              <Button
-                color="primary"
-                raised
-                aria-haspopup="true"
-                style={{ marginLeft: 20 }}
-                onClick={this.keyValueTrue('showSelectTypeDialog')}
-              >
-                {this.props.type === '' ? 'Choose' : humanizedType}
-                <FontIcon
-                  height={16}
-                  aria-label="More"
-                  aria-owns={headerMenu ? 'menu-list' : null}
-                  icon="arrow_drop_down"
-                />
-              </Button>
-            </span>
-          </div>
-          <div style={{ flexGrow: 1 }} />
-          <FontIcon
-            button={true}
-            icon={'delete'}
-            onClick={this.keyValueTrue('showDeleteDialog')}
-          />
-        </Bar>
-
+      <DraggablePopUpModule
+        dialogTitle={
+          <Bar background="none" padding={'0px'}>
+            <div>
+              <span className={classes.title}>
+                Create
+                <Button
+                  color="primary"
+                  raised
+                  aria-haspopup="true"
+                  style={{ marginLeft: 20 }}
+                  onClick={this.keyValueTrue('showSelectTypeDialog')}
+                >
+                  {this.props.type === '' ? 'Choose' : humanizedType}
+                  <FontIcon
+                    height={16}
+                    aria-label="More"
+                    aria-owns={headerMenu ? 'menu-list' : null}
+                    icon="arrow_drop_down"
+                  />
+                </Button>
+              </span>
+            </div>
+            <div style={{ flexGrow: 1 }} />
+            <FontIcon
+              button={true}
+              icon={'delete'}
+              onClick={this.keyValueTrue('showDeleteDialog')}
+            />
+          </Bar>
+        }
+      >
         <form className={classes.fieldsContainer} noValidate>
           <FormControlLabel
             checked={this.props.showHeader}
+            style={{ width: '100%' }}
             control={
               <Switch
                 onChange={() => this.props.handleBooleanToggle('showHeader')}
@@ -444,8 +470,10 @@ class Editor extends React.Component {
             }
             label="Show Header"
           />
+
           <FormControlLabel
             checked={this.props.headerTop}
+            style={{ width: '100%' }}
             control={
               <Switch
                 onChange={() => this.props.handleBooleanToggle('headerTop')}
@@ -454,8 +482,10 @@ class Editor extends React.Component {
             }
             label="Header Above"
           />
+
           <FormControlLabel
             checked={this.props.public}
+            style={{ width: '100%' }}
             control={
               <Switch
                 onChange={() => this.props.handleBooleanToggle('public')}
@@ -559,10 +589,38 @@ class Editor extends React.Component {
           <FormHelperText style={{ marginLeft: 8 }}>
             These will be terms that allow you to find this.
           </FormHelperText>
+          <TextField
+            id="string"
+            label="String"
+            margin="normal"
+            fullWidth={true}
+            multiline
+            value={this.props.circle.string}
+            onChange={this.props.handleStateEventChange('string')}
+          />
+          <FormControlLabel
+            style={{ width: '100%' }}
+            checked={
+              this.props.circle.boolean ? this.props.circle.boolean : false
+            }
+            control={
+              <Switch
+                onChange={() => this.props.handleBooleanToggle('boolean')}
+                aria-label="boolean"
+              />
+            }
+            label="Boolean"
+          />
+          <div
+            style={{
+              paddingTop: 124,
+              width: '100%',
+            }}
+          />
         </form>
         {typeDialog}
         {deleteDialog}
-      </div>
+      </DraggablePopUpModule>
     );
   }
 }
