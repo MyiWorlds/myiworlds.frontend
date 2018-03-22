@@ -23,13 +23,13 @@ import FontIcon from '../../Components/FontIcon';
 import TextField from '../../Components/TextField';
 import defaultHeader from './types/defaultHeader';
 
-const tempVarCircle = {
-  type: 'LINES',
-  lines: [
-    '3864b9f1-1537-11e8-9946-83dae007e691',
-    '45736d91-1536-11e8-aa70-dd831f7124be',
-  ],
-};
+// const tempVarCircle = {
+// type: 'LINES',
+// lines: [
+//   '3864b9f1-1537-11e8-9946-83dae007e691',
+//   '45736d91-1536-11e8-aa70-dd831f7124be',
+// ],
+// };
 
 const style = theme => ({
   fieldsContainer: {
@@ -56,34 +56,35 @@ class CircleController extends React.Component {
       addTitle: true,
       headerTop: true,
 
-      circle: {
-        id: null,
-        _id: null,
-        type: tempVarCircle.type,
-        public: false,
-        creator: '',
-        slugName: '',
-        dateCreated: Date.now(),
-        dateUpdated: Date.now(),
-      },
+      // circle: {
+      //   id: null,
+      //   _id: null,
+      //   type: this.props.type,
+      //   public: false,
+      //   creator: '',
+      //   slugName: '',
+      //   dateCreated: Date.now(),
+      //   dateUpdated: Date.now(),
+      // },
 
       id: null,
       _id: null,
       public: false,
-      type: tempVarCircle.type,
+      type: '',
       title: '',
       subtitle: '',
       description: '',
       tags: '',
       creatorId: '',
-      styles: '',
+      settings: {},
+      styles: {},
       slugName: '',
       dateCreated: Date.now(),
       dateUpdated: Date.now(),
       string: '',
       boolean: null,
-      blob: tempVarCircle.blob,
-      lines: tempVarCircle.lines,
+      object: {},
+      lines: [],
     };
   }
 
@@ -101,13 +102,14 @@ class CircleController extends React.Component {
         description: circle.description || '',
         tags: circle.tags ? (circle.tags.length ? circle.tags.join() : '') : '',
         creatorId: circle.creator._id || null,
-        styles: circle.styles || '',
+        settings: circle.settings || {},
+        styles: circle.styles || {},
         slugName: circle.slugName || '',
         dateCreated: circle.dateCreated || Date.now(),
         dateUpdated: circle.dateUpdated || Date.now(),
         string: circle.string || '',
         boolean: circle.boolean || null,
-        blob: circle.blob || null,
+        object: circle.object || null,
         lines: circle.lines || [],
       });
     }
@@ -181,7 +183,7 @@ class CircleController extends React.Component {
           ? state.tags.includes(',') ? state.tags.split(',') : state.tags
           : null,
       string: state.string,
-      blob: state.blob && state.blob !== '' ? state.blob : '',
+      object: state.object && state.object !== '' ? state.object : '',
       boolean: state.boolean,
       creator: this.props.user._id,
       slug: `${this.props.user.username}/${slug}`,
@@ -192,25 +194,6 @@ class CircleController extends React.Component {
   };
 
   createCircle = () => {
-    // const circle = {
-    //   _id: _id,
-    //   public: state.public || false,
-    //   type: state.type,
-    //   title: state.title,
-    //   subtitle: state.subtitle,
-    //   description: state.description,
-    //   tags:
-    //     state.tags !== ''
-    //       ? state.tags.includes(',') ? state.tags.split(',') : state.tags
-    //       : null,
-    //   string: state.string,
-    //   blob: state.blob && state.blob !== '' ? state.blob : '',
-    //   boolean: state.boolean,
-    //   creator: this.props.user._id,
-    //   slug: `${this.props.user.username}/${slug}`,
-    //   dateCreated: Date.now(),
-    //   dateUpdated: Date.now(),
-    // };
     const circle = this.getCircle();
 
     const buildCircle = [
@@ -262,6 +245,12 @@ class CircleController extends React.Component {
     );
     console.log('Circle was deleted');
   };
+
+  // combineCirclePropsAndState = (propsCircle, stateCircle) => {
+  //   const circle = Object.assign({}, propsCircle, stateCircle);
+
+  //   return circle;
+  // };
 
   render() {
     const user = this.props.user || {};
@@ -331,9 +320,9 @@ class CircleController extends React.Component {
     const content = (
       <div key="content" style={{ height: 500 }}>
         <ComponentController
-          circle={this.state}
+          circle={this.props.circle}
+          circleState={this.state}
           editing={this.props.editing}
-          componentController={this.props.componentController}
           handleStateEventChange={this.handleStateEventChange}
           handleStateStringChange={this.handleStateStringChange}
         />
@@ -367,6 +356,8 @@ class CircleController extends React.Component {
             dividerTop={true}
             flexDirection="row-reverse"
           >
+            <h3>TYPE</h3>
+            <h3>Header</h3>
             <div className={classes.headerRight}>
               <FontIcon
                 button={true}

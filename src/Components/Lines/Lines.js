@@ -6,8 +6,8 @@ import LinesContainer from './LinesContainer';
 
 const Lines = props => {
   const lines =
-    props.circle && props.circle.blob && props.circle.blob.lines
-      ? props.circle.blob.lines
+    props.circle && props.circle.object && props.circle.object.lines
+      ? props.circle.object.lines
       : false;
 
   const listType =
@@ -53,7 +53,7 @@ export default Lines;
 //           _id
 //         }
 //       }
-//       blob
+//       object
 //       type
 //       title
 //       subtitle

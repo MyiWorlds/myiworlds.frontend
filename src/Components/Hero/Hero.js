@@ -8,7 +8,7 @@ import Button from '../Button';
 import Link from '../Link';
 
 const circle = {
-  blob: {
+  object: {
     container: {
       styles: {
         width: '100%',
@@ -86,36 +86,36 @@ const circle = {
 
 const Hero = props => {
   return (
-    <div className={circle.blob.container.styles}>
+    <div className={circle.object.container.styles}>
       <Image
         {...props}
         editing={props.editing}
         backgroundSize={'cover'}
-        style={circle.blob.backgroundImage.styles}
+        style={circle.object.backgroundImage.styles}
         src={props.circle.string}
       />
-      <div style={circle.blob.imageOverlay.styles} />
-      <div style={circle.blob.textContainer}>
+      <div style={circle.object.imageOverlay.styles} />
+      <div style={circle.object.textContainer}>
         <Typography
-          type={circle.blob.title.type}
-          style={circle.blob.title.styles}
+          type={circle.object.title.type}
+          style={circle.object.title.styles}
         >
-          {circle.blob.title.string}
+          {circle.object.title.string}
         </Typography>
         <Typography
-          type={circle.blob.subtitle.type}
-          style={circle.blob.subtitle.styles}
+          type={circle.object.subtitle.type}
+          style={circle.object.subtitle.styles}
         >
-          {circle.blob.subtitle.string}
+          {circle.object.subtitle.string}
         </Typography>
         <Typography
-          type={circle.blob.description.type}
-          style={circle.blob.description.styles}
+          type={circle.object.description.type}
+          style={circle.object.description.styles}
         >
-          {circle.blob.description.string}
+          {circle.object.description.string}
         </Typography>
-        <Bar background="none" style={circle.blob.actions.styles}>
-          {circle.blob.actions.lines.map(circle => {
+        <Bar background="none" style={circle.object.actions.styles}>
+          {circle.object.actions.lines.map(circle => {
             return (() => {
               switch (circle.type) {
                 case 'BUTTON':

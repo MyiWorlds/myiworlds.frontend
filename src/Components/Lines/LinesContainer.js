@@ -71,12 +71,14 @@ export default createFragmentContainer(
       slug
       public
       settings {
-        _id
-        lines {
-          _id
-        }
+        string
+        object
       }
-      blob
+      styles {
+        string
+        object
+      }
+      object
       type
       title
       subtitle

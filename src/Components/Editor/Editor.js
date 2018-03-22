@@ -20,6 +20,12 @@ import { List } from '../List';
 import Typography from '../Typography';
 import DraggablePopUpModule from '../../Components/DraggablePopUpModule';
 
+import ExpansionPanel, {
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+} from 'material-ui/ExpansionPanel';
+import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+
 const creationTypes = {
   title: 'Select a Type of content to create',
   type: 'LINES',
@@ -44,7 +50,7 @@ const creationTypes = {
         id: 'media1',
         title: 'Image Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small:
             'https://support.squarespace.com/hc/en-us/article_attachments/216947387/blogpage.png',
           medium:
@@ -66,7 +72,7 @@ const creationTypes = {
         id: 'media2',
         title: 'Image Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small:
             'https://mymodernmet.com/wp/wp-content/uploads/2017/12/siberian-cats-alla-lebedeva-2.jpg',
           medium:
@@ -88,7 +94,7 @@ const creationTypes = {
         id: 'media3',
         title: 'Image Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small:
             'https://cdn-images-1.medium.com/max/800/1*wvlnb8JL9_FU_AJroew_Rw.gif',
           medium:
@@ -110,7 +116,7 @@ const creationTypes = {
         id: 'media4',
         title: 'Gif Title',
         type: 'GIF',
-        blob: {
+        object: {
           small:
             'https://i.pinimg.com/originals/75/4e/cf/754ecf62f036b6de554bc4c737ce3863.gif',
           medium:
@@ -132,7 +138,7 @@ const creationTypes = {
         id: 'media5',
         title: 'Image Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small: 'https://getmdl.io/assets/templates/text-only.jpg',
           medium: 'https://getmdl.io/assets/templates/text-only.jpg',
           large: 'https://getmdl.io/assets/templates/text-only.jpg',
@@ -150,7 +156,7 @@ const creationTypes = {
         id: 'media6',
         title: 'Image Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small: 'http://deothemes.com/envato/unika/youtube.jpg',
           medium: 'http://deothemes.com/envato/unika/youtube.jpg',
           large: 'http://deothemes.com/envato/unika/youtube.jpg',
@@ -161,14 +167,14 @@ const creationTypes = {
     {
       id: '7',
       type: 'TYPE',
-      title: 'JSON',
-      description: 'A JSON field to put object values',
-      string: 'BLOB',
+      title: 'Object',
+      description: 'A Object field to put key values in',
+      string: 'OBJECT',
       media: {
         id: 'media4',
         title: 'Blob Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small:
             'https://lh3.googleusercontent.com/pbXlI5GfAN40IkF1n_S5vceOF_UJ-oA51mJwNxWQcfr6ZVFNkNW62kbQvenifVHMjAOxo3stCNpYhmuPndPoUpFcBsf5G3PbQEZ8Rz8LsaWMy8mMIPwGHR1S7mf5oWpg8d4U5-yISElJpNl_mH-8ocTLN9dM25x8yOPWTV_QC9tTJQL9zn_0vqG07WoqOAJaFiointfKNeN_Jt-chF_dqcQOq9Uvv9DpbBjm7S3nULsYSnaWwJTLEJHtVaVqkynVYSynfKfxo3FsqsbXMwpeuMfhduqjOkdvIBwkmHldxbpgkV0kMA2kzS8MBliZIUSebxh4lU-g8irdUwugGkHQuDkVxp68zPL9gx5ZTsd-34zxn9SOpRCahCP2Fcp1-Lz2iC_SIM-lVmmmgiVSSnfCVtPGp_KYMgbXFsr1g4-3uQ-qzD29tnF_42LL5pzqrB1o_j4rtNXV4O3Z92J77r_3hhGDjV7vGxdgZ-exqiB3-ZHOJYQvgiCRVCbGChcFoDw8e1b2fcq-Rw2qdnMWkoLVfB3nbnf6YK62IoT61gWYhNPNSNgEP_CtT0ZbpfVjHZuEfFSNyyf6N1aJqMYQ35ByPrIUQ7NzurcUQuxVj9Gt=w470-h388-no',
           medium:
@@ -190,7 +196,7 @@ const creationTypes = {
         id: 'media7',
         title: 'Image Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small:
             'https://lh3.googleusercontent.com/qRRFv6WVuupkCZTV6_7KfuH63k_EaoVqZqVWba8iOf3lS2Db835fsdDN358thx15Rcq54Yq-T_C6hfzlOqdHjTKHuUMlkg1LAkPcCGkH9dDCiL9iI-GYqJiC4rY0mdIPbfAPkT6IKzwCfElpQnwd5QtDCQcR3dJGALeYreozooCQMgowrTGA-QJdZ94-Hy-1uaztoyys-000FedCcVPFjYjf35-eJDjzmmmwJnsU5cDYyctxuna99uMOQZD5buCz338nK47MguciLpDr_8HtucT1juMAPgaNUPb5azW3sn22B2WtNhgagF0Z2JGOic27XSZTaB41_Toi5RJu_gQz2gf8UA2cYw5Y6RgHIUULVdQutSYLWX72SCaWHFztWvNN5SqmJkeRi6FCcLThx_n3XHyc1lTfgKyzwWX4UJSusp64gWCXcZPAIlqEU18-9qTxdmSDkGbw5SqtOslWzB-HyFBxxJtwzTnU1txIaT2WCFFPVvOgzL1uGOO4iKmd_gFA4dNEkRHQLCISHIHGJVxilzhcOJBSdYYFLkkBmymVWsYnelrhKQOy1nQGoTvT90_9NdjIysTguzQGp7ZRMW4-dr8JkXwpvG9WqCtgktLM=w409-h321-no',
           medium:
@@ -206,13 +212,13 @@ const creationTypes = {
       id: '9',
       type: 'TYPE',
       title: 'Lines',
-      description: 'Connected multiple pieces of content together',
+      description: 'Connect multiple pieces of content together',
       string: 'LINES',
       media: {
         id: 'media7',
         title: 'Image Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small:
             'https://2.bp.blogspot.com/-V36UxAlLpyY/WWFrLX7ODeI/AAAAAAAAA9g/ToFHTGO-GHo9lSqA7nuCthwEUXNFFbPdACLcBGAs/s1600/Graph-Thingee.png',
           medium:
@@ -234,7 +240,7 @@ const creationTypes = {
         id: 'media7',
         title: 'Image Title',
         type: 'IMAGE',
-        blob: {
+        object: {
           small:
             'https://assets.materialup.com/uploads/dfd29b6d-156d-4043-9a31-6f66c99ad500/material_design_widgets_ui_kit.png',
           medium:
@@ -281,6 +287,14 @@ const style = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
+  },
+
+  root: {
+    flexGrow: 1,
+  },
+  expansionPanel: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
   },
 });
 
@@ -611,6 +625,144 @@ class Editor extends React.Component {
             }
             label="Boolean"
           />
+
+          <div className={classes.root}>
+            <ExpansionPanel>
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                style={{ padding: 8 }}
+              >
+                <Typography className={classes.expansionPanel}>
+                  Styles
+                </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <div className={classes.root}>
+                  <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography className={classes.expansionPanel}>
+                        Header
+                      </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <div className={classes.root}>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              X Small
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails />
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              Small
+                            </Typography>
+                          </ExpansionPanelSummary>
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              Medium
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails />
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              Large
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails />
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              X Large
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails />
+                        </ExpansionPanel>
+                      </div>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                  <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography className={classes.expansionPanel}>
+                        Content
+                      </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <div className={classes.root}>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              X Small
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails />
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              Small
+                            </Typography>
+                          </ExpansionPanelSummary>
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              Medium
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails />
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              Large
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails />
+                        </ExpansionPanel>
+                        <ExpansionPanel>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionPanel}>
+                              X Large
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails />
+                        </ExpansionPanel>
+                      </div>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                </div>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </div>
+
           <div
             style={{
               paddingTop: 124,

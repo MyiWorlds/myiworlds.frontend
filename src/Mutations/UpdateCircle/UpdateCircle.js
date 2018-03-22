@@ -2,18 +2,18 @@
 
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
-import type { UpdateCircle_getCircleByKey } from './__generated__/UpdateCircle_getCircleByKey.graphql';
+import type { UpdateCircle_circle } from './__generated__/UpdateCircle_circle.graphql';
 import type { UpdateCircle_user } from './__generated__/UpdateCircle_user.graphql';
 
 import UpdateCircleMutation from './UpdateCircleMutation';
 import DeleteCircleMutation from '../DeleteCircle/DeleteCircleMutation';
 
-import ComponentController from '../../Components/ComponentController';
+// import ComponentController from '../../Components/ComponentController';
 import CircleController from '../CircleController';
 
 class UpdateCircle extends React.Component {
   props: {
-    circle: UpdateCircle_getCircleByKey,
+    circle: UpdateCircle_circle,
     user: UpdateCircle_user,
   };
 
@@ -21,13 +21,12 @@ class UpdateCircle extends React.Component {
     return (
       <CircleController
         {...this.props}
-        componentController={this.props.getCircleByKey}
         editing={true}
         relayEnvironment={this.props.relay.environment}
         updateCircleMutation={UpdateCircleMutation}
         deleteCircleMutation={DeleteCircleMutation}
         user={this.props.user}
-        circle={this.props.getCircleByKey}
+        circle={this.props.circle}
       />
     );
   }
@@ -42,7 +41,7 @@ export default createFragmentContainer(
       username
     }
 
-    fragment UpdateCircle_getCircleByKey on Circle {
+    fragment UpdateCircle_circle on Circle {
       ...ComponentController_circle
       id
       _id
@@ -55,14 +54,16 @@ export default createFragmentContainer(
       passwordRequired
       type
       settings {
-        _id
+        string
+        object
       }
       rating {
         _id
       }
       styles {
         _id
-        blob
+        string
+        object
       }
       tags
       title
@@ -87,7 +88,7 @@ export default createFragmentContainer(
       dateCreated
       dateUpdated
       string
-      blob
+      object
       number
       boolean
       date

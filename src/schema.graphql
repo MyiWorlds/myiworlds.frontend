@@ -29,9 +29,13 @@ type Circle implements Node {
 
   # The type of data this node is holding, it allows the frontend to choose the perfect component to show you.
   type: String!
-  settings: Circle
+
+  # This circle type will iteslf be a circle.lines, it will contain links to all the circles that build this circle settings
+  settings: [Circle]
+
+  # This circle type will iteslf be a circle.lines, it will contain links to all the circles that build this circle styles
+  styles: [Circle]
   rating: Circle
-  styles: Circle
   tags: [String]
   title: String
   subtitle: String
@@ -54,7 +58,7 @@ type Circle implements Node {
   dateCreated: BigInt
   dateUpdated: BigInt
   string: String
-  blob: JSON
+  object: JSON
   number: Int
   bigNumber: BigInt
   boolean: Boolean
@@ -98,6 +102,7 @@ input createCircleInput {
   password: String
   viewers: [String]
   type: String!
+  settings: [String]
   styles: [String]
   tags: [String]
   title: String
@@ -110,7 +115,7 @@ input createCircleInput {
   dateCreated: String
   dateUpdated: String
   string: String
-  blob: JSON
+  object: JSON
   number: Int
   boolean: Boolean
   line: String
@@ -233,6 +238,7 @@ input updateCircleInput {
   passwordRequired: Boolean
   viewers: [String]
   type: String!
+  settings: [String]
   styles: [String]
   tags: [String]
   order: Int
@@ -245,7 +251,7 @@ input updateCircleInput {
   dateCreated: String
   dateUpdated: String
   string: String
-  blob: JSON
+  object: JSON
   number: Int
   boolean: Boolean
   line: String

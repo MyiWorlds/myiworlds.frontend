@@ -26,7 +26,7 @@ const GridSmall = props => {
       <div
         className={props.classes.mediaContainer}
         style={{
-          backgroundImage: `url(${props.circle.media.blob.medium})`,
+          backgroundImage: `url(${props.circle.media.object.medium})`,
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           backroundPosition: 'center',

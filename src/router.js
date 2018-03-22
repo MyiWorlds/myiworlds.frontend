@@ -48,7 +48,7 @@ const routes = [
         ...UpdateCircle_user
       }
       getCircleByKey (_id: $_id ) {
-        ...UpdateCircle_getCircleByKey
+        ...UpdateCircle_circle
       }
     }`, // prettier-ignore
     components: () => [
@@ -56,9 +56,7 @@ const routes = [
     ],
     render: ([UpdateCircle], data) => ({
       title: 'Update Circle',
-      body: (
-        <UpdateCircle getCircleByKey={data.getCircleByKey} user={data.user} />
-      ),
+      body: <UpdateCircle circle={data.getCircleByKey} user={data.user} />,
     }),
   },
   {

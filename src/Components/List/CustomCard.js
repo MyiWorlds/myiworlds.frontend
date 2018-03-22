@@ -15,7 +15,7 @@ const CustomCard = props => {
     >
       <CardMedia
         style={props.settings.media.style}
-        image={props.circle.media.blob.medium}
+        image={props.circle.media.object.medium}
         title={props.circle.media.title}
       />
       <CardContent>

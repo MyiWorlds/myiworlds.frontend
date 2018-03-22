@@ -42,7 +42,7 @@ const hero = {
       color: 'rgba(0, 0, 0, 0.54)',
     },
   },
-  blob: {
+  object: {
     lines: [
       {
         type: 'LINES',

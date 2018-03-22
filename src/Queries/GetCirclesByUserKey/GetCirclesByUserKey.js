@@ -14,12 +14,12 @@ let listCircle = {
   slug: '/recents/daveyedwards',
   // slug: '/daveyedwards/recents',
   styles: {
-    blob: {},
+    object: {},
   },
   settings: {
     listType: 'MEDIA_CARD',
     // hideHeader: true,
-    blob: {
+    object: {
       actions: [
         {
           type: 'BUTTON_FUNCTION',
@@ -28,7 +28,7 @@ let listCircle = {
         },
         {
           // type: 'FONTICON_FUNCTION',
-          blob: {},
+          object: {},
           type: 'BUTTON',
           title: 'VIEW',
           string: '/${this.circle.slug}',
@@ -36,7 +36,7 @@ let listCircle = {
       ],
     },
   },
-  blob: {
+  object: {
     query: [
       {
         type: 'FUNCTION', // Type function transforms the value
@@ -81,12 +81,10 @@ export default createFragmentContainer(
       _id
       slug
       settings {
-        _id
-        lines {
-          _id
-        }
+        string
+        object
       }
-      blob
+      object
       type
       title
       subtitle

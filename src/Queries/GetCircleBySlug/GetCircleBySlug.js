@@ -22,7 +22,7 @@ export default createFragmentContainer(
   GetCircleBySlug,
   graphql`
     fragment GetCircleBySlug_getCircleBySlug on Circle {
-      # ...LinesContainer_circle
+      # ...LinesContainer_getCircleBySlug
       ...ComponentController_circle
     }
   `,

@@ -108,8 +108,8 @@ const MediaCard = props => {
             image={
               props.circle.type.startsWith('IMAGE') && props.circle.string
                 ? props.circle.string
-                : props.circle.media && props.circle.media.blob
-                  ? props.circle.media.blob.medium
+                : props.circle.media && props.circle.media.object
+                  ? props.circle.media.object.medium
                   : ''
             }
             title={
