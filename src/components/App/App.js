@@ -76,7 +76,7 @@ class App extends React.Component {
                 </div>
               )}
               <br />
-              <h1>Username: {user.username}</h1>
+              <h1>Username: {user.username || 'No set username'}</h1>
               {this.props.children}
             </div>
           );
