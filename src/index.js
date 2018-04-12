@@ -11,6 +11,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 
 import CreateCircle from './mutations/CreateCircle';
+import UpdateCircle from './mutations/UpdateCircle';
 
 import App from './components/App';
 import AppBar from './components/AppBar';
@@ -49,6 +50,11 @@ const Root = () => (
             exact
             path="/create"
             render={props => <CreateCircle {...props} />}
+          />
+          <Route
+            exact
+            path="/update/:id"
+            render={props => <UpdateCircle {...props} />}
           />
           <Route exact path="/about" render={props => <AppBar {...props} />} />
           <Route

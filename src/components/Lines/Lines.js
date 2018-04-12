@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import List, {
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-} from 'material-ui/List';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import { Link } from 'react-router-dom';
 import Divider from 'material-ui/Divider';
 
@@ -41,6 +37,8 @@ const Lines = props => {
   );
 };
 
-Lines.prototype.propTypes = {};
+Lines.prototype.propTypes = {
+  lines: PropTypes.array,
+};
 
 export default Lines;

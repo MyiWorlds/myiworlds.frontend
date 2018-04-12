@@ -7,12 +7,8 @@ import { Link } from 'react-router-dom';
 
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
-import List, {
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-} from 'material-ui/List';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import Card from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
 
 import Progress from '../Progress';

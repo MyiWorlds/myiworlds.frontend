@@ -1,13 +1,19 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
 
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+
+import { withStyles } from 'material-ui/styles';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
+import Avatar from 'material-ui/Avatar';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import Progress from '../../components/Progress';
 
@@ -19,6 +25,9 @@ const GET_USER = gql`
       username
       email
       uiEnabled
+      profileMedia {
+        string
+      }
       ui {
         id
         title
@@ -37,6 +46,22 @@ const GET_USER = gql`
   }
 `;
 
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+  flex: {
+    flex: 1,
+  },
+  avatar: {
+    margin: 10,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+};
+
 class App extends React.Component {
   logout = refetch => {
     fetch('/login/clear', { method: 'POST', credentials: 'include' }).then(() =>
@@ -45,6 +70,7 @@ class App extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <Query query={GET_USER}>
         {({ loading, error, data, refetch }) => {
@@ -53,7 +79,57 @@ class App extends React.Component {
           const user = data.getUser;
 
           return (
-            <div style={{ marginTop: 124 }}>
+            <div>
+              <div className={classes.root}>
+                <AppBar position="static">
+                  <Toolbar>
+                    <IconButton
+                      className={classes.menuButton}
+                      color="inherit"
+                      aria-label="Menu"
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                    <Typography
+                      variant="title"
+                      color="inherit"
+                      className={classes.flex}
+                    >
+                      Title
+                    </Typography>
+                    {user.profileMedia ? (
+                      <Avatar
+                        alt={user.username}
+                        src={user.profileMedia.string}
+                        className={classes.avatar}
+                      />
+                    ) : (
+                      <IconButton aria-haspopup="true" color="inherit">
+                        <AccountCircle />
+                      </IconButton>
+                    )}
+                    {user.username !== 'guest' ? (
+                      <Button
+                        color="inherit"
+                        component={({ ...props }) => (
+                          <a onClick={() => this.logout(refetch)} {...props} />
+                        )}
+                      >
+                        Logout
+                      </Button>
+                    ) : (
+                      <Button
+                        color="inherit"
+                        component={({ ...props }) => (
+                          <a href="/login/google" {...props} />
+                        )}
+                      >
+                        Login
+                      </Button>
+                    )}
+                  </Toolbar>
+                </AppBar>
+              </div>
               <br />
               <Link to="/">Home</Link>
               <br />
@@ -86,4 +162,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
