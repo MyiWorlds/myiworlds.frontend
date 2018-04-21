@@ -11,7 +11,15 @@ const styles = {
 
 const Progress = props => {
   return (
-    <CircularProgress style={styles} size={props.size || 50} thickness={7} />
+    <div
+      style={{
+        position: 'relative',
+        height: props.size * 1.5 || 75,
+        width: '100%',
+      }}
+    >
+      <CircularProgress style={styles} size={props.size || 50} thickness={7} />
+    </div>
   );
 };
 

@@ -3,76 +3,50 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 import { render } from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+
+import JssProvider from 'react-jss/lib/JssProvider';
+import { create } from 'jss';
+import { createGenerateClassName, jssPreset } from 'material-ui/styles';
+import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
+import { SheetsRegistry } from 'jss';
+import jssNested from 'jss-nested';
 
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 
-import CreateCircle from './mutations/CreateCircle';
-import UpdateCircle from './mutations/UpdateCircle';
-
 import App from './components/App';
-import AppBar from './components/AppBar';
-import CirclesByUserKey from './components/CirclesByUserKey';
-import CircleBySlug from './components/CircleBySlug';
-import CircleByKey from './components/CircleByKey';
-import CirclesByTags from './components/CirclesByTags';
-
-import AddUsername from './mutations/AddUsername';
-
-const httpLink = new BatchHttpLink({
-  uri: 'http://localhost:8080/graphql',
-  // Batching not working
-  fetchOptions: {
-    batchInterval: 10000,
-  },
-});
 
 const client = new ApolloClient({
-  link: httpLink,
+  link: new BatchHttpLink({
+    uri: 'http://localhost:8080/graphql',
+    batchInterval: 100,
+  }),
   cache: new InMemoryCache(),
 });
 
+const sheetsRegistry = new SheetsRegistry();
+
+const theme = createMuiTheme();
+const generateClassName = createGenerateClassName();
+const jss = create(jssPreset());
+jss.use(jssNested());
+
 const Root = () => (
-  <ApolloProvider client={client}>
-    <BrowserRouter>
-      <div>
-        <App />
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={props => <CirclesByUserKey {...props} />}
-          />
-          <Route
-            exact
-            path="/create"
-            render={props => <CreateCircle {...props} />}
-          />
-          <Route
-            exact
-            path="/update/:id"
-            render={props => <UpdateCircle {...props} />}
-          />
-          <Route exact path="/about" render={props => <AppBar {...props} />} />
-          <Route
-            exact
-            path="/add-username"
-            render={props => <AddUsername {...props} />}
-          />
-          <Route
-            exact
-            path="/search"
-            render={props => <CirclesByTags {...props} />}
-          />
-          <Route path="/id/:_id" render={props => <CircleByKey {...props} />} />
-          <Route path="/:slug" render={props => <CircleBySlug {...props} />} />
-        </Switch>
-      </div>
-    </BrowserRouter>
-  </ApolloProvider>
+  <BrowserRouter>
+    <ApolloProvider client={client}>
+      <JssProvider
+        registry={sheetsRegistry}
+        generateClassName={generateClassName}
+      >
+        <MuiThemeProvider theme={theme}>
+          <App />
+        </MuiThemeProvider>
+      </JssProvider>
+    </ApolloProvider>
+  </BrowserRouter>
 );
 
 render(<Root />, document.getElementById('root'));

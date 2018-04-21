@@ -7,6 +7,7 @@ export default gql`
       _id
       title
       creator {
+        _id
         username
       }
       tags

@@ -16,7 +16,7 @@ const Lines = props => {
                 <ListItem
                   button
                   component={({ ...props }) => (
-                    <Link to={`id/${circle._id}`} {...props} />
+                    <Link to={`/id/${circle._id}`} {...props} />
                   )}
                 >
                   <ListItemText

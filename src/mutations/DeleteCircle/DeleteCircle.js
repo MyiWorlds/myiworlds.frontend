@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
@@ -18,6 +20,10 @@ const DELETE_CIRCLE = gql`
 `;
 
 class DeleteCircle extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+  };
+
   delete = deleteCircle => {
     deleteCircle({
       variables: {
@@ -31,9 +37,16 @@ class DeleteCircle extends React.Component {
   render() {
     return (
       <Mutation mutation={DELETE_CIRCLE}>
-        {deleteCircle => (
-          <button onClick={() => this.delete(deleteCircle)}>Delete</button>
-        )}
+        {(deleteCircle, { loading, error }) => {
+          if (loading) return <Progress />;
+          if (error) return <p>Error</p>;
+
+          return (
+            <div onClick={() => this.delete(deleteCircle)} {...this.props}>
+              {this.props.children}
+            </div>
+          );
+        }}
       </Mutation>
     );
   }
