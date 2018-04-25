@@ -1,41 +1,41 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  query getCircleByKey($_id: String!) {
-    getCircleByKey(_id: $_id) {
+  query getCircleByKey($uid: String!) {
+    getCircleByKey(uid: $uid) {
       id
-      _id
+      uid
       parent {
-        _id
+        uid
       }
       slug
       slugName
       public
       type
       settings {
-        _id
+        uid
       }
       styles {
-        _id
+        uid
       }
       rating {
-        _id
+        uid
       }
       tags
       title
       subtitle
       description
       media {
-        _id
+        uid
       }
       icon {
-        _id
+        uid
       }
       viewers {
-        _id
+        uid
       }
       editors {
-        _id
+        uid
       }
       string
       object
@@ -45,15 +45,15 @@ export default gql`
       date
       geoPoint
       line {
-        _id
+        uid
       }
       lines {
-        _id
+        uid
       }
       linesMany {
         edges {
           node {
-            _id
+            uid
           }
         }
       }

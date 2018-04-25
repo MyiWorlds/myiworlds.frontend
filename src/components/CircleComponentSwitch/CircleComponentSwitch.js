@@ -41,7 +41,7 @@ class CircleComponentSwitch extends React.Component {
             <div>
               <h1>{circle.title ? circle.title : null}</h1>
               <p>{circle.type}</p>
-              <p>{circle._id}</p>
+              <p>{circle.uid}</p>
               <p>{circle.slug}</p>
             </div>
           );

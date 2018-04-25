@@ -11,7 +11,7 @@ const DELETE_CIRCLE = gql`
     deleteCircle(input: $input) {
       status
       message
-      idToDelete
+      uidToDelete
       wasDeleted
       numberOfClones
       clonesDeleted
@@ -28,10 +28,14 @@ class DeleteCircle extends React.Component {
     deleteCircle({
       variables: {
         input: {
-          _id: this.props.id,
+          uid: this.props.uid,
         },
       },
     });
+
+    if (window) {
+      window.location.href = '/';
+    }
   };
 
   render() {

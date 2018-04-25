@@ -3,13 +3,13 @@ import Description from '../../components/CircleByKey/Description';
 import Lines from '../../components/CircleByKey/Lines';
 
 export default gql`
-  query getCircleByKey($_id: String!) {
-    getCircleByKey(_id: $_id) {
+  query getCircleByKey($uid: String!) {
+    getCircleByKey(uid: $uid) {
       id
-      _id
+      uid
       type
       creator {
-        _id
+        uid
       }
       title
       ...Description

@@ -9,7 +9,7 @@ import Progress from '../../components/Progress';
 class CreateCircle extends React.Component {
   render() {
     return (
-      <Query query={GET_CIRCLE_BY_KEY} variables={{ _id: this.props._id }}>
+      <Query query={GET_CIRCLE_BY_KEY} variables={{ uid: this.props.uid }}>
         {({ loading, error, data }) => {
           if (loading) return <Progress />;
           if (error) return <p>`Error :( ${console.log(error)}`</p>;

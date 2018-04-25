@@ -28,7 +28,7 @@ const styles = theme => ({
 
 class CircleByKey extends React.Component {
   static propTypes = {
-    _id: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
   };
 
   state = {
@@ -42,7 +42,7 @@ class CircleByKey extends React.Component {
     return (
       <Query
         query={GET_CIRCLE_BY_KEY}
-        variables={{ _id: this.props._id }}
+        variables={{ uid: this.props.uid }}
         skip={!this.props.location.pathname}
         notifyOnNetworkStatusChange
       >
@@ -54,17 +54,17 @@ class CircleByKey extends React.Component {
           if (!circle) return <NotFound />;
 
           // Update Edit url to only show if you are creator or editor
-          // Requires getting User._id into this component
+          // Requires getting User.uid into this component
 
           const userCanEdit =
-            user && circle.creator._id === user._id ? true : false;
+            user && circle.creator.uid === user.uid ? true : false;
 
           const editCircleButton = (
             <Button
               className={classes.marginRight}
               color="primary"
               component={Link}
-              to={`/update/${circle._id}`}
+              to={`/update/${circle.uid}`}
               variant="raised"
             >
               <FontIcon className={classes.marginRight}>mode_edit</FontIcon>
@@ -81,7 +81,7 @@ class CircleByKey extends React.Component {
                     className={classes.marginRight}
                     color="primary"
                     component={Link}
-                    to={`/copy/${circle._id}`}
+                    to={`/copy/${circle.uid}`}
                     variant="raised"
                   >
                     <FontIcon className={classes.marginRight}>
@@ -90,7 +90,7 @@ class CircleByKey extends React.Component {
                     Copy
                   </Button>
 
-                  <DeleteCircle id={circle._id}>
+                  <DeleteCircle uid={circle.uid}>
                     <Button color="primary" variant="raised">
                       <FontIcon className={classes.marginRight}>
                         delete
@@ -101,7 +101,7 @@ class CircleByKey extends React.Component {
                 </Toolbar>
               </AppBar>
               <h1>{circle.title}</h1>
-              <div>{circle._id}</div>
+              <div>{circle.uid}</div>
               <button onClick={() => this.setState({ bool: !this.state.bool })}>
                 Toggle components
               </button>

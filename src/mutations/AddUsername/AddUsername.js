@@ -44,6 +44,10 @@ class AddUsername extends React.Component {
       },
       refetchQueries: [{ query: GET_USER }],
     });
+
+    if (window) {
+      window.location.href = '/';
+    }
   };
 
   render() {

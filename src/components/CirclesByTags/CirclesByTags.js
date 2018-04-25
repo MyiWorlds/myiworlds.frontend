@@ -107,7 +107,7 @@ class CirclesByTags extends React.Component {
                             <ListItem
                               button
                               component={Link}
-                              to={`/id/${circle._id}`}
+                              to={`/uid/${circle.uid}`}
                             >
                               <ListItemText
                                 primary={circle.title}

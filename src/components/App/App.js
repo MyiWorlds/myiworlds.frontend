@@ -15,7 +15,7 @@ const GET_USER = gql`
   {
     getUser {
       id
-      _id
+      uid
       username
       email
       uiEnabled
@@ -37,13 +37,13 @@ const GET_USER = gql`
         }
       }
       homePublic {
-        _id
+        uid
       }
       homePrivate {
-        _id
+        uid
       }
       inbox {
-        _id
+        uid
       }
     }
   }
@@ -79,12 +79,12 @@ class App extends React.Component {
       <Query query={GET_USER}>
         {({ loading, error, data, refetch }) => {
           if (loading) return <Progress />;
-          if (error) return <p>`Error :( ${console.log(error)}`</p>;
+          if (error) return <p>App had error {console.log(error)}</p>;
           const user = data.getUser;
 
           return (
             <div className={classes.root}>
-              {/* <Circle circleKey={user.ui._id} /> */}
+              {/* <Circle circleKey={user.ui.uid} /> */}
 
               <Navigation
                 user={user}

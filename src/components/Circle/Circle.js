@@ -16,7 +16,7 @@ const Circle = props => {
           <div>
             {circle.title}
             {circle.type}
-            {circle._id}
+            {circle.uid}
             {circle.slug}
           </div>
         );

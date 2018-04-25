@@ -4,7 +4,7 @@ export default gql`
   {
     getUser {
       id
-      _id
+      uid
       username
     }
   }

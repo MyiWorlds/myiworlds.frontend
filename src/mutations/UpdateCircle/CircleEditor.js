@@ -30,7 +30,7 @@ const GET_USER = gql`
   {
     getUser {
       id
-      _id
+      uid
     }
   }
 `;
@@ -49,31 +49,31 @@ class CircleEditor extends React.Component {
     const circle = this.props.circle || {};
 
     function getKeysFromArray(array) {
-      let _ids = null;
+      let uids = null;
       if (array && array.length) {
-        _ids = [];
-        array.forEach(item => _ids.push(item._id));
+        uids = [];
+        array.forEach(item => uids.push(item.uid));
       }
-      return _ids;
+      return uids;
     }
 
     if (circle) {
       this.setState({
-        _id: circle._id,
-        parent: circle._id,
+        uid: circle.uid,
+        parent: circle.uid,
         slug: circle.slug,
         slugName: circle.slugName,
         public: circle.public || false,
         type: circle.type || '',
         settings: getKeysFromArray(circle.settings),
         styles: getKeysFromArray(circle.styles),
-        rating: circle.rating ? circle.rating._id : null,
+        rating: circle.rating ? circle.rating.uid : null,
         tags: circle.tags,
         title: circle.title,
         subtitle: circle.subtitle,
         description: circle.description,
-        media: circle.media ? circle.media._id : null,
-        icon: circle.icon ? circle.icon._id : null,
+        media: circle.media ? circle.media.uid : null,
+        icon: circle.icon ? circle.icon.uid : null,
         viewers: getKeysFromArray(circle.viewers),
         editors: getKeysFromArray(circle.editors),
         string: circle.string,
@@ -83,7 +83,7 @@ class CircleEditor extends React.Component {
         boolean: circle.boolean,
         date: circle.date,
         geoPoint: circle.geoPoint,
-        line: circle.line ? circle.line._id : null,
+        line: circle.line ? circle.line.uid : null,
         lines: getKeysFromArray(circle.lines),
         linesMany: getKeysFromArray(circle.linesMany),
       });
@@ -94,7 +94,7 @@ class CircleEditor extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
-  submitForm = (event, updateCircle, userId) => {
+  submitForm = (event, updateCircle, userUid) => {
     event.preventDefault();
     const typeIsEmpty = this.state.type === '' || null;
     if (typeIsEmpty) {
@@ -103,7 +103,7 @@ class CircleEditor extends React.Component {
     }
 
     let slug;
-    let _id;
+    let uid;
 
     if (this.state.slugName === '') {
       slug = uuid();
@@ -112,18 +112,18 @@ class CircleEditor extends React.Component {
     }
 
     if (
-      this.state._id === '' ||
-      this.state._id === null ||
-      this.state._id === undefined
+      this.state.uid === '' ||
+      this.state.uid === null ||
+      this.state.uid === undefined
     ) {
-      _id = uuid();
+      uid = uuid();
     } else {
-      _id = this.state._id;
+      uid = this.state.uid;
     }
 
     const circle = {
-      _id: _id,
-      creator: userId,
+      uid: uid,
+      creator: userUid,
       dateCreated: this.state.dateCreated || Date.now(),
       dateUpdated: Date.now(),
 
@@ -157,11 +157,11 @@ class CircleEditor extends React.Component {
 
     const builtCircle = [
       Object.keys(circle).forEach(
-        key =>
-          (circle[key] === '' ||
-            circle[key] === null ||
-            circle[key] === undefined) &&
-          delete circle[key],
+        uid =>
+          (circle[uid] === '' ||
+            circle[uid] === null ||
+            circle[uid] === undefined) &&
+          delete circle[uid],
       ),
       circle,
     ][1];
@@ -170,7 +170,7 @@ class CircleEditor extends React.Component {
       variables: {
         input: builtCircle,
       },
-    }).then(() => this.props.history.push(`/id/${circle._id}`));
+    }).then(() => this.props.history.push(`/uid/${circle.uid}`));
   };
 
   render() {
@@ -188,7 +188,7 @@ class CircleEditor extends React.Component {
                 <div>
                   <form
                     onSubmit={event =>
-                      this.submitForm(event, updateCircle, data.getUser._id)
+                      this.submitForm(event, updateCircle, data.getUser.uid)
                     }
                   >
                     <input

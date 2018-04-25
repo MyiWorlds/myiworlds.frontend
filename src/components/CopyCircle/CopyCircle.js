@@ -9,7 +9,7 @@ import NotFound from '../NotFound';
 
 const CopyCircle = props => {
   return (
-    <Query query={GET_WHOLE_CIRCLE_BY_KEY} variables={{ _id: props._id }}>
+    <Query query={GET_WHOLE_CIRCLE_BY_KEY} variables={{ uid: props.uid }}>
       {({ loading, error, data, refetch }) => {
         if (loading) return <Progress />;
         if (error) return <p>`Error :( ${error}`</p>;

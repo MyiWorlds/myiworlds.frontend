@@ -6,7 +6,7 @@ export default gql`
       tags: $tags
       requestedNumberOfResults: $requestedNumberOfResults
     ) {
-      _id
+      uid
       id
       title
       slug

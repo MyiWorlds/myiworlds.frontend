@@ -37,8 +37,8 @@ class AppBar extends React.Component {
 
   logout = (event, refetch) => {
     this.handleClose(event);
-    fetch('/login/clear', { method: 'POST', credentials: 'include' }).then(() =>
-      refetch(),
+    fetch('/login/clear', { method: 'POST', credentials: 'include' }).then(
+      () => (window.location = '/'),
     );
   };
 

@@ -13,21 +13,28 @@ const CirclesByUserKey = () => (
   <Query query={GET_CIRCLES_BY_USER_KEY} notifyOnNetworkStatusChange>
     {({ loading, error, data, refetch, networkStatus }) => {
       if (loading) return <Progress />;
-      if (error) return <p>`Error :( ${console.log(error)}`</p>;
+      if (error)
+        return <p>`Circles By User uid error ${console.log(error)}`</p>;
 
-      return (
-        <div>
-          <Card>
-            <Lines lines={data.getCirclesByUserKey} />
-          </Card>
-          <br />
-          <div style={{ margin: '0 auto' }}>
-            <Button color="primary" onClick={() => refetch()}>
-              Refetch Your Circles
-            </Button>
+      const circles = data.getCirclesByUserKey;
+
+      if (circles) {
+        return (
+          <div>
+            <Card>
+              <Lines lines={circles} />
+            </Card>
+            <br />
+            <div style={{ margin: '0 auto' }}>
+              <Button color="primary" onClick={() => refetch()}>
+                Refetch Your Circles
+              </Button>
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
+
+      return <div>No Circles</div>;
     }}
   </Query>
 );

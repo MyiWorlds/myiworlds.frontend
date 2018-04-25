@@ -178,8 +178,8 @@ class Navigation extends React.Component {
   };
 
   logout = (event, refetch) => {
-    fetch('/login/clear', { method: 'POST', credentials: 'include' }).then(() =>
-      refetch(),
+    fetch('/login/clear', { method: 'POST', credentials: 'include' }).then(
+      () => (window.location = '/'),
     );
   };
 
@@ -357,8 +357,8 @@ class Navigation extends React.Component {
                       return null;
                   }
                 })}
-                {user && user.username ? null : addUsername}
-                {user && user._id === 'GUEST' ? login : [userLink, logout]}
+                {!user ? null : user.username ? null : addUsername}
+                {!user ? login : [userLink, logout]}
               </div>
             </Drawer>
           </div>

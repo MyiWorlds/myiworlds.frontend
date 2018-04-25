@@ -4,10 +4,10 @@ export default gql`
   {
     getCirclesByUserKey {
       id
-      _id
+      uid
       title
       creator {
-        _id
+        uid
         username
       }
       tags

@@ -19,9 +19,9 @@ const Routes = props => {
     <Switch>
       <Route exact path="/" render={props => <CirclesByUserKey {...props} />} />
       <Route
-        path="/id/:_id"
+        path="/uid/:uid"
         render={props => (
-          <CircleByKey user={user} _id={props.match.params._id} {...props} />
+          <CircleByKey user={user} uid={props.match.params.uid} {...props} />
         )}
       />
       <Route
@@ -33,28 +33,28 @@ const Routes = props => {
         exact
         path="/create"
         render={props =>
-          user._id === 'GUEST' ? <PleaseLogin /> : <CreateCircle {...props} />
+          !user ? <PleaseLogin /> : <CreateCircle {...props} />
         }
       />
       <Route
         exact
-        path="/update/:_id"
+        path="/update/:uid"
         render={props =>
-          user._id === 'GUEST' ? (
+          !user ? (
             <PleaseLogin />
           ) : (
-            <UpdateCircle _id={props.match.params._id} {...props} />
+            <UpdateCircle uid={props.match.params.uid} {...props} />
           )
         }
       />
       <Route
         exact
-        path="/copy/:_id"
+        path="/copy/:uid"
         render={props =>
-          user._id === 'GUEST' ? (
+          !user ? (
             <PleaseLogin />
           ) : (
-            <CopyCircle _id={props.match.params._id} {...props} />
+            <CopyCircle uid={props.match.params.uid} {...props} />
           )
         }
       />
@@ -62,32 +62,24 @@ const Routes = props => {
         exact
         path="/recents"
         render={props =>
-          user._id === 'GUEST' ? (
-            <PleaseLogin />
-          ) : (
-            <CirclesByUserKey {...props} />
-          )
+          !user ? <PleaseLogin /> : <CirclesByUserKey {...props} />
         }
       />
       <Route
         exact
         path="/settings"
         render={props =>
-          user._id === 'GUEST' ? (
-            <PleaseLogin />
-          ) : (
-            <UserSettings user={user} {...props} />
-          )
+          !user ? <PleaseLogin /> : <UserSettings user={user} {...props} />
         }
       />
       <Route
         exact
         path="/private/home"
         render={props =>
-          user._id === 'GUEST' ? (
+          !user ? (
             <PleaseLogin />
           ) : (
-            <CircleByKey user={user} _id={user.homePrivate._id} {...props} />
+            <CircleByKey user={user} uid={user.homePrivate.uid} {...props} />
           )
         }
       />
@@ -95,19 +87,17 @@ const Routes = props => {
         exact
         path="/inbox"
         render={props =>
-          user._id === 'GUEST' ? (
+          !user ? (
             <PleaseLogin />
           ) : (
-            <CircleByKey user={user} _id={user.inbox._id} {...props} />
+            <CircleByKey user={user} uid={user.inbox.uid} {...props} />
           )
         }
       />
       <Route
         exact
         path="/add-username"
-        render={props =>
-          user._id === 'GUEST' ? <PleaseLogin /> : <AddUsername {...props} />
-        }
+        render={props => (!user ? <PleaseLogin /> : <AddUsername {...props} />)}
       />
       <Route
         path="/:slug"
