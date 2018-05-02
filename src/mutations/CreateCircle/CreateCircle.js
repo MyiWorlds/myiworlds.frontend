@@ -55,7 +55,7 @@ class CreateCircle extends React.Component {
         parent: circle.uid,
         slug: circle.slug,
         slugName: circle.slugName,
-        public: circle.public || false,
+        public: false,
         type: circle.type,
         settings: getKeysFromArray(circle.settings),
         styles: getKeysFromArray(circle.styles),
@@ -88,58 +88,70 @@ class CreateCircle extends React.Component {
 
   submitForm = (event, createCircle, data) => {
     event.preventDefault();
+    const state = this.state;
 
     let slug;
     let uid;
+    let pii;
+    let _public;
 
-    if (this.state.slugName === '') {
+    if (state.slugName === '') {
       slug = uuid();
     } else {
-      slug = this.state.slugName;
+      slug = state.slugName;
     }
 
-    if (
-      this.state.uid === '' ||
-      this.state.uid === null ||
-      this.state.uid === undefined
-    ) {
+    if (state.uid === '' || state.uid === null || state.uid === undefined) {
       uid = uuid();
     } else {
-      uid = this.state.uid;
+      uid = state.uid;
+    }
+
+    if (state.pii === null || state.pii === undefined) {
+      pii = false;
+    } else {
+      pii = state.pii;
+    }
+
+    if (state.public === null || state.public === undefined) {
+      _public = false;
+    } else {
+      _public = state.public;
     }
 
     const circle = {
       uid: uid,
+      pii: pii,
       creator: data.getUser.uid,
       dateCreated: Date.now(),
       dateUpdated: Date.now(),
 
-      parent: this.state.parent,
+      parent: state.parent,
       slug: slug,
-      slugName: this.state.slugName,
-      public: this.state.public,
-      type: this.state.type,
-      settings: this.state.settings,
-      styles: this.state.styles,
-      rating: this.state.rating,
-      tags: this.state.tags,
-      title: this.state.title,
-      subtitle: this.state.subtitle,
-      description: this.state.description,
-      media: this.state.media,
-      icon: this.state.icon,
-      viewers: this.state.viewers,
-      editors: this.state.editors,
-      string: this.state.string,
-      object: this.state.object,
-      number: this.state.number,
-      bigNumber: this.state.bigNumber,
-      boolean: this.state.boolean,
-      date: this.state.date,
-      geoPoint: this.state.geoPoint,
-      line: this.state.line,
-      lines: this.state.lines,
-      linesMany: this.state.linesMany,
+      slugName: state.slugName,
+      public: _public,
+      type: state.type,
+      settings: state.settings,
+      styles: state.styles,
+      rating: state.rating,
+      tags: state.tags,
+      title: state.title,
+      subtitle: state.subtitle,
+      description: state.description,
+      media: state.media,
+      icon: state.icon,
+      viewers: state.viewers,
+      editors: state.editors,
+      string: state.string,
+      object: state.object,
+      number: state.number,
+      bigNumber: state.bigNumber,
+      boolean: state.boolean,
+      date: state.date,
+      geoPoint: state.geoPoint,
+      line: state.line,
+      lines: state.lines,
+      linesMany: state.linesMany,
     };
 
     const builtCircle = [

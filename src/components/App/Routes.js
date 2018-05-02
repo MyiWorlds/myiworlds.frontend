@@ -9,6 +9,8 @@ import CirclesByUserKey from '../CirclesByUserKey';
 import CircleBySlug from '../CircleBySlug';
 import CircleByKey from '../CircleByKey';
 import CirclesByTags from '../CirclesByTags';
+import CircleByUsername from '../CircleByUsername';
+import CirclesByFilters from '../CirclesByFilters';
 import CopyCircle from '../CopyCircle';
 import UserSettings from './UserSettings';
 import PleaseLogin from './PleaseLogin';
@@ -78,8 +80,10 @@ const Routes = props => {
         render={props =>
           !user ? (
             <PleaseLogin />
-          ) : (
+          ) : user && user.homePrivate ? (
             <CircleByKey user={user} uid={user.homePrivate.uid} {...props} />
+          ) : (
+            <AddUsername {...props} />
           )
         }
       />
@@ -100,9 +104,24 @@ const Routes = props => {
         render={props => (!user ? <PleaseLogin /> : <AddUsername {...props} />)}
       />
       <Route
-        path="/:slug"
+        exact
+        path="/filters"
+        render={props => <CirclesByFilters user={user} />}
+      />
+      <Route
+        path="/:username"
         render={props => (
-          <CircleBySlug slug={props.match.params.slug} {...props} />
+          <CircleByUsername username={props.match.params.username} {...props} />
+        )}
+      />
+      <Route
+        path="/:username/:slug"
+        render={props => (
+          <CircleBySlug
+            username={props.match.params.username}
+            slug={props.match.params.slug}
+            {...props}
+          />
         )}
       />
     </Switch>

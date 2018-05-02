@@ -1,5 +1,10 @@
 import React from 'react';
+
 import { Avatar } from 'material-ui';
+import Button from 'material-ui/Button';
+
+import DeleteUser from '../../mutations/DeleteUser';
+
 import FontIcon from '../FontIcon';
 
 const UserSettings = props => {
@@ -24,6 +29,12 @@ const UserSettings = props => {
           <FontIcon>account_circle</FontIcon>
         )}
         Change Profile Image
+        <DeleteUser uid={user.uid}>
+          <Button color="primary" variant="raised">
+            <FontIcon>delete</FontIcon>
+            Delete
+          </Button>
+        </DeleteUser>
       </div>
     </div>
   );

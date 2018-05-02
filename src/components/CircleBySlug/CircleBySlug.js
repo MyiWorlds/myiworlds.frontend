@@ -9,7 +9,7 @@ import NotFound from '../NotFound';
 const CircleBySlug = props => (
   <Query
     query={GET_CIRCLE_BY_SLUG}
-    variables={{ slug: props.slug }}
+    variables={{ username: props.username, slug: props.slug }}
     skip={!props.location.pathname}
     notifyOnNetworkStatusChange
   >

@@ -195,7 +195,15 @@ class Navigation extends React.Component {
     const addUsername = (
       <ListItem button key="username" component={Link} to={'/add-username'}>
         <ListItemIcon>
-          <FontIcon>account_circle</FontIcon>
+          {user && user.profileMedia ? (
+            <Avatar
+              alt={user.username}
+              src={user.profileMedia.string}
+              className={classes.avatar}
+            />
+          ) : (
+            <FontIcon>account_circle</FontIcon>
+          )}
         </ListItemIcon>
         <ListItemText primary="Add Username" />
       </ListItem>
@@ -301,7 +309,7 @@ class Navigation extends React.Component {
                     return null;
                 }
               })}
-              {user && user.username ? null : (
+              {user && user.username ? (
                 <ListItem
                   button
                   key="username"
@@ -309,11 +317,19 @@ class Navigation extends React.Component {
                   to={'/add-username'}
                 >
                   <ListItemIcon>
-                    <FontIcon>account_circle</FontIcon>
+                    {user.profileMedia ? (
+                      <Avatar
+                        alt={user.username}
+                        src={user.profileMedia.string}
+                        className={classes.avatar}
+                      />
+                    ) : (
+                      <FontIcon>account_circle</FontIcon>
+                    )}
                   </ListItemIcon>
                   <ListItemText primary="Add Username" />
                 </ListItem>
-              )}
+              ) : null}
             </div>
           </Drawer>
         </Hidden>
