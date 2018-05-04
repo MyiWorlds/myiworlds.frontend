@@ -1,6 +1,4 @@
 import React from 'react';
-import './index.css';
-import registerServiceWorker from './registerServiceWorker';
 
 import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -17,7 +15,10 @@ import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 
-import App from './components/App';
+import './index.css';
+import registerServiceWorker from './registerServiceWorker';
+
+import App from './App';
 
 const client = new ApolloClient({
   link: new BatchHttpLink({
