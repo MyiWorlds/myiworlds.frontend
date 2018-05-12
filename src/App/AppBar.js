@@ -35,13 +35,6 @@ class AppBar extends React.Component {
     userMenu: false,
   };
 
-  logout = (event, refetch) => {
-    this.handleClose(event);
-    fetch('/login/clear', { method: 'POST', credentials: 'include' }).then(
-      () => (window.location = '/'),
-    );
-  };
-
   render() {
     const { classes, handleNavigationToggle, showNavigation } = this.props;
 

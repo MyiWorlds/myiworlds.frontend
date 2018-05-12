@@ -15,6 +15,8 @@ import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import AppBar from './AppBar';
 import FontIcon from './Components/FontIcon';
 
+import logout from './functions/logout';
+
 const navItems = [
   {
     type: 'BUTTON',
@@ -177,19 +179,12 @@ class Navigation extends React.Component {
     this.setState({ value });
   };
 
-  logout = (event, refetch) => {
-    fetch('/login/clear', { method: 'POST', credentials: 'include' }).then(
-      () => (window.location = '/'),
-    );
-  };
-
   render() {
     const {
       classes,
       user,
       showNavigation,
       handleNavigationToggle,
-      refetch,
     } = this.props;
 
     const addUsername = (
@@ -249,14 +244,8 @@ class Navigation extends React.Component {
         </ListItem>
       ) : null;
 
-    const logout = (
-      <ListItem
-        button
-        key="logout"
-        onClick={event => {
-          this.logout(event, refetch);
-        }}
-      >
+    const logoutBtn = (
+      <ListItem button key="logout" onClick={() => logout()}>
         <ListItemIcon>
           <FontIcon>exit_to_app</FontIcon>
         </ListItemIcon>
@@ -374,7 +363,7 @@ class Navigation extends React.Component {
                   }
                 })}
                 {!user ? null : user.username ? null : addUsername}
-                {!user ? login : [userLink, logout]}
+                {!user ? login : [userLink, logoutBtn]}
               </div>
             </Drawer>
           </div>

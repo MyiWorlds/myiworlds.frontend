@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
+import apolloClient from '../../../../apolloClient';
+
+import logout from '../../../functions/logout';
+
 import Progress from '../../../Components/Progress';
 
 const DELETE_USER = gql`
@@ -29,9 +33,9 @@ class DeleteUser extends React.Component {
       },
     });
 
-    if (window) {
-      window.location.href = '/';
-    }
+    apolloClient.resetStore();
+
+    logout();
   };
 
   render() {

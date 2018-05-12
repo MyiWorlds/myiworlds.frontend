@@ -10,34 +10,24 @@ import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
 import { SheetsRegistry } from 'jss';
 import jssNested from 'jss-nested';
 
-import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { BatchHttpLink } from 'apollo-link-batch-http';
 
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
+import apolloClient from './apolloClient';
 
 import App from './App';
 
-const client = new ApolloClient({
-  link: new BatchHttpLink({
-    uri: 'http://localhost:8080/graphql',
-    batchInterval: 100,
-  }),
-  cache: new InMemoryCache(),
-});
-
-const sheetsRegistry = new SheetsRegistry();
-
 const theme = createMuiTheme();
 const generateClassName = createGenerateClassName();
+
+const sheetsRegistry = new SheetsRegistry();
 const jss = create(jssPreset());
 jss.use(jssNested());
 
 const Root = () => (
   <BrowserRouter>
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <JssProvider
         registry={sheetsRegistry}
         generateClassName={generateClassName}
