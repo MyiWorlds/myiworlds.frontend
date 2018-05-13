@@ -9,15 +9,15 @@ const styles = theme => ({
     display: 'flex',
     flex: 1,
     height: '100%',
+    top: 48,
     position: 'relative',
-    // height: '100%',
+  },
+
+  content: {
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.complex,
     }),
-  },
-
-  content: {
     position: 'relative',
     zIndex: 1,
     flexGrow: 1,

@@ -2,7 +2,11 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 
+import { Button } from 'material-ui';
+import TextField from 'material-ui/TextField';
+
 import GET_USER from '../../Queries/getUser';
+import GET_CIRCLE_BY_USERNAME from '../../../Circle/Queries/getCircleByUsername';
 
 import Progress from '../../../Components/Progress';
 
@@ -18,18 +22,28 @@ const ADD_USERNAME = gql`
   }
 `;
 
-// const CHECK_USERNAME_NOT_TAKEN = gql`
-// {}
-// `;
-
 class AddUsername extends React.Component {
-  state = {
-    username: '',
-    creator: '',
-    dateCreated: 0,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      checkUsername: false,
+      usernameAvailable: false,
+    };
+    this.timeout = 0;
+  }
 
   handleInputChange = name => event => {
+    this.setState({ checkUsername: false });
+
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
+    this.timeout = setTimeout(() => {
+      this.setState({ checkUsername: true });
+    }, 500);
+
     this.setState({ [name]: event.target.value });
   };
 
@@ -52,6 +66,8 @@ class AddUsername extends React.Component {
   };
 
   render() {
+    const { username, checkUsername } = this.state;
+
     return (
       <Query query={GET_USER}>
         {({ loading, error, data }) => {
@@ -68,24 +84,64 @@ class AddUsername extends React.Component {
           return (
             <Mutation mutation={ADD_USERNAME}>
               {(createUsername, { data }) => (
-                <div>
-                  <div>
-                    {data && data.createUsername
-                      ? data.createUsername.message
-                      : null}
-                  </div>
-                  <form
-                    onSubmit={event =>
-                      this.submitForm(event, createUsername, data)
+                <Query
+                  query={GET_CIRCLE_BY_USERNAME}
+                  variables={{
+                    username: username,
+                  }}
+                  skip={!checkUsername}
+                >
+                  {({ loading, error, data }) => {
+                    if (error) return <p>Error :( {console.log(error)}</p>;
+
+                    const usernameInvalid =
+                      data.getCircleByUsername &&
+                      data.getCircleByUsername.type !== 'DOES_NOT_EXIST' &&
+                      username !== '' &&
+                      !loading;
+
+                    let usernameMessage = null;
+
+                    if (username === '') {
+                      usernameMessage = 'Please enter a username';
+                    } else if (loading) {
+                      usernameMessage = '';
+                    } else if (
+                      data.getCircleByUsername &&
+                      data.getCircleByUsername.type === 'DOES_NOT_EXIST'
+                    ) {
+                      usernameMessage = 'Yes this username is available!';
+                    } else {
+                      usernameMessage =
+                        'That username is already taken, please try another';
                     }
-                  >
-                    <input
-                      value={this.state.username}
-                      onChange={this.handleInputChange('username')}
-                    />
-                    <button type="submit">Add Username</button>
-                  </form>
-                </div>
+
+                    return (
+                      <form
+                        onSubmit={event =>
+                          this.submitForm(event, createUsername, data)
+                        }
+                      >
+                        <TextField
+                          label="Username"
+                          margin="normal"
+                          value={username}
+                          onChange={this.handleInputChange('username')}
+                          error={usernameInvalid}
+                          helperText={usernameMessage}
+                        />
+                        <Button
+                          // style={{ float: 'right' }}
+                          variant="raised"
+                          color="primary"
+                          type="submit"
+                        >
+                          Add Username
+                        </Button>
+                      </form>
+                    );
+                  }}
+                </Query>
               )}
             </Mutation>
           );

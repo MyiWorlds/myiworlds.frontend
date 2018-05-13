@@ -10,7 +10,7 @@ import AppBarMUI from 'material-ui/AppBar';
 
 const styles = theme => ({
   appBar: {
-    height: 60,
+    height: 48,
     left: 0,
     display: 'flex',
     zIndex: 1201,
@@ -24,6 +24,9 @@ const styles = theme => ({
     marginLeft: -12,
     marginRight: 20,
   },
+  siteTitle: {
+    fontSize: '1.2125rem',
+  },
 });
 
 class AppBar extends React.Component {
@@ -36,16 +39,11 @@ class AppBar extends React.Component {
   };
 
   render() {
-    const { classes, handleNavigationToggle, showNavigation } = this.props;
+    const { classes, handleNavigationToggle } = this.props;
 
     return (
-      <AppBarMUI
-        className={classes.appBar}
-        style={{
-          width: showNavigation ? 240 : 64,
-        }}
-      >
-        <Toolbar>
+      <AppBarMUI className={classes.appBar}>
+        <Toolbar style={{ minHeight: 48 }}>
           <IconButton
             className={classes.menuButton}
             onClick={handleNavigationToggle}
@@ -54,7 +52,11 @@ class AppBar extends React.Component {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="title" color="inherit" className={classes.flex}>
+          <Typography
+            variant="title"
+            color="inherit"
+            className={classes.siteTitle}
+          >
             MyiWorlds
           </Typography>
         </Toolbar>

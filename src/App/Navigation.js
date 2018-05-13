@@ -138,7 +138,7 @@ const styles = theme => ({
     top: '0',
     width: drawerWidth,
     [theme.breakpoints.up('md')]: {
-      top: `64px`,
+      top: 48,
     },
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
