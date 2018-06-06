@@ -2,15 +2,16 @@ import React from 'react';
 import injectSheet from 'react-jss';
 import Routes from './Routes';
 
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flex: 1,
-    height: '100%',
+    height: 'calc(100% - 48px)',
     top: 48,
     position: 'relative',
+    overflow: 'auto',
   },
 
   content: {

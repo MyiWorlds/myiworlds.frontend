@@ -3,10 +3,12 @@ import { Query } from 'react-apollo';
 
 import { Link } from 'react-router-dom';
 
-import TextField from 'material-ui/TextField';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Card from 'material-ui/Card';
-import Divider from 'material-ui/Divider';
+import TextField from '@material-ui/core/TextField';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Card from '@material-ui/core/Card';
+import Divider from '@material-ui/core/Divider';
 
 import GET_CIRCLES_BY_TAGS from '../../Queries/getCirclesByTags';
 

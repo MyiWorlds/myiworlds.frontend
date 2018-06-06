@@ -6,16 +6,15 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
-import Avatar from 'material-ui/Avatar';
-import Divider from 'material-ui/Divider';
-import Drawer from 'material-ui/Drawer';
-import Hidden from 'material-ui/Hidden';
-import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import Avatar from '@material-ui/core/Avatar';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
-import AppBar from './AppBar';
 import FontIcon from './Components/FontIcon';
-
-import logout from './functions/logout';
 
 const navItems = [
   {
@@ -71,34 +70,6 @@ const navItems = [
     icon: 'query_builder',
     title: 'Recents',
     slug: '/recents',
-  },
-  {
-    type: 'DIVIDER',
-  },
-  {
-    type: 'BUTTON',
-    settings: {
-      primary: true,
-    },
-    icon: 'settings',
-    title: 'Settings',
-    slug: '/settings',
-  },
-  {
-    type: 'DIVIDER',
-  },
-  {
-    type: 'BUTTON',
-    title: 'Privacy Policy',
-    slug: '/privacy-policy',
-  },
-  {
-    type: 'BUTTON',
-    title: 'Terms of Service',
-    slug: '/terms-of-service',
-  },
-  {
-    type: 'DIVIDER',
   },
 ];
 
@@ -171,6 +142,7 @@ class Navigation extends React.Component {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     showNavigation: PropTypes.bool.isRequired,
+    handleToggleBoolean: PropTypes.func.isRequired,
   };
 
   state = {};
@@ -180,12 +152,7 @@ class Navigation extends React.Component {
   };
 
   render() {
-    const {
-      classes,
-      user,
-      showNavigation,
-      handleNavigationToggle,
-    } = this.props;
+    const { classes, user, showNavigation, handleToggleBoolean } = this.props;
 
     const addUsername = (
       <ListItem button key="username" component={Link} to={'/add-username'}>
@@ -204,66 +171,12 @@ class Navigation extends React.Component {
       </ListItem>
     );
 
-    const login = (
-      <ListItem
-        button
-        key="login"
-        onClick={() => {
-          if (window) {
-            window.location.href = '/login/google';
-          }
-        }}
-      >
-        <ListItemIcon>
-          <FontIcon style={{ fontSize: 34 }}>account_circle</FontIcon>
-        </ListItemIcon>
-        <ListItemText primary="Login" />
-      </ListItem>
-    );
-
-    const userLink =
-      user && user.username ? (
-        <ListItem
-          button
-          key="userLink"
-          component={Link}
-          to={`/${user.username}`}
-        >
-          <ListItemIcon>
-            {user.profileMedia ? (
-              <Avatar
-                alt={user.username}
-                src={user.profileMedia.string}
-                className={classes.avatar}
-              />
-            ) : (
-              <FontIcon>account_circle</FontIcon>
-            )}
-          </ListItemIcon>
-          <ListItemText primary={user.username} />
-        </ListItem>
-      ) : null;
-
-    const logoutBtn = (
-      <ListItem button key="logout" onClick={() => logout()}>
-        <ListItemIcon>
-          <FontIcon>exit_to_app</FontIcon>
-        </ListItemIcon>
-        <ListItemText primary="Logout" />
-      </ListItem>
-    );
-
     return (
       <div className={classes.navigation}>
-        <AppBar
-          user={user}
-          handleNavigationToggle={handleNavigationToggle}
-          showNavigation={showNavigation}
-        />
         <Hidden mdUp>
           <Drawer
             variant="temporary"
-            onClose={handleNavigationToggle}
+            onClose={() => handleToggleBoolean('showNavigation')}
             classes={{
               paper: classNames(
                 classes.drawerPaper,
@@ -333,7 +246,7 @@ class Navigation extends React.Component {
                   !showNavigation && classes.drawerPaperClose,
                 ),
               }}
-              onClose={handleNavigationToggle}
+              onClose={() => handleToggleBoolean('showNavigation')}
               open={showNavigation}
             >
               <div className={classes.drawerInner}>
@@ -363,7 +276,6 @@ class Navigation extends React.Component {
                   }
                 })}
                 {!user ? null : user.username ? null : addUsername}
-                {!user ? login : [userLink, logoutBtn]}
               </div>
             </Drawer>
           </div>

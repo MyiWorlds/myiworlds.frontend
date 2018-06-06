@@ -1,47 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
-import { CircularProgress } from 'material-ui/Progress';
-import Paper from 'material-ui/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@material-ui/core/Paper';
+import Zoom from '@material-ui/core/Zoom';
 
 const styles = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  container: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
 };
 
-const Progress = props => {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-      }}
-    >
-      <Paper
-        elevation={5}
-        style={{
-          position: 'relative',
-          height: props.size * 1.25 || 50,
-          width: props.size * 1.25 || 50,
-          borderRadius: '50%',
-        }}
-      >
-        <CircularProgress
-          style={styles}
-          size={props.size || 35}
-          thickness={7}
-        />
-      </Paper>
-    </div>
-  );
-};
+class Progress extends React.Component {
+  static propTypes = {
+    size: PropTypes.number,
+  };
 
-Progress.prototype.propTypes = {
-  size: PropTypes.number,
-};
+  componentWillMount() {
+    this.setState({
+      zoom: true,
+    });
+  }
 
-export default Progress;
+  componentWillUnmount() {
+    this.setState({
+      zoom: false,
+    });
+  }
+
+  render() {
+    const { classes, size } = this.props;
+    const { zoom } = this.state;
+
+    let progressSize = size || 35;
+
+    return (
+      <div className={classes.container}>
+        <Zoom in={zoom}>
+          <Paper
+            elevation={5}
+            style={{
+              position: 'relative',
+              height: size * 1.25 || 50,
+              width: size * 1.25 || 50,
+              borderRadius: '50%',
+            }}
+          >
+            <CircularProgress
+              style={{
+                position: 'absolute',
+                top: progressSize / 4,
+                left: progressSize / 4,
+              }}
+              className={classes.progress}
+              size={progressSize}
+              thickness={5}
+            />
+          </Paper>
+        </Zoom>
+      </div>
+    );
+  }
+}
+
+export default withStyles(styles)(Progress);

@@ -5,8 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
-import { createGenerateClassName, jssPreset } from 'material-ui/styles';
-import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
+import { createGenerateClassName, jssPreset } from '@material-ui/core/styles';
 import { SheetsRegistry } from 'jss';
 import jssNested from 'jss-nested';
 
@@ -18,7 +17,6 @@ import apolloClient from './apolloClient';
 
 import App from './App';
 
-const theme = createMuiTheme();
 const generateClassName = createGenerateClassName();
 
 const sheetsRegistry = new SheetsRegistry();
@@ -32,9 +30,7 @@ const Root = () => (
         registry={sheetsRegistry}
         generateClassName={generateClassName}
       >
-        <MuiThemeProvider theme={theme}>
-          <App />
-        </MuiThemeProvider>
+        <App />
       </JssProvider>
     </ApolloProvider>
   </BrowserRouter>

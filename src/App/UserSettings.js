@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Avatar } from 'material-ui';
-import Button from 'material-ui/Button';
+import { Avatar } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 
 import DeleteUser from './User/Mutations/DeleteUser';
 

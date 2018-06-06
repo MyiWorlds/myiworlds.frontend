@@ -5,6 +5,7 @@ import GET_CIRCLE_BY_SLUG from '../../Queries/getCircleBySlug';
 
 import Progress from '../../../Components/Progress';
 import NotFound from '../../../Components/NotFound';
+import { Typography } from '@material-ui/core';
 
 const CircleBySlug = props => (
   <Query
@@ -20,7 +21,9 @@ const CircleBySlug = props => (
 
       return (
         <div>
-          <h1>{data.getCircleBySlug.title}</h1>
+          <Typography component="h4" color="inherit">
+            {data.getCircleBySlug.title}
+          </Typography>
           <div>{data.getCircleBySlug.slug}</div>
           <button onClick={() => refetch()}>Refetch!</button>
         </div>

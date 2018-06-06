@@ -5,11 +5,17 @@ import gql from 'graphql-tag';
 
 import { Query } from 'react-apollo';
 
-import { withStyles } from 'material-ui/styles';
+import {
+  Card,
+  createMuiTheme,
+  MuiThemeProvider,
+  withStyles,
+} from '@material-ui/core';
 
 import Progress from './Components/Progress';
 import Navigation from './Navigation';
 import Content from './Content';
+import AppBar from './AppBar';
 
 const GET_USER = gql`
   {
@@ -50,20 +56,49 @@ const GET_USER = gql`
 `;
 
 const styles = theme => ({
+  app: {
+    position: 'fixed',
+    height: '100%',
+    width: '100%',
+  },
   root: {
     position: 'relative',
     display: 'flex',
-    flex: 1,
     height: '100%',
     width: '100%',
   },
 });
+
+const theme = props =>
+  createMuiTheme({
+    palette: {
+      primary: {
+        // light: will be calculated from palette.primary.main,
+        main: '#2196F3',
+        // dark: will be calculated from palette.primary.main,
+        // contrastText: will be calculated to contast with palette.primary.main
+      },
+      secondary: {
+        light: '#0066ff',
+        main: '#0044ff',
+        // dark: will be calculated from palette.secondary.main,
+        contrastText: '#ffcc00',
+      },
+      // background: {
+      //   paper: '#303030',
+      // },
+      // error: will use the default color
+      // type: props.dark ? 'dark' : 'light', // Temp making dark
+      type: props.dark ? 'light' : 'dark',
+    },
+  });
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showNavigation: true,
+      themeDark: false,
     };
   }
 
@@ -71,32 +106,47 @@ class App extends React.Component {
     this.setState({ showNavigation: !this.state.showNavigation });
   };
 
+  handleToggleBoolean = key => {
+    this.setState({ [key]: !this.state[key] });
+  };
+
   render() {
     const { classes } = this.props;
-    const { showNavigation } = this.state;
+    const { showNavigation, themeDark } = this.state;
 
     return (
-      <Query query={GET_USER}>
-        {({ loading, error, data, refetch }) => {
-          if (loading) return <Progress />;
-          if (error) return <p>App had error {console.log(error)}</p>;
-          const user = data.getUser;
+      <MuiThemeProvider theme={theme({ dark: themeDark })}>
+        <Query query={GET_USER}>
+          {({ loading, error, data, refetch }) => {
+            if (loading) return <Progress />;
+            if (error) return <p>App had error {console.log(error)}</p>;
+            const user = data.getUser;
 
-          return (
-            <div className={classes.root}>
-              {/* <Circle circleKey={user.ui.uid} /> */}
-
-              <Navigation
-                user={user}
-                refetch={refetch}
-                showNavigation={showNavigation}
-                handleNavigationToggle={this.handleNavigationToggle}
-              />
-              <Content user={user} showNavigation={showNavigation} />
-            </div>
-          );
-        }}
-      </Query>
+            return (
+              <Card className={classes.app}>
+                <div className={classes.root}>
+                  {/* <Circle circleKey={user.ui.uid} /> */}
+                  <AppBar
+                    user={user}
+                    handleNavigationToggle={this.handleNavigationToggle}
+                    showNavigation={showNavigation}
+                    themeDark={themeDark}
+                    handleToggleBoolean={this.handleToggleBoolean}
+                  />
+                  <Navigation
+                    user={user}
+                    refetch={refetch}
+                    themeDark={themeDark}
+                    showNavigation={showNavigation}
+                    handleToggleBoolean={this.handleToggleBoolean}
+                  />
+                  <Content user={user} showNavigation={showNavigation} />
+                </div>
+              </Card>
+            );
+          }}
+        </Query>
+      </MuiThemeProvider>
     );
   }
 }

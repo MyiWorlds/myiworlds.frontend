@@ -1,16 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import { Redirect } from 'react-router-dom';
 
 import uuid from 'uuid/v1';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 
-import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button';
-import Card from 'material-ui/Card';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 
 import GET_CIRCLES_BY_USER_KEY from '../../Queries/getCirclesByUserKey';
 
-import CirclesByUserKey from '../../Components/CirclesByUserKey';
 import Progress from '../../../Components/Progress';
 
 const CREATE_CIRCLE = gql`
@@ -36,7 +38,14 @@ const GET_USER = gql`
 `;
 
 class CreateCircle extends React.Component {
+  static propTypes: {
+    editingCircle: PropTypes.boolean,
+    circle: PropTypes.object,
+  };
+
   state = {
+    toCircle: false,
+    uid: null,
     title: '',
     type: '',
     creator: '',
@@ -45,8 +54,9 @@ class CreateCircle extends React.Component {
 
   componentWillMount() {
     const circle = this.props.circle || {};
+    const { editingCircle } = this.props;
 
-    function getKeysFromArray(array) {
+    function getUidsFromArray(array) {
       let uids = null;
       if (array && array.length) {
         uids = [];
@@ -57,12 +67,13 @@ class CreateCircle extends React.Component {
 
     if (circle) {
       this.setState({
-        parent: circle.uid,
+        uid: editingCircle ? circle.uid : null,
+        parent: editingCircle ? circle.uid : circle.uid,
         slug: circle.slug,
         public: false,
         type: circle.type,
-        settings: getKeysFromArray(circle.settings),
-        styles: getKeysFromArray(circle.styles),
+        settings: getUidsFromArray(circle.settings),
+        styles: getUidsFromArray(circle.styles),
         rating: circle.rating ? circle.rating.uid : null,
         tags: circle.tags,
         title: circle.title,
@@ -70,8 +81,8 @@ class CreateCircle extends React.Component {
         description: circle.description,
         media: circle.media ? circle.media.uid : null,
         icon: circle.icon ? circle.icon.uid : null,
-        viewers: getKeysFromArray(circle.viewers),
-        editors: getKeysFromArray(circle.editors),
+        viewers: getUidsFromArray(circle.viewers),
+        editors: getUidsFromArray(circle.editors),
         string: circle.string,
         object: circle.object,
         number: circle.number,
@@ -80,8 +91,8 @@ class CreateCircle extends React.Component {
         date: circle.date,
         geoPoint: circle.geoPoint,
         line: circle.line ? circle.line.uid : null,
-        lines: getKeysFromArray(circle.lines),
-        linesMany: getKeysFromArray(circle.linesMany),
+        lines: getUidsFromArray(circle.lines),
+        linesMany: getUidsFromArray(circle.linesMany),
       });
     }
   }
@@ -178,14 +189,27 @@ class CreateCircle extends React.Component {
       },
       refetchQueries: [{ query: GET_CIRCLES_BY_USER_KEY }],
     });
+
+    this.setState({
+      toCircle: true,
+      uid: uid,
+    });
   };
 
   render() {
+    const { toCircle, uid } = this.state;
+
+    if (toCircle === true) {
+      return <Redirect to={`/uid/${uid}`} />;
+    }
+
     return (
       <Query query={GET_USER}>
         {({ loading, error, data }) => {
           if (loading) return <Progress />;
           if (error) return <p>`Error :( ${console.log(error)}`</p>;
+
+          const { type, title, slug } = this.state;
 
           return (
             <Mutation mutation={CREATE_CIRCLE}>
@@ -207,8 +231,18 @@ class CreateCircle extends React.Component {
                         id="type"
                         autoFocus={true}
                         label="Type"
-                        value={this.state.type}
+                        value={type}
                         onChange={this.handleInputChange('type')}
+                        margin="normal"
+                        fullWidth={true}
+                      />
+                      <br />
+                      <TextField
+                        id="slug"
+                        autoFocus={true}
+                        label="Slug"
+                        value={slug}
+                        onChange={this.handleInputChange('slug')}
                         margin="normal"
                         fullWidth={true}
                       />
@@ -216,7 +250,7 @@ class CreateCircle extends React.Component {
                       <TextField
                         id="title"
                         label="Title"
-                        value={this.state.title}
+                        value={title}
                         onChange={this.handleInputChange('title')}
                         margin="normal"
                         fullWidth={true}
@@ -235,7 +269,6 @@ class CreateCircle extends React.Component {
                       <br />
                     </form>
                   </Card>
-                  <CirclesByUserKey />
                 </div>
               )}
             </Mutation>

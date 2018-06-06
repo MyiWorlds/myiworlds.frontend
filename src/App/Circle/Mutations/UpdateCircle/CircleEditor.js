@@ -1,17 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v1';
-import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 
-import Card from 'material-ui/Card';
-import { Snackbar } from 'material-ui';
+import {
+  Button,
+  Card,
+  CardActions,
+  Divider,
+  // List,
+  // ListItem,
+  // ListItemIcon,
+  // ListItemText,
+  TextField,
+  Snackbar,
+  withStyles,
+} from '@material-ui/core';
 
 import Progress from '../../../Components/Progress';
-import CirclesByUserKey from '../../Components/CirclesByUserKey';
-import CirclesByTags from '../../Components/CirclesByTags';
+import FontIcon from '../../../Components/FontIcon';
+import ArrayEditor from './ArrayEditor';
+import CircleByKey from '../../Components/CircleByKey/CircleByKey';
 
 const UPDATE_CIRCLE = gql`
   mutation updateCircle($input: updateCircleInput!) {
@@ -36,14 +48,30 @@ const GET_USER = gql`
   }
 `;
 
+const styles = {
+  listActions: {
+    justifyContent: 'center',
+  },
+  listActionIcon: {
+    marginRight: 8,
+  },
+  editorActions: {
+    justifyContent: 'flex-end',
+  },
+};
+
 class CircleEditor extends React.Component {
   static propTypes = {
     circle: PropTypes.object.isRequired,
   };
 
   state = {
+    toCircle: false,
     snackbarOpen: false,
     type: '',
+    value: 0,
+    showLineEditor: false,
+    showLinesEditor: false,
   };
 
   componentWillMount() {
@@ -183,11 +211,46 @@ class CircleEditor extends React.Component {
       variables: {
         input: builtCircle,
       },
-    }).then(() => this.props.history.push(`/uid/${circle.uid}`));
+    });
+
+    this.setState({
+      uid: uid,
+      toCircle: true,
+    });
+  };
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+  handleBooleanTrue = key => {
+    this.setState({ [key]: true });
+  };
+
+  handleBooleanFalse = key => {
+    this.setState({ [key]: false });
+  };
+
+  handleSetState = (key, value) => {
+    this.setState({ [key]: value });
   };
 
   render() {
-    const { title, type } = this.state;
+    const {
+      title,
+      type,
+      line,
+      lines,
+      showLineEditor,
+      showLinesEditor,
+      uid,
+      toCircle,
+    } = this.state;
+    const { classes } = this.props;
+
+    if (toCircle === true) {
+      return <Redirect to={`/uid/${uid}`} />;
+    }
 
     return (
       <Query query={GET_USER}>
@@ -204,42 +267,142 @@ class CircleEditor extends React.Component {
                       this.submitForm(event, updateCircle, data.getUser.uid)
                     }
                   >
-                    <input
-                      value={title}
-                      onChange={this.handleInputChange('title')}
-                    />
-                    <input
-                      value={type}
-                      onChange={this.handleInputChange('type')}
-                    />
-                    <button type="submit">Update Circle</button>
-                    <Card style={{ width: 420, margin: '0 auto', padding: 8 }}>
-                      <h2>
-                        How would you like to find what you are Searching for?
-                      </h2>
-                      <Card
-                        style={{ maxWidth: 400, margin: '0 auto', padding: 8 }}
+                    <Card
+                      style={{
+                        margin: '24px auto',
+                        maxWidth: 400,
+                      }}
+                    >
+                      <div
+                        style={{
+                          padding: 12,
+                        }}
                       >
-                        <h3>Your Recent creations</h3>
-                        <CirclesByUserKey />
-                      </Card>
-                      <div>
-                        <h5>Search by Tags</h5>
-                        <CirclesByTags />
+                        <TextField
+                          label="Type"
+                          value={type}
+                          onChange={this.handleInputChange('type')}
+                          margin="normal"
+                          fullWidth={true}
+                        />
+                        <TextField
+                          label="Title"
+                          value={title}
+                          onChange={this.handleInputChange('title')}
+                          margin="normal"
+                          fullWidth={true}
+                        />
                       </div>
-                      <div>
-                        <h5>Your tree</h5>
-                        <ul>
-                          <li>Circle</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <h5>Favorites</h5>
-                        <ul>
-                          <li>Circle</li>
-                        </ul>
-                      </div>
+
+                      <Divider />
+
+                      {/* Make this list component */}
+                      {/* <List>
+                        <ListItem>
+                          <ListItemIcon>
+                            <FontIcon>details</FontIcon>
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Single-line item"
+                            secondary={'Secondary text'}
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemIcon>
+                            <FontIcon>details</FontIcon>
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Single-line item"
+                            secondary={'Secondary text'}
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemIcon>
+                            <FontIcon>details</FontIcon>
+                          </ListItemIcon>
+                          <ListItemText
+                            primary="Single-line item"
+                            secondary={'Secondary text'}
+                          />
+                        </ListItem>
+                      </List> */}
+
+                      <CardActions className={classes.listActions}>
+                        <Button
+                          onClick={() =>
+                            this.handleBooleanTrue('showLineEditor')
+                          }
+                          color="primary"
+                          label="Add"
+                        >
+                          <FontIcon className={classes.listActionIcon}>
+                            add
+                          </FontIcon>Add
+                        </Button>
+                        <Button color="primary" label="Edit">
+                          <FontIcon className={classes.listActionIcon}>
+                            edit
+                          </FontIcon>Edit
+                        </Button>
+                      </CardActions>
+
+                      {line ? <CircleByKey uid={line} /> : 'none'}
+
+                      <Divider />
+
+                      <CardActions className={classes.listActions}>
+                        <Button
+                          onClick={() =>
+                            this.handleBooleanTrue('showLinesEditor')
+                          }
+                          color="primary"
+                          label="Add"
+                        >
+                          <FontIcon className={classes.listActionIcon}>
+                            add
+                          </FontIcon>Add
+                        </Button>
+                        <Button color="primary" label="Edit">
+                          <FontIcon className={classes.listActionIcon}>
+                            edit
+                          </FontIcon>Edit
+                        </Button>
+                      </CardActions>
+
+                      {lines
+                        ? lines.map(line => (
+                            <CircleByKey key={line} uid={line} />
+                          ))
+                        : 'none'}
+
+                      <Divider />
+
+                      <CardActions className={classes.editorActions}>
+                        <Button type="submit" variant="raised" color="primary">
+                          Update Circle
+                        </Button>
+                      </CardActions>
                     </Card>
+
+                    <ArrayEditor
+                      id="showLineEditor"
+                      listItemType="RADIO"
+                      show={showLineEditor}
+                      handleSetState={this.handleSetState}
+                      title="Select Circle"
+                      stateLine={line}
+                      stateKey="line"
+                    />
+
+                    <ArrayEditor
+                      id="showLinesEditor"
+                      listItemType="CHECKBOX"
+                      show={showLinesEditor}
+                      handleSetState={this.handleSetState}
+                      title="Connect Circles"
+                      stateLines={lines}
+                      stateKey="lines"
+                    />
 
                     <Snackbar
                       anchorOrigin={{
@@ -269,4 +432,4 @@ class CircleEditor extends React.Component {
   }
 }
 
-export default withRouter(CircleEditor);
+export default withStyles(styles)(CircleEditor);

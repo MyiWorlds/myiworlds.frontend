@@ -23,19 +23,28 @@ const Routes = props => {
       <Route
         path="/uid/:uid"
         render={props => (
-          <CircleByKey user={user} uid={props.match.params.uid} {...props} />
+          <CircleByKey
+            user={user}
+            uid={props.match.params.uid}
+            isPrimaryContent={true}
+            {...props}
+          />
         )}
       />
       <Route
         exact
         path="/search"
-        render={props => <CirclesByTags {...props} />}
+        render={props => <CirclesByTags {...props} isPrimaryContent={true} />}
       />
       <Route
         exact
         path="/create"
         render={props =>
-          !user ? <PleaseLogin /> : <CreateCircle {...props} />
+          !user ? (
+            <PleaseLogin />
+          ) : (
+            <CreateCircle {...props} isPrimaryContent={true} />
+          )
         }
       />
       <Route
@@ -45,7 +54,11 @@ const Routes = props => {
           !user ? (
             <PleaseLogin />
           ) : (
-            <UpdateCircle uid={props.match.params.uid} {...props} />
+            <UpdateCircle
+              uid={props.match.params.uid}
+              {...props}
+              isPrimaryContent={true}
+            />
           )
         }
       />
@@ -56,7 +69,11 @@ const Routes = props => {
           !user ? (
             <PleaseLogin />
           ) : (
-            <CopyCircle uid={props.match.params.uid} {...props} />
+            <CopyCircle
+              uid={props.match.params.uid}
+              {...props}
+              isPrimaryContent={true}
+            />
           )
         }
       />
@@ -64,14 +81,22 @@ const Routes = props => {
         exact
         path="/recents"
         render={props =>
-          !user ? <PleaseLogin /> : <CirclesByUserKey {...props} />
+          !user ? (
+            <PleaseLogin />
+          ) : (
+            <CirclesByUserKey {...props} isPrimaryContent={true} />
+          )
         }
       />
       <Route
         exact
         path="/settings"
         render={props =>
-          !user ? <PleaseLogin /> : <UserSettings user={user} {...props} />
+          !user ? (
+            <PleaseLogin />
+          ) : (
+            <UserSettings user={user} {...props} isPrimaryContent={true} />
+          )
         }
       />
       <Route
@@ -81,7 +106,12 @@ const Routes = props => {
           !user ? (
             <PleaseLogin />
           ) : user && user.homePrivate ? (
-            <CircleByKey user={user} uid={user.homePrivate.uid} {...props} />
+            <CircleByKey
+              user={user}
+              uid={user.homePrivate.uid}
+              {...props}
+              isPrimaryContent={true}
+            />
           ) : (
             <AddUsername {...props} />
           )
@@ -94,19 +124,46 @@ const Routes = props => {
           !user ? (
             <PleaseLogin />
           ) : (
-            <CircleByKey user={user} uid={user.inbox.uid} {...props} />
+            <CircleByKey
+              user={user}
+              uid={user.inbox.uid}
+              {...props}
+              isPrimaryContent={true}
+            />
           )
         }
       />
       <Route
         exact
         path="/add-username"
-        render={props => (!user ? <PleaseLogin /> : <AddUsername {...props} />)}
+        render={props =>
+          !user ? (
+            <PleaseLogin />
+          ) : (
+            <AddUsername {...props} isPrimaryContent={true} />
+          )
+        }
       />
       <Route
         exact
         path="/filters"
-        render={props => <CirclesByFilters user={user} />}
+        render={props => (
+          <CirclesByFilters user={user} isPrimaryContent={true} />
+        )}
+      />
+      <Route
+        exact
+        path="/privacy-policy"
+        render={props => (
+          <CircleBySlug username="APP" slug="/privacy-policy" {...props} />
+        )}
+      />
+      <Route
+        exact
+        path="/terms-of-service"
+        render={props => (
+          <CircleBySlug username="APP" slug="/terms-of-service" {...props} />
+        )}
       />
       <Route
         path="/:username"
@@ -120,6 +177,7 @@ const Routes = props => {
           <CircleBySlug
             username={props.match.params.username}
             slug={props.match.params.slug}
+            isPrimaryContent={true}
             {...props}
           />
         )}

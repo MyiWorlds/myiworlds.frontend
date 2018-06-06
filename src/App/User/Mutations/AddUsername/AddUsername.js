@@ -2,8 +2,8 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 
-import { Button } from 'material-ui';
-import TextField from 'material-ui/TextField';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import GET_USER from '../../Queries/getUser';
 import GET_CIRCLE_BY_USERNAME from '../../../Circle/Queries/getCircleByUsername';

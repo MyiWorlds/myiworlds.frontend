@@ -5,6 +5,7 @@ import GET_CIRCLE_BY_USERNAME from '../../Queries/getCircleByUsername';
 
 import Progress from '../../../Components/Progress';
 import NotFound from '../../../Components/NotFound';
+import { Typography, Button } from '@material-ui/core';
 
 const CircleByUsername = props => (
   <Query
@@ -22,9 +23,13 @@ const CircleByUsername = props => (
 
       return (
         <div>
-          <h1>{data.getCircleByUsername.title}</h1>
-          <div>{data.getCircleByUsername.slug}</div>
-          <button onClick={() => refetch()}>Refetch!</button>
+          <Typography variant="display4">
+            {data.getCircleByUsername.title}
+          </Typography>
+          <Typography variant="title">
+            {data.getCircleByUsername.slug}
+          </Typography>
+          <Button onClick={() => refetch()}>Refetch</Button>
         </div>
       );
     }}
