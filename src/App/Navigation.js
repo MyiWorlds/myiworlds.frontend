@@ -6,81 +6,20 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
-import Avatar from '@material-ui/core/Avatar';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import {
+  Hidden,
+  Drawer,
+  Divider,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core';
 
 import FontIcon from './Components/FontIcon';
-
-const navItems = [
-  {
-    type: 'BUTTON',
-    settings: {
-      primary: true,
-    },
-    icon: 'add',
-    title: 'Create',
-    slug: `/create`,
-  },
-  {
-    type: 'BUTTON',
-    settings: {
-      primary: true,
-    },
-    icon: 'search',
-    title: 'Search',
-    slug: `/search`,
-  },
-  {
-    type: 'BUTTON',
-    settings: {
-      primary: true,
-    },
-    icon: 'home',
-    title: 'Home',
-    slug: `/`,
-  },
-  {
-    type: 'BUTTON',
-    settings: {
-      primary: true,
-    },
-    icon: 'public',
-    title: 'MyiWorlds',
-    slug: '/private/home',
-  },
-  {
-    type: 'BUTTON',
-    settings: {
-      primary: true,
-    },
-    icon: 'inbox',
-    title: 'Inbox',
-    slug: '/inbox',
-  },
-  {
-    type: 'BUTTON',
-    settings: {
-      primary: true,
-    },
-    icon: 'query_builder',
-    title: 'Recents',
-    slug: '/recents',
-  },
-];
 
 const drawerWidth = 240;
 
 const styles = theme => ({
-  avatar: {
-    height: 36,
-    width: 36,
-    margin: '4px 4px 4px -7px',
-  },
   navigation: {
     overflow: 'hidden',
     width: '0px',
@@ -151,25 +90,72 @@ class Navigation extends React.Component {
     this.setState({ value });
   };
 
+  navItems = user => {
+    const navItems = [
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'add',
+        title: 'Create',
+        slug: `/create`,
+      },
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'search',
+        title: 'Search',
+        slug: `/search`,
+      },
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'home',
+        title: 'Home',
+        slug: `/private/home`,
+      },
+      user && user.username
+        ? {
+            type: 'BUTTON',
+            settings: {
+              primary: true,
+            },
+            icon: 'public',
+            title: 'Public Profile',
+            slug: `/${user.username}`,
+          }
+        : {},
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'inbox',
+        title: 'Inbox',
+        slug: '/inbox',
+      },
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
+        icon: 'query_builder',
+        title: 'Recents',
+        slug: '/recents',
+      },
+    ];
+
+    return navItems;
+  };
+
   render() {
     const { classes, user, showNavigation, handleToggleBoolean } = this.props;
-
-    const addUsername = (
-      <ListItem button key="username" component={Link} to={'/add-username'}>
-        <ListItemIcon>
-          {user && user.profileMedia ? (
-            <Avatar
-              alt={user.username}
-              src={user.profileMedia.string}
-              className={classes.avatar}
-            />
-          ) : (
-            <FontIcon>account_circle</FontIcon>
-          )}
-        </ListItemIcon>
-        <ListItemText primary="Add Username" />
-      </ListItem>
-    );
+    const navItems = this.navItems(user);
 
     return (
       <div className={classes.navigation}>
@@ -211,27 +197,6 @@ class Navigation extends React.Component {
                     return null;
                 }
               })}
-              {user && user.username ? (
-                <ListItem
-                  button
-                  key="username"
-                  component={Link}
-                  to={'/add-username'}
-                >
-                  <ListItemIcon>
-                    {user.profileMedia ? (
-                      <Avatar
-                        alt={user.username}
-                        src={user.profileMedia.string}
-                        className={classes.avatar}
-                      />
-                    ) : (
-                      <FontIcon>account_circle</FontIcon>
-                    )}
-                  </ListItemIcon>
-                  <ListItemText primary="Add Username" />
-                </ListItem>
-              ) : null}
             </div>
           </Drawer>
         </Hidden>
@@ -275,7 +240,6 @@ class Navigation extends React.Component {
                       return null;
                   }
                 })}
-                {!user ? null : user.username ? null : addUsername}
               </div>
             </Drawer>
           </div>

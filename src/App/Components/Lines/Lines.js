@@ -21,6 +21,7 @@ class Lines extends React.Component {
     stateLines: [],
   };
   static propTypes = {
+    handleSetState: PropTypes.func,
     lines: PropTypes.array,
     stateLine: PropTypes.string,
     stateLines: PropTypes.array,
@@ -40,10 +41,10 @@ class Lines extends React.Component {
 
     if (stateLines.indexOf(circle.uid) === -1) {
       stateLines.push(circle.uid);
-      this.props.handleSetState(this.props.stateKey, stateLines);
+      this.props.handleSetState({ [this.props.stateKey]: stateLines });
     } else {
       stateLines = stateLines.filter(id => id !== circle.uid);
-      this.props.handleSetState(this.props.stateKey, stateLines);
+      this.props.handleSetState({ [this.props.stateKey]: stateLines });
     }
   };
 
@@ -104,7 +105,9 @@ class Lines extends React.Component {
                 control={
                   <Radio
                     onClick={() =>
-                      this.props.handleSetState(this.props.stateKey, circle.uid)
+                      this.props.handleSetState({
+                        [this.props.stateKey]: circle.uid,
+                      })
                     }
                     color="primary"
                     checked={circle.uid === this.props.stateLine}

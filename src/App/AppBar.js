@@ -98,13 +98,6 @@ class AppBar extends React.Component {
       </Button>
     );
 
-    const userLink =
-      user && user.username ? (
-        <MenuItem component={Link} to={`/${user.username}`}>
-          <ListItemText primary={user.username} />
-        </MenuItem>
-      ) : null;
-
     const logoutBtn = (
       <MenuItem button key="logout" onClick={() => logout()}>
         <ListItemIcon>
@@ -172,7 +165,6 @@ class AppBar extends React.Component {
               open={open}
               onClose={this.handleClose}
             >
-              {user ? userLink : null}
               <MenuItem
                 onClick={this.handleClose}
                 component={Link}
@@ -193,7 +185,7 @@ class AppBar extends React.Component {
                   <Switch
                     checked={themeDark}
                     onChange={() => handleToggleBoolean('themeDark')}
-                    value={themeDark}
+                    value={'theme-color'}
                   />
                 </ListItemSecondaryAction>
               </MenuItem>

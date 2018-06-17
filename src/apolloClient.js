@@ -4,7 +4,7 @@ import { BatchHttpLink } from 'apollo-link-batch-http';
 
 const apolloClient = new ApolloClient({
   link: new BatchHttpLink({
-    uri: 'http://localhost:8080/graphql',
+    uri: `${process.env.URL}/graphql`,
     batchInterval: 100,
   }),
   cache: new InMemoryCache(),

@@ -1,15 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { propType } from 'graphql-anywhere';
-import { compose, graphql } from 'react-apollo';
 import { Typography } from '@material-ui/core';
-
-// const DESCRIPTION =
-//   fragment Description on Circle {
-//     description
-//     subtitle
-//   }
-// ;
 
 class Description extends React.Component {
   static fragments = {
@@ -22,9 +14,9 @@ class Description extends React.Component {
     `,
   };
 
-  // static propTypes = {
-  //   circle: propType(Description.fragments.circle).isRequired,
-  // };
+  static propTypes = {
+    circle: propType(Description.fragments.circle).isRequired,
+  };
 
   render() {
     const circle = this.props.circle;
@@ -39,4 +31,3 @@ class Description extends React.Component {
 }
 
 export default Description;
-// export default compose(graphql(DESCRIPTION))(Description);

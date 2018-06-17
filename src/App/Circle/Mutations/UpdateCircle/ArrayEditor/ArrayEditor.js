@@ -46,14 +46,14 @@ const ArrayEditor = ({
     <Dialog
       fullScreen
       open={show}
-      onClose={() => handleSetState(id, false)}
+      onClose={() => handleSetState({ [id]: false })}
       TransitionComponent={Transition}
     >
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton
             color="inherit"
-            onClick={() => handleSetState(id, false)}
+            onClick={() => handleSetState({ [id]: false })}
             aria-label="Close"
           >
             <FontIcon>close</FontIcon>
@@ -64,7 +64,7 @@ const ArrayEditor = ({
           <Button
             variant="raised"
             color="primary"
-            onClick={() => handleSetState(id, false)}
+            onClick={() => handleSetState({ [id]: false })}
           >
             Select
           </Button>

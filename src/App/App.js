@@ -73,16 +73,10 @@ const theme = props =>
   createMuiTheme({
     palette: {
       primary: {
-        // light: will be calculated from palette.primary.main,
         main: '#2196F3',
-        // dark: will be calculated from palette.primary.main,
-        // contrastText: will be calculated to contast with palette.primary.main
       },
       secondary: {
-        light: '#0066ff',
-        main: '#0044ff',
-        // dark: will be calculated from palette.secondary.main,
-        contrastText: '#ffcc00',
+        main: '#f44336',
       },
       // background: {
       //   paper: '#303030',

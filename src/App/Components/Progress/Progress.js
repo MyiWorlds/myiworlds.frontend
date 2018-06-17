@@ -33,34 +33,50 @@ class Progress extends React.Component {
   }
 
   render() {
-    const { classes, size } = this.props;
+    const { classes, size, hideBackground } = this.props;
     const { zoom } = this.state;
 
     let progressSize = size || 35;
 
+    const progressCircle = (
+      <CircularProgress
+        style={{
+          position: 'absolute',
+          top: progressSize / 8,
+          left: progressSize / 8,
+        }}
+        className={classes.progress}
+        size={progressSize}
+        thickness={5}
+      />
+    );
+
     return (
       <div className={classes.container}>
         <Zoom in={zoom}>
-          <Paper
-            elevation={5}
-            style={{
-              position: 'relative',
-              height: size * 1.25 || 50,
-              width: size * 1.25 || 50,
-              borderRadius: '50%',
-            }}
-          >
-            <CircularProgress
+          {hideBackground ? (
+            <div
               style={{
-                position: 'absolute',
-                top: progressSize / 4,
-                left: progressSize / 4,
+                position: 'relative',
+                height: size * 1.25 || 50,
+                width: size * 1.25 || 50,
               }}
-              className={classes.progress}
-              size={progressSize}
-              thickness={5}
-            />
-          </Paper>
+            >
+              {progressCircle}
+            </div>
+          ) : (
+            <Paper
+              elevation={5}
+              style={{
+                position: 'relative',
+                height: size * 1.25 || 50,
+                width: size * 1.25 || 50,
+                borderRadius: '50%',
+              }}
+            >
+              {progressCircle}
+            </Paper>
+          )}
         </Zoom>
       </div>
     );

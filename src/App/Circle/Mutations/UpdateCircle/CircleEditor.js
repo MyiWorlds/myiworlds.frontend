@@ -18,6 +18,10 @@ import {
   TextField,
   Snackbar,
   withStyles,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from '@material-ui/core';
 
 import Progress from '../../../Components/Progress';
@@ -218,11 +222,6 @@ class CircleEditor extends React.Component {
       toCircle: true,
     });
   };
-
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
   handleBooleanTrue = key => {
     this.setState({ [key]: true });
   };
@@ -231,8 +230,13 @@ class CircleEditor extends React.Component {
     this.setState({ [key]: false });
   };
 
-  handleSetState = (key, value) => {
-    this.setState({ [key]: value });
+  handleSetState = object => {
+    this.setState(object);
+  };
+
+  // Redo
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
@@ -278,13 +282,26 @@ class CircleEditor extends React.Component {
                           padding: 12,
                         }}
                       >
-                        <TextField
-                          label="Type"
-                          value={type}
-                          onChange={this.handleInputChange('type')}
-                          margin="normal"
-                          fullWidth={true}
-                        />
+                        <FormControl>
+                          <InputLabel htmlFor="type">Type</InputLabel>
+                          <Select
+                            value={type}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'type',
+                              id: 'type',
+                            }}
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={'IMAGE'}>Image</MenuItem>
+                            <MenuItem value={'STRING'}>Sentence</MenuItem>
+                            <MenuItem value={'TEXT'}>Text</MenuItem>
+                            <MenuItem value={'LINES'}>Lines</MenuItem>
+                          </Select>
+                        </FormControl>
+
                         <TextField
                           label="Title"
                           value={title}

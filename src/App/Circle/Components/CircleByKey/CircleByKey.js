@@ -23,6 +23,7 @@ import Progress from '../../../Components/Progress';
 import NotFound from '../../../Components/NotFound';
 import Description from './Description';
 import Lines from './Lines';
+import Circle from '../Circle';
 
 const styles = theme => ({
   card: {
@@ -134,9 +135,11 @@ class CircleByKey extends React.Component {
                     <Description
                       circle={filter(Description.fragments.circle, circle)}
                     />
-                  ) : (
+                  ) : circle.lines ? (
                     <Lines circle={filter(Lines.fragments.circle, circle)} />
-                  )}
+                  ) : null}
+
+                  <Circle circle={filter(Circle.fragments.circle, circle)} />
                 </Card>
               </div>
             );
