@@ -42,8 +42,8 @@ class Progress extends React.Component {
       <CircularProgress
         style={{
           position: 'absolute',
-          top: progressSize / 8,
-          left: progressSize / 8,
+          top: progressSize / hideBackground ? 4 : 8,
+          left: progressSize / hideBackground ? 4 : 8,
         }}
         className={classes.progress}
         size={progressSize}

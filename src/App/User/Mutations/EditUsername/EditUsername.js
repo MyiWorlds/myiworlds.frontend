@@ -4,11 +4,11 @@ import gql from 'graphql-tag';
 import { Redirect } from 'react-router-dom';
 import { Query, Mutation } from 'react-apollo';
 
-import GET_CIRCLE_BY_USERNAME from './Circle/Queries/getCircleByUsername';
-import GET_USER from './User/Queries/getUser';
+import GET_CIRCLE_BY_USERNAME from '../../../Circle/Queries/getCircleByUsername';
+import GET_USER from '../../Queries/getUser';
 
-import Progress from './Components/Progress';
-import FontIcon from './Components/FontIcon';
+import Progress from '../../../Components/Progress';
+import FontIcon from '../../../Components/FontIcon';
 
 import {
   Button,
@@ -73,7 +73,7 @@ class EditUsername extends React.Component {
 
     this.timeout = setTimeout(() => {
       this.setState({ checkUsername: true });
-    }, 700);
+    }, 900);
 
     this.setState({ [name]: event.target.value });
   };
@@ -127,6 +127,7 @@ class EditUsername extends React.Component {
                     if (error) return <p>Error :( {console.log(error)}</p>;
 
                     const usernameAvailable =
+                      !loading &&
                       data.getCircleByUsername &&
                       data.getCircleByUsername.type === 'DOES_NOT_EXIST';
 
@@ -159,18 +160,21 @@ class EditUsername extends React.Component {
                     );
 
                     let usernameMessage = null;
-                    let textfieldIcon = userIcon;
+                    let textfieldIcon = null;
 
                     if (user.username === username || username === '') {
                       usernameMessage = 'Please enter a unique username';
-                    } else if (!checkUsername) {
-                      usernameMessage = 'Checking if available...';
-                      textfieldIcon = progress;
+                      textfieldIcon = userIcon;
                     } else if (usernameInvalid) {
                       usernameMessage =
                         'That username is already taken, please try another';
-                    } else {
+                      textfieldIcon = userIcon;
+                    } else if (!usernameInvalid && usernameAvailable) {
                       usernameMessage = 'Yes this username is available!';
+                      textfieldIcon = userIcon;
+                    } else {
+                      usernameMessage = 'Checking if available...';
+                      textfieldIcon = progress;
                     }
 
                     return (
@@ -257,7 +261,7 @@ class EditUsername extends React.Component {
                             color="primary"
                             type="submit"
                             disabled={
-                              usernameInvalid || username === user.username
+                              usernameInvalid || !usernameAvailable || loading
                             }
                           >
                             Edit

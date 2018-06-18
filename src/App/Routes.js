@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router';
 
 import CreateCircle from './Circle/Mutations/CreateCircle';
 import UpdateCircle from './Circle/Mutations/UpdateCircle';
-import AddUsername from './User/Mutations/AddUsername';
+import EditUsername from './User/Mutations/EditUsername';
 
 import CirclesByUserKey from './Circle/Components/CirclesByUserKey';
 import CircleBySlug from './Circle/Components/CircleBySlug';
@@ -113,7 +113,7 @@ const Routes = props => {
               isPrimaryContent={true}
             />
           ) : (
-            <AddUsername {...props} />
+            <EditUsername {...props} />
           )
         }
       />
@@ -140,7 +140,7 @@ const Routes = props => {
           !user ? (
             <PleaseLogin />
           ) : (
-            <AddUsername {...props} isPrimaryContent={true} />
+            <EditUsername {...props} isPrimaryContent={true} />
           )
         }
       />

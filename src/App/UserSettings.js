@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import DeleteUser from './DeleteUser';
-import EditUsername from './EditUsername';
+import EditUsername from './User/Mutations/EditUsername/EditUsername';
 import FontIcon from './Components/FontIcon';
 
 const styles = theme => ({
