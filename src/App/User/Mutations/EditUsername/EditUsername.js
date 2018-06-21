@@ -1,7 +1,6 @@
 import React from 'react';
 
 import gql from 'graphql-tag';
-import { Redirect } from 'react-router-dom';
 import { Query, Mutation } from 'react-apollo';
 
 import GET_CIRCLE_BY_USERNAME from '../../../Circle/Queries/getCircleByUsername';
@@ -45,6 +44,13 @@ const styles = theme => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  textfieldProgress: {
+    position: 'relative',
+    width: 14,
+    height: 14,
+    marginRight: 4,
+    marginLeft: 6,
+  },
 });
 
 class EditUsername extends React.Component {
@@ -55,7 +61,9 @@ class EditUsername extends React.Component {
       username: this.props.user.username || '',
       checkUsername: false,
       usernameAvailable: false,
-      redirect: false,
+      isLoading: false,
+      usernameAvailable: false,
+      usernameInvalid: false,
     };
     this.timeout = 0;
   }
@@ -64,28 +72,46 @@ class EditUsername extends React.Component {
     this.setState(object);
   };
 
-  handleInputChange = name => event => {
-    this.setState({ checkUsername: false, usernameAvailable: false });
+  handleInputChange = (key, value, refetch) => {
+    this.setState({
+      checkUsername: false,
+      usernameAvailable: false,
+      isLoading: true,
+      usernameInvalid: false,
+    });
 
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
 
-    this.timeout = setTimeout(() => {
+    this.timeout = setTimeout(async () => {
       this.setState({ checkUsername: true });
-    }, 900);
+      await refetch().then(res => {
+        const response = res.data.getCircleByUsername;
+        const usernameAvailable =
+          response && response.type === 'DOES_NOT_EXIST';
+        const usernameInvalid = response && response.type !== 'DOES_NOT_EXIST';
 
-    this.setState({ [name]: event.target.value });
+        this.setState({
+          checkUsername: false,
+          usernameAvailable,
+          isLoading: false,
+          usernameInvalid,
+        });
+      });
+    }, 700);
+
+    this.setState({ [key]: value });
   };
 
-  submitForm = (event, createUsername, usernameInvalid) => {
+  submitForm = async (event, createUsername, usernameInvalid) => {
     event.preventDefault();
 
     if (usernameInvalid) {
       return;
     }
 
-    createUsername({
+    await createUsername({
       variables: {
         input: {
           username: this.state.username,
@@ -95,16 +121,22 @@ class EditUsername extends React.Component {
       refetchQueries: [{ query: GET_USER }],
     });
 
-    this.setState({ redirect: true });
+    this.setState({
+      expanded: false,
+      checkUsername: false,
+    });
   };
 
   render() {
-    const { username, checkUsername, redirect, expanded } = this.state;
+    const {
+      username,
+      checkUsername,
+      expanded,
+      isLoading,
+      usernameAvailable,
+      usernameInvalid,
+    } = this.state;
     const { user, classes } = this.props;
-
-    if (redirect) {
-      return <Redirect to={'/settings'} />;
-    }
 
     return (
       <Query query={GET_USER}>
@@ -120,20 +152,16 @@ class EditUsername extends React.Component {
                   variables={{
                     username: username,
                   }}
-                  fetchPolicy="network-only"
+                  fetchPolicy="no-cache"
                   skip={!checkUsername}
                 >
-                  {({ loading, error, data }) => {
+                  {({ loading, error, data, refetch }) => {
                     if (error) return <p>Error :( {console.log(error)}</p>;
-
-                    const usernameAvailable =
-                      !loading &&
-                      data.getCircleByUsername &&
-                      data.getCircleByUsername.type === 'DOES_NOT_EXIST';
-
-                    const usernameInvalid =
-                      !usernameAvailable &&
-                      (username === '' || (!loading && checkUsername));
+                    const progress = (
+                      <div className={classes.textfieldProgress}>
+                        <Progress hideBackground size={24} />
+                      </div>
+                    );
 
                     const userIcon = (
                       <FontIcon
@@ -145,36 +173,18 @@ class EditUsername extends React.Component {
                       </FontIcon>
                     );
 
-                    const progress = (
-                      <div
-                        style={{
-                          position: 'relative',
-                          width: 14,
-                          height: 14,
-                          marginRight: 4,
-                          marginLeft: 6,
-                        }}
-                      >
-                        <Progress hideBackground size={24} />
-                      </div>
-                    );
-
                     let usernameMessage = null;
                     let textfieldIcon = null;
 
-                    if (user.username === username || username === '') {
-                      usernameMessage = 'Please enter a unique username';
-                      textfieldIcon = userIcon;
-                    } else if (usernameInvalid) {
-                      usernameMessage =
-                        'That username is already taken, please try another';
-                      textfieldIcon = userIcon;
-                    } else if (!usernameInvalid && usernameAvailable) {
+                    if (isLoading) {
+                      usernameMessage = 'Checking if available...';
+                      textfieldIcon = progress;
+                    } else if (usernameAvailable) {
                       usernameMessage = 'Yes this username is available!';
                       textfieldIcon = userIcon;
                     } else {
-                      usernameMessage = 'Checking if available...';
-                      textfieldIcon = progress;
+                      usernameMessage = 'Please try another unique username';
+                      textfieldIcon = userIcon;
                     }
 
                     return (
@@ -223,7 +233,13 @@ class EditUsername extends React.Component {
                               margin="normal"
                               value={username}
                               fullWidth
-                              onChange={this.handleInputChange('username')}
+                              onChange={event =>
+                                this.handleInputChange(
+                                  'username',
+                                  event.target.value,
+                                  refetch,
+                                )
+                              }
                               error={usernameInvalid}
                               helperText={usernameMessage}
                               InputProps={{
@@ -253,16 +269,13 @@ class EditUsername extends React.Component {
                             Cancel
                           </Button>
                           <Button
-                            // style={{ float: 'right' }}
                             onClick={event =>
                               this.submitForm(event, createUsername)
                             }
                             variant="raised"
                             color="primary"
                             type="submit"
-                            disabled={
-                              usernameInvalid || !usernameAvailable || loading
-                            }
+                            disabled={!usernameAvailable || isLoading}
                           >
                             Edit
                           </Button>
