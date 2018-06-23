@@ -60,7 +60,6 @@ class EditUsername extends React.Component {
       expanded: false,
       username: this.props.user.username || '',
       checkUsername: false,
-      usernameAvailable: false,
       isLoading: false,
       usernameAvailable: false,
       usernameInvalid: false,
@@ -86,6 +85,7 @@ class EditUsername extends React.Component {
 
     this.timeout = setTimeout(async () => {
       this.setState({ checkUsername: true });
+
       await refetch().then(res => {
         const response = res.data.getCircleByUsername;
         const usernameAvailable =
@@ -124,6 +124,15 @@ class EditUsername extends React.Component {
     this.setState({
       expanded: false,
       checkUsername: false,
+    });
+  };
+
+  handleCancel = user => {
+    this.updateState({
+      username: user.username || '',
+      expanded: false,
+      checkUsername: false,
+      usernameInvalid: false,
     });
   };
 
@@ -257,13 +266,7 @@ class EditUsername extends React.Component {
 
                         <ExpansionPanelActions>
                           <Button
-                            onClick={() =>
-                              this.updateState({
-                                username: user.username || '',
-                                expanded: false,
-                                checkUsername: false,
-                              })
-                            }
+                            onClick={() => this.handleCancel(user)}
                             color="primary"
                           >
                             Cancel
