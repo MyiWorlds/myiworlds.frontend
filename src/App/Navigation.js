@@ -115,6 +115,15 @@ class Navigation extends React.Component {
         settings: {
           primary: true,
         },
+        icon: 'search',
+        title: 'Search2',
+        slug: `/search2`,
+      },
+      {
+        type: 'BUTTON',
+        settings: {
+          primary: true,
+        },
         icon: 'home',
         title: 'Home',
         slug: `/private/home`,

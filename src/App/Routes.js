@@ -14,6 +14,7 @@ import CirclesByFilters from './Circle/Components/CirclesByFilters';
 import CopyCircle from './Circle/Components/CopyCircle';
 import UserSettings from './UserSettings';
 import PleaseLogin from './PleaseLogin';
+import Search from './Components/Search';
 
 const Routes = props => {
   const { user } = props;
@@ -35,6 +36,13 @@ const Routes = props => {
         exact
         path="/search"
         render={props => <CirclesByTags {...props} isPrimaryContent={true} />}
+      />
+      <Route
+        exact
+        path="/search2"
+        render={props => (
+          <Search {...props} user={user} isPrimaryContent={true} />
+        )}
       />
       <Route
         exact

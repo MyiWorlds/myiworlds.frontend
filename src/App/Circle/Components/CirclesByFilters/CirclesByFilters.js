@@ -1,18 +1,18 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 
-import GET_CIRCLES_BY_FILTERS from '../../Queries/getCirclesByFilters';
+import GET_ANYTHING_BY_FILTERS from '../../Queries/getAnythingByFilters';
 
 import Progress from '../../../Components/Progress';
 import NotFound from '../../../Components/NotFound';
 
 const CirclesByFilters = props => (
   <Query
-    query={GET_CIRCLES_BY_FILTERS}
+    query={GET_ANYTHING_BY_FILTERS}
     variables={{
       kind: 'circles',
       filters: {
-        list: [
+        searchConditions: [
           {
             property: 'creator',
             condition: '=',

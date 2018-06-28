@@ -58,7 +58,7 @@ class EditUsername extends React.Component {
     super(props);
     this.state = {
       expanded: false,
-      username: this.props.user.username || '',
+      username: props.user.username || '',
       checkUsername: false,
       isLoading: false,
       usernameAvailable: false,

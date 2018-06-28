@@ -20,11 +20,9 @@ class Progress extends React.Component {
     size: PropTypes.number,
   };
 
-  componentWillMount() {
-    this.setState({
-      zoom: true,
-    });
-  }
+  state = {
+    zoom: true,
+  };
 
   componentWillUnmount() {
     this.setState({

@@ -77,7 +77,9 @@ class CircleByKey extends React.Component {
             // Requires getting User.uid into this component
 
             const userCanEdit =
-              user && circle.creator.uid === user.uid ? true : false;
+              user && circle.creator && circle.creator.uid === user.uid
+                ? true
+                : false;
 
             const editCircleButton = (
               <Button

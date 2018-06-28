@@ -35,8 +35,6 @@ const styles = theme => ({
 });
 
 const UserSettings = ({ user, classes }) => {
-  // Make button, display placeholder text and button says change or add
-  // Fix route to allow you to change your username again
   const avatarUrl = user.profileMedia
     ? `${user.profileMedia.string.substring(
         0,

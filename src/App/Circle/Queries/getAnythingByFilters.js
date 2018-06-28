@@ -1,12 +1,12 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  query getCirclesByFilters(
+  query getAnythingByFilters(
     $kind: String!
     $filters: JSON!
     $requestedNumberOfResults: Int
   ) {
-    getCirclesByFilters(
+    getAnythingByFilters(
       kind: $kind
       filters: $filters
       requestedNumberOfResults: $requestedNumberOfResults
@@ -17,6 +17,9 @@ export default gql`
       slug
       type
       tags
+      creator {
+        username
+      }
     }
   }
 `;
