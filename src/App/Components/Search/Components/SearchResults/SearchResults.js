@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
   withStyles,
-  TextField,
   Card,
   CardHeader,
   Avatar,
@@ -30,14 +29,24 @@ class SearchResults extends React.Component {
   static propTypes = {
     circles: PropTypes.array,
     title: PropTypes.string,
+    secondary: PropTypes.bool,
     icon: PropTypes.node,
     dense: PropTypes.bool,
+    showMore: PropTypes.bool.isRequired,
   };
 
   state = {};
 
   render() {
-    const { classes, circles, title, icon, dense, secondary } = this.props;
+    const {
+      classes,
+      circles,
+      title,
+      icon,
+      dense,
+      secondary,
+      showMore,
+    } = this.props;
 
     return (
       <div className={classes.container}>
@@ -97,7 +106,16 @@ class SearchResults extends React.Component {
             </List>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
-            <Button style={{ flex: 1 }}>Show More</Button>
+            {showMore ? (
+              <Button
+                style={{ flex: 1 }}
+                onClick={() => {
+                  return;
+                }}
+              >
+                Show More
+              </Button>
+            ) : null}
           </CardActions>
         </Card>
       </div>

@@ -7,7 +7,7 @@ import GET_ANYTHING_BY_FILTERS from '../../../../Circle/Queries/getAnythingByFil
 import Progress from '../../../../Components/Progress';
 import NotFound from '../../../../Components/NotFound';
 
-const CirclesByFilters = ({ filters, kind, requestedNumberOfResults }) => {
+const CirclesByFilters = ({ filters, kind, requestedNumberOfResults, cursor }) => {
   return (
     <Query
       query={GET_ANYTHING_BY_FILTERS}
@@ -17,6 +17,7 @@ const CirclesByFilters = ({ filters, kind, requestedNumberOfResults }) => {
           searchConditions: filters,
         },
         requestedNumberOfResults: requestedNumberOfResults || 10,
+        cursor: cursor
       }}
       // skip={!props.location.pathname}
     >

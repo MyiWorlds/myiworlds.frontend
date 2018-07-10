@@ -4,17 +4,29 @@ import { withStyles } from '@material-ui/core/styles';
 import SearchField from './Components/SearchField/SearchField';
 import client from '../../../apolloClient';
 
-import GET_ANYTHING_BY_FILTERS from '../../Circle/Queries/getAnythingByFilters';
-import { Grid } from '@material-ui/core';
+import GLOBAL_SEARCH from '../../Circle/Queries/globalSearch';
+import { Grid, CardActions, Button, Divider } from '@material-ui/core';
 import SearchResults from './Components/SearchResults/SearchResults';
 import FontIcon from '../FontIcon';
 import removePermissionDenied from '../../functions/removePermissionDenied';
+import SearchSettings from './SearchSettings';
+import SearchBuilder from './SearchBuilder';
 
-const styles = { container: {} };
+const styles = {
+  cardContainers: {
+    padding: 12,
+  },
+  container: {},
+};
 
 // TODOS:
 // Needs to change the url when a search happens so you can go back to it
 // IMPORTANT: Issue with not having permissions when searching editable
+
+// !! IMPORTANT !!
+// This is the root query, this will render a component which allows the children
+// to make their own sub queries
+
 class Search extends React.Component {
   // static propTypes = {
   //   user: PropTypes.object,
@@ -27,7 +39,11 @@ class Search extends React.Component {
       lastSearch: '',
       tags: [],
       requestedNumberOfResults: 10,
-      search: false,
+      getMyCreations: true,
+      getMyViewable: true,
+      getMyEditable: true,
+      getAllResults: true,
+      // THESE NEXT
       myCircles: [],
       myEditableCircles: [],
       myViewableCircles: [],
@@ -38,9 +54,20 @@ class Search extends React.Component {
 
   handleChange = event => {
     this.setState({
-      search: false,
       searchTagsField: event.target.value,
     });
+
+    // TODO: Tags are not being processed correctly
+    // When you delete they dont refetch new data
+    // because it has old tags to search with only
+
+    if (event.target.value === '') {
+      clearTimeout(this.timeout);
+      this.setState({
+        lastSearch: '',
+      });
+      return;
+    }
 
     if (event.key === 'Enter' || event.key === ' ' || event.key === ',') {
       clearTimeout(this.timeout);
@@ -49,6 +76,7 @@ class Search extends React.Component {
     }
 
     if (this.timeout) {
+      clearTimeout(this.timeout);
     }
 
     this.timeout = setTimeout(async () => {
@@ -56,42 +84,31 @@ class Search extends React.Component {
     }, 500);
   };
 
+  createSearchTags = searchTagsField => {
+    let tags = [];
+    tags = searchTagsField.split(/[ ,]+/);
+
+    return tags;
+  };
+
   search = async () => {
     let tagsToSearch = this.createSearchTags(this.state.searchTagsField);
 
     if (this.state.lastSearch.length) {
-      tagsToSearch = this.state.lastSearch.filter(tag =>
-        tagsToSearch.includes(tag),
+      tagsToSearch = tagsToSearch.filter(
+        tag => !this.state.lastSearch.includes(tag) || tag !== '',
       );
     }
 
-    let circles = this.state.results || [];
-    let myCircles = [];
-    let myViewableCircles = [];
-    let myEditableCircles = [];
+    const allCircles = await this.getLines(tagsToSearch);
 
-    let allCircles = await this.getAllCircles(tagsToSearch);
-
-    if (this.props.user && this.props.user.uid) {
-      myCircles = await this.getMyCircles(tagsToSearch);
-      myViewableCircles = await this.getMyViewableCircles(tagsToSearch);
-      myEditableCircles = await this.getMyEditableCircles(tagsToSearch);
-    }
-
-    const combinedResults = this.flattenArraysAndRemoveDuplicates([
-      myCircles,
-      allCircles,
-    ]);
-
-    allCircles = removePermissionDenied(allCircles);
+    // TODO: ADD THIS BACK SOMEWHERE
+    // Where I merge the results (for querying different tags)
+    // Also add back flattenArraysAndRemoveDuplicates at lower level
 
     this.setState({
       lastSearch: tagsToSearch,
-      myCircles: myCircles,
-      myViewableCircles,
-      myEditableCircles,
       allResults: allCircles,
-      results: combinedResults,
     });
   };
 
@@ -102,99 +119,17 @@ class Search extends React.Component {
     return circles;
   };
 
-  getMyViewableCircles = async tagsToSearch => {
-    return await Promise.all(
+  getLines = async tagsToSearch => {
+    const lines = await Promise.all(
       tagsToSearch.map(async tag => {
         const test = await client.query({
-          query: GET_ANYTHING_BY_FILTERS,
+          query: GLOBAL_SEARCH,
+          fetchPolicy: 'no-cache',
           variables: {
-            kind: 'circles',
-            filters: {
-              searchConditions: [
-                {
-                  property: 'viewers',
-                  condition: '=',
-                  value: this.props.user.uid,
-                },
-                {
-                  property: 'tags',
-                  condition: '=',
-                  value: tag,
-                },
-              ],
-            },
-            requestedNumberOfResults: 4,
-          },
-        });
-        return test.data.getAnythingByFilters;
-      }),
-    ).then(result => this.flattenArraysAndRemoveDuplicates(result));
-  };
-
-  getMyEditableCircles = async tagsToSearch => {
-    return await Promise.all(
-      tagsToSearch.map(async tag => {
-        const test = await client.query({
-          query: GET_ANYTHING_BY_FILTERS,
-          variables: {
-            kind: 'circles',
-            filters: {
-              searchConditions: [
-                {
-                  property: 'editors',
-                  condition: '=',
-                  value: this.props.user.uid,
-                },
-                {
-                  property: 'tags',
-                  condition: '=',
-                  value: tag,
-                },
-              ],
-            },
-            requestedNumberOfResults: 4,
-          },
-        });
-        return test.data.getAnythingByFilters;
-      }),
-    ).then(result => this.flattenArraysAndRemoveDuplicates(result));
-  };
-
-  getMyCircles = async tagsToSearch => {
-    return await Promise.all(
-      tagsToSearch.map(async tag => {
-        const test = await client.query({
-          query: GET_ANYTHING_BY_FILTERS,
-          variables: {
-            kind: 'circles',
-            filters: {
-              searchConditions: [
-                {
-                  property: 'creator',
-                  condition: '=',
-                  value: this.props.user.uid,
-                },
-                {
-                  property: 'tags',
-                  condition: '=',
-                  value: tag,
-                },
-              ],
-            },
-            requestedNumberOfResults: 4,
-          },
-        });
-        return test.data.getAnythingByFilters;
-      }),
-    ).then(result => this.flattenArraysAndRemoveDuplicates(result));
-  };
-
-  getAllCircles = async tagsToSearch => {
-    return await Promise.all(
-      tagsToSearch.map(async tag => {
-        const test = await client.query({
-          query: GET_ANYTHING_BY_FILTERS,
-          variables: {
+            getMyCreations: this.state.getMyCreations,
+            getMyViewable: this.state.getMyViewable,
+            getMyEditable: this.state.getMyEditable,
+            getAllResults: this.state.getAllResults,
             kind: 'circles',
             filters: {
               searchConditions: [
@@ -203,31 +138,27 @@ class Search extends React.Component {
                   condition: '=',
                   value: tag,
                 },
-                {
-                  property: 'public',
-                  condition: '=',
-                  value: true,
-                },
               ],
             },
-            requestedNumberOfResults: 8,
+            requestedNumberOfResults: 1,
           },
         });
-        return test.data.getAnythingByFilters;
+        return test.data.globalSearch;
       }),
-    ).then(result => this.flattenArraysAndRemoveDuplicates(result));
-  };
+    );
 
-  createSearchTags = searchTagsField => {
-    let tags = [];
-    tags = searchTagsField.split(/[ ,]+/);
-
-    return tags;
+    return lines;
   };
 
   removeDuplicates = (myArr, prop) => {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    });
+  };
+
+  updateSearchSettings = object => {
+    this.setState(object, () => {
+      this.search();
     });
   };
 
@@ -239,62 +170,44 @@ class Search extends React.Component {
       myViewableCircles,
       myEditableCircles,
       allResults,
+      getMyCreations,
+      getMyViewable,
+      getMyEditable,
+      getAllResults,
     } = this.state;
+
+    const lines = allResults;
 
     return (
       <div className={classes.container}>
         <SearchField
           searchTagsField={searchTagsField}
-          runSearch={this.runSearch}
           handleChange={this.handleChange}
         />
-
-        <Grid container spacing={16}>
-          {myCircles.length ? (
-            <Grid item xs={12} md={6} lg={4} xl={3}>
-              <SearchResults
-                title={'My World'}
-                icon={<FontIcon>account_circle</FontIcon>}
-                circles={myCircles}
-                secondary={true}
-                dense={false}
-              />
+        <Divider />
+        <SearchSettings
+          updateSearchSettings={this.updateSearchSettings}
+          getMyCreations={getMyCreations}
+          getMyViewable={getMyViewable}
+          getMyEditable={getMyEditable}
+          getAllResults={getAllResults}
+        />
+        <Divider />
+        {lines.map((circle, index) => {
+          return (
+            <Grid container spacing={16} key={circle.uid + index}>
+              {circle.lines.map((circle, index) => {
+                return (
+                  <SearchBuilder
+                    key={circle.uid}
+                    circle={circle}
+                    index={index}
+                  />
+                );
+              })}
             </Grid>
-          ) : null}
-          {myEditableCircles.length ? (
-            <Grid item xs={12} md={6} lg={4} xl={3}>
-              <SearchResults
-                title={'My Editable Worlds'}
-                icon={<FontIcon>account_circle</FontIcon>}
-                circles={myEditableCircles}
-                secondary={true}
-                dense={false}
-              />
-            </Grid>
-          ) : null}
-          {myViewableCircles.length ? (
-            <Grid item xs={12} md={6} lg={4} xl={3}>
-              <SearchResults
-                title={'My Viewable Worlds'}
-                icon={<FontIcon>account_circle</FontIcon>}
-                circles={myViewableCircles}
-                secondary={true}
-                dense={false}
-              />
-            </Grid>
-          ) : null}
-          {allResults.length ? (
-            <Grid item xs={12} md={6} lg={4} xl={3}>
-              <SearchResults
-                title={'All Worlds'}
-                icon={<FontIcon>public</FontIcon>}
-                circles={allResults}
-                secondary={true}
-                dense={false}
-              />
-            </Grid>
-          ) : null}
-        </Grid>
+          );
+        })}
       </div>
     );
   }
