@@ -57,7 +57,7 @@ class SearchBuilder extends React.Component {
             <SearchResults
               title={circle.title}
               icon={<FontIcon>{circle.icon}</FontIcon>}
-              circles={circle.lines}
+              lines={circle.lines}
               secondary={true}
               dense={false}
               showMore={circle.object.cursor.moreResults === CURSOR.moreResults}

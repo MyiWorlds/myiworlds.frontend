@@ -25,7 +25,7 @@ const styles = {
 
 // !! IMPORTANT !!
 // This is the root query, this will render a component which allows the children
-// to make their own sub queries.  (Cursors/show more)
+// to make their own sub queries
 
 class Search extends React.Component {
   // static propTypes = {
@@ -244,3 +244,128 @@ class Search extends React.Component {
 }
 
 export default withStyles(styles)(Search);
+
+// const data = {
+//   type: 'QUERIES',
+//   lines: [
+//     {
+//       title: 'QUERY 1',
+//       lines: [
+//         {
+//           type: 'QUERY',
+//           settings: {
+//             filters: [
+//               {
+//                 property: 'creator',
+//                 condition: '=',
+//                 value: user.uid,
+//               },
+//               {
+//                 property: 'tags',
+//                 condition: '=',
+//                 value: tag1,
+//               },
+//             ],
+//           },
+//           lines: [{}, {}, {}, {}],
+//         },
+//         {
+//           type: 'QUERY',
+//           settings: {
+//             filters: [
+//               {
+//                 property: 'editors',
+//                 condition: '=',
+//                 value: user.uid,
+//               },
+//               {
+//                 property: 'tags',
+//                 condition: '=',
+//                 value: tag1,
+//               },
+//             ],
+//           },
+//           lines: [{}, {}, {}, {}],
+//         },
+//         {
+//           type: 'QUERY',
+//           settings: {
+//             filters: [
+//               {
+//                 property: 'viewers',
+//                 condition: '=',
+//                 value: user.uid,
+//               },
+//               {
+//                 property: 'tags',
+//                 condition: '=',
+//                 value: tag1,
+//               },
+//             ],
+//           },
+//           lines: [{}, {}, {}, {}],
+//         },
+//       ],
+//     },
+//     {
+//       title: 'QUERY 2',
+//       lines: [
+//         {
+//           type: 'QUERY',
+//           settings: {
+//             filters: [
+//               {
+//                 property: 'creator',
+//                 condition: '=',
+//                 value: user.uid,
+//               },
+//               {
+//                 property: 'tags',
+//                 condition: '=',
+//                 value: tag,
+//               },
+//             ],
+//           },
+//           lines: [{}, {}, {}, {}],
+//         },
+//         {
+//           type: 'QUERY',
+//           settings: {
+//             filters: [
+//               {
+//                 property: 'editors',
+//                 condition: '=',
+//                 value: user.uid,
+//               },
+//               {
+//                 property: 'tags',
+//                 condition: '=',
+//                 value: tag,
+//               },
+//             ],
+//           },
+//           lines: [{}, {}, {}, {}],
+//         },
+//         {
+//           type: 'QUERY',
+//           settings: {
+//             filters: [
+//               {
+//                 property: 'viewers',
+//                 condition: '=',
+//                 value: user.uid,
+//               },
+//               {
+//                 property: 'tags',
+//                 condition: '=',
+//                 value: tag,
+//               },
+//             ],
+//           },
+//           lines: [{}, {}, {}, {}],
+//         },
+//       ],
+//     },
+//     },
+//   ],
+// };

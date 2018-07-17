@@ -25,102 +25,96 @@ const styles = {
   },
 };
 
-class SearchResults extends React.Component {
-  static propTypes = {
-    circles: PropTypes.array,
-    title: PropTypes.string,
-    secondary: PropTypes.bool,
-    icon: PropTypes.node,
-    dense: PropTypes.bool,
-    showMore: PropTypes.bool.isRequired,
-  };
-
-  state = {};
-
-  render() {
-    const {
-      classes,
-      circles,
-      title,
-      icon,
-      dense,
-      secondary,
-      showMore,
-    } = this.props;
-
-    return (
-      <div className={classes.container}>
-        <Card className={classes.card}>
-          <CardHeader
-            avatar={
-              <Avatar aria-label="Recipe" className={classes.avatar}>
-                {icon || <FontIcon>access_time</FontIcon>}
-              </Avatar>
-            }
-            action={
-              <div>
-                {/* <IconButton aria-label="More options">
+const SearchResults = ({
+  classes,
+  lines,
+  title,
+  icon,
+  dense,
+  secondary,
+  showMore,
+}) => {
+  return (
+    <div className={classes.container}>
+      <Card className={classes.card}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="Recipe" className={classes.avatar}>
+              {icon || <FontIcon>access_time</FontIcon>}
+            </Avatar>
+          }
+          action={
+            <div>
+              {/* <IconButton aria-label="More options">
                         <FontIcon>drag_handle</FontIcon>
                       </IconButton> */}
-                <IconButton aria-label="More options">
-                  <FontIcon>more_vert</FontIcon>
-                </IconButton>
-              </div>
-            }
-            title={title}
-            // subheader="September 14, 2016"
-          />
-          <Divider />
-          <CardContent style={{ padding: 0 }}>
-            <List dense={dense}>
-              {circles
-                ? circles.map(circle => {
-                    return (
-                      <ListItem
-                        button
-                        key={circle.uid}
-                        component={Link}
-                        to={`/uid/${circle.uid}`}
-                      >
-                        <ListItemAvatar>
-                          <Avatar>
-                            <FolderIcon />
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={circle.title}
-                          secondary={
-                            secondary
-                              ? circle.tags
-                                ? circle.tags.map((tag, index) => (
-                                    <span key={index}> {tag},</span>
-                                  ))
-                                : null
+              <IconButton aria-label="More options">
+                <FontIcon>more_vert</FontIcon>
+              </IconButton>
+            </div>
+          }
+          title={title}
+          // subheader="September 14, 2016"
+        />
+        <Divider />
+        <CardContent style={{ padding: 0 }}>
+          <List dense={dense}>
+            {lines
+              ? lines.map(circle => {
+                  return (
+                    <ListItem
+                      button
+                      key={circle.uid}
+                      component={Link}
+                      to={`/uid/${circle.uid}`}
+                    >
+                      <ListItemAvatar>
+                        <Avatar>
+                          <FolderIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={circle.title}
+                        secondary={
+                          secondary
+                            ? circle.tags
+                              ? circle.tags.map((tag, index) => (
+                                  <span key={index}> {tag},</span>
+                                ))
                               : null
-                          }
-                        />
-                      </ListItem>
-                    );
-                  })
-                : null}
-            </List>
-          </CardContent>
-          <CardActions className={classes.actions} disableActionSpacing>
-            {showMore ? (
-              <Button
-                style={{ flex: 1 }}
-                onClick={() => {
-                  return;
-                }}
-              >
-                Show More
-              </Button>
-            ) : null}
-          </CardActions>
-        </Card>
-      </div>
-    );
-  }
-}
+                            : null
+                        }
+                      />
+                    </ListItem>
+                  );
+                })
+              : null}
+          </List>
+        </CardContent>
+        <CardActions className={classes.actions} disableActionSpacing>
+          {showMore ? (
+            <Button
+              style={{ flex: 1 }}
+              onClick={() => {
+                return;
+              }}
+            >
+              Show More
+            </Button>
+          ) : null}
+        </CardActions>
+      </Card>
+    </div>
+  );
+};
+
+SearchResults.protoTypes = {
+  lines: PropTypes.array,
+  title: PropTypes.string,
+  secondary: PropTypes.bool,
+  icon: PropTypes.node,
+  dense: PropTypes.bool,
+  showMore: PropTypes.bool.isRequired,
+};
 
 export default withStyles(styles)(SearchResults);
