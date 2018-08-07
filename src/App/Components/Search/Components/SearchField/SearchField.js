@@ -10,8 +10,8 @@ const styles = {
 
 class SearchField extends React.Component {
   static propTypes = {
-    handleChange: PropTypes.func.isRequired,
-    searchTagsField: PropTypes.string.isRequired,
+    handleSearchFieldChange: PropTypes.func.isRequired,
+    searchFieldString: PropTypes.string.isRequired,
   };
 
   state = {
@@ -19,7 +19,12 @@ class SearchField extends React.Component {
   };
 
   render() {
-    const { classes, handleChange, searchTagsField, refetch } = this.props;
+    const {
+      classes,
+      handleSearchFieldChange,
+      searchFieldString,
+      refetch,
+    } = this.props;
 
     return (
       <div className={classes.container}>
@@ -28,8 +33,8 @@ class SearchField extends React.Component {
           autoFocus={true}
           autoComplete="off"
           label="Search"
-          value={searchTagsField}
-          onChange={event => handleChange(event, refetch)}
+          value={searchFieldString}
+          onChange={event => handleSearchFieldChange(event, refetch)}
           margin="normal"
           fullWidth
           // style={{ flexGrow: 1 }}

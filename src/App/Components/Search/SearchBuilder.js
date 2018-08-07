@@ -36,7 +36,7 @@ class SearchBuilder extends React.Component {
     this.setState({ show: true });
   };
 
-  showMore = () => {
+  showMore = cursor => {
     // query(this.props.circle.object.cursor.endCursor);
   };
 
@@ -60,7 +60,11 @@ class SearchBuilder extends React.Component {
               lines={circle.lines}
               secondary={true}
               dense={false}
-              showMore={circle.object.cursor.moreResults === CURSOR.moreResults}
+              showMore={
+                circle.settings.cursor
+                  ? circle.settings.cursor.moreResults === CURSOR.moreResults
+                  : false
+              }
               getMore={this.showMore}
             />
           </div>

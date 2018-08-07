@@ -72,7 +72,7 @@ class CreateCircle extends React.Component {
         slug: circle.slug,
         public: false,
         type: circle.type,
-        settings: getUidsFromArray(circle.settings),
+        settings: circle.settings,
         styles: getUidsFromArray(circle.styles),
         rating: circle.rating ? circle.rating.uid : null,
         tags: circle.tags,

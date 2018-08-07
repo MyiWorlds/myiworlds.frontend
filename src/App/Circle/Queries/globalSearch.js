@@ -1,24 +1,8 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  query globalSearch(
-    $getMyCreations: Boolean!
-    $getMyViewable: Boolean!
-    $getMyEditable: Boolean!
-    $getAllResults: Boolean!
-    $kind: String!
-    $filters: JSON!
-    $requestedNumberOfResults: Int
-  ) {
-    globalSearch(
-      getMyCreations: $getMyCreations
-      getMyViewable: $getMyViewable
-      getMyEditable: $getMyEditable
-      getAllResults: $getAllResults
-      kind: $kind
-      filters: $filters
-      requestedNumberOfResults: $requestedNumberOfResults
-    ) {
+  query globalSearch($circle: JSON!) {
+    globalSearch(circle: $circle) {
       uid
       id
       type
@@ -37,12 +21,25 @@ export default gql`
         type
         object
         icon
+        settings
+        tags
         lines {
           uid
           title
           icon
           type
+          settings
           description
+          tags
+          lines {
+            settings
+            uid
+            title
+            icon
+            type
+            description
+            tags
+          }
         }
       }
     }

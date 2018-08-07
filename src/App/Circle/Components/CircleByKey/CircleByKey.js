@@ -52,11 +52,11 @@ class CircleByKey extends React.Component {
 
     return (
       <div>
-        <button
+        {/* <button
           onClick={() => this.setState({ showLines: !this.state.showLines })}
         >
           Toggle me
-        </button>
+        </button> */}
         <Query
           query={GET_CIRCLE_BY_KEY}
           variables={{

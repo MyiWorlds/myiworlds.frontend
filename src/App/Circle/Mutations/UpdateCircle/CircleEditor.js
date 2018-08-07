@@ -97,7 +97,7 @@ class CircleEditor extends React.Component {
         slug: circle.slug,
         public: circle.public || false,
         type: circle.type || '',
-        settings: getKeysFromArray(circle.settings),
+        settings: circle.settings,
         styles: getKeysFromArray(circle.styles),
         rating: circle.rating ? circle.rating.uid : null,
         tags: circle.tags,

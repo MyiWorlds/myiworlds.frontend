@@ -32,10 +32,7 @@ const GET_USER = gql`
         id
         title
         lines {
-          settings {
-            string
-            object
-          }
+          settings
           styles {
             string
             object

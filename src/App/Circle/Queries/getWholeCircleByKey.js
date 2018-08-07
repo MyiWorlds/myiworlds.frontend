@@ -11,9 +11,7 @@ export default gql`
       slug
       public
       type
-      settings {
-        uid
-      }
+      settings
       styles {
         uid
       }

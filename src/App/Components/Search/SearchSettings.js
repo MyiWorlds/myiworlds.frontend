@@ -21,11 +21,12 @@ const styles = {
 
 const SearchSettings = ({
   classes,
-  updateSearchSettings,
-  getMyCreations,
-  getMyViewable,
-  getMyEditable,
-  getAllResults,
+  updateSearchCategories,
+  myCreations,
+  myViewable,
+  myEditable,
+  allResults,
+  updateGridSize,
 }) => {
   return (
     <div className={classes.cardContainers}>
@@ -33,9 +34,9 @@ const SearchSettings = ({
         <FormControlLabel
           control={
             <Checkbox
-              checked={getMyCreations}
+              checked={myCreations}
               onChange={() =>
-                updateSearchSettings({ getMyCreations: !getMyCreations })
+                updateSearchCategories({ myCreations: !myCreations })
               }
               value="dense"
             />
@@ -45,9 +46,9 @@ const SearchSettings = ({
         <FormControlLabel
           control={
             <Checkbox
-              checked={getMyViewable}
+              checked={myEditable}
               onChange={() =>
-                updateSearchSettings({ getMyViewable: !getMyViewable })
+                updateSearchCategories({ myEditable: !myEditable })
               }
               value="dense"
             />
@@ -57,9 +58,9 @@ const SearchSettings = ({
         <FormControlLabel
           control={
             <Checkbox
-              checked={getMyEditable}
+              checked={myViewable}
               onChange={() =>
-                updateSearchSettings({ getMyEditable: !getMyEditable })
+                updateSearchCategories({ myViewable: !myViewable })
               }
               value="dense"
             />
@@ -69,9 +70,9 @@ const SearchSettings = ({
         <FormControlLabel
           control={
             <Checkbox
-              checked={getAllResults}
+              checked={allResults}
               onChange={() =>
-                updateSearchSettings({ getAllResults: !getAllResults })
+                updateSearchCategories({ allResults: !allResults })
               }
               value="dense"
             />
@@ -82,7 +83,7 @@ const SearchSettings = ({
           <FontIcon className={classes.btnIcon}>view_list</FontIcon>
           List Style
         </Button>
-        <Button>
+        <Button onClick={() => updateGridSize()}>
           <FontIcon className={classes.btnIcon}>dashboard</FontIcon>
           Edit Layout
         </Button>
@@ -92,11 +93,12 @@ const SearchSettings = ({
 };
 
 SearchSettings.protoTypes = {
-  updateSearchSettings: PropTypes.func.isRequired,
-  getMyCreations: PropTypes.bool.isRequired,
-  getMyViewable: PropTypes.bool.isRequired,
-  getMyEditable: PropTypes.bool.isRequired,
-  getAllResults: PropTypes.bool.isRequired,
+  updateSearchCategories: PropTypes.func.isRequired,
+  myCreations: PropTypes.bool.isRequired,
+  myViewable: PropTypes.bool.isRequired,
+  myEditable: PropTypes.bool.isRequired,
+  allResults: PropTypes.bool.isRequired,
+  updateGridSize: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(SearchSettings);
