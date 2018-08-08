@@ -10,6 +10,7 @@ import removePermissionDenied from '../../functions/removePermissionDenied';
 import SearchSettings from './SearchSettings';
 import SearchCategoryResultsList from './Components/SearchResults/SearchCategoryResultsList';
 import removeEmptyValuesFromArray from '../../functions/removeEmptyValuesFromArray';
+import _ from 'lodash';
 
 const styles = {
   cardContainers: {
@@ -63,6 +64,12 @@ class Search extends React.Component {
     };
     this.timeout = 0;
   }
+
+  // componentDidMount() {
+  //   this.setState({ searchFieldString: 'test' }, () => {
+  //     this.search();
+  //   });
+  // }
 
   updateGridSize = () => {
     const gridOptionsLength = resultCategorySizes.length;
@@ -200,35 +207,35 @@ class Search extends React.Component {
           lines: myEditableQueries,
         });
       }
-    }
 
-    if (this.state.myViewable) {
-      const myViewableQueries = tagsToSearch.map(tag =>
-        this.createQuery(
-          [
-            {
-              property: 'viewers',
-              condition: '=',
-              value: user.uid,
-            },
-            {
-              property: 'tags',
-              condition: '=',
-              value: tag,
-            },
-          ],
-          3,
-          null,
-        ),
-      );
+      if (this.state.myViewable) {
+        const myViewableQueries = tagsToSearch.map(tag =>
+          this.createQuery(
+            [
+              {
+                property: 'viewers',
+                condition: '=',
+                value: user.uid,
+              },
+              {
+                property: 'tags',
+                condition: '=',
+                value: tag,
+              },
+            ],
+            3,
+            null,
+          ),
+        );
 
-      allQueries.push({
-        uid: 'myViewable',
-        type: 'LINES',
-        title: 'Viewable to me',
-        icon: 'remove_red_eye',
-        lines: myViewableQueries,
-      });
+        allQueries.push({
+          uid: 'myViewable',
+          type: 'LINES',
+          title: 'Viewable to me',
+          icon: 'remove_red_eye',
+          lines: myViewableQueries,
+        });
+      }
     }
 
     if (this.state.allResults) {
@@ -432,18 +439,68 @@ class Search extends React.Component {
   };
 
   showMoreResults = async category => {
-    // If I want to be more performant I could remove all the
-    // already fetched queries from the nested Query array
-    // and then add them back + push new results into it
+    let oldQueryAndTheirResults = _.cloneDeep(category);
+    let results;
+
+    category.lines = category.lines.map(query => {
+      // oldQueryAndTheirResults.push(query);
+      query.lines = [];
+
+      return query;
+    });
+
     const query = this.createQueryContainer([category]);
-    let updatedResults = { ...this.state.results };
     let newResults = await this.getData(query);
-    newResults = JSON.parse(JSON.stringify(newResults));
+    newResults = _.cloneDeep(newResults);
+
+    oldQueryAndTheirResults.lines.forEach(query => {
+      query.settings.cursor.moreResults = 'NO_MORE_RESULTS';
+      query.settings.cursor.endCursor = '';
+    });
+
+    oldQueryAndTheirResults.lines = oldQueryAndTheirResults.lines.concat(
+      newResults.lines[0].lines,
+    );
+
+    // DONT DO THIS
+    // Just add a new query object to the list so they go to the bottom
+    // Remove old cursor and set to no more results on the first ones
+    // newResults.lines = newResults.lines.map(category1 => {
+    //   category1.lines = category1.lines.map(query1 => {
+    //     const oldMatchingQueryResults = oldQueryAndTheirResults.find(
+    //       q =>
+    //         q.settings.filters.searchConditions[0].value ===
+    //           query1.settings.filters.searchConditions[0].value &&
+    //         q.settings.filters.searchConditions[1].value ===
+    //           query1.settings.filters.searchConditions[1].value,
+    //     );
+    //     if (oldMatchingQueryResults && oldMatchingQueryResults.lines.length) {
+    //       query1.lines.unshift(oldMatchingQueryResults.lines);
+    //     }
+
+    //     return query1;
+    //   });
+
+    //   return category1;
+    // });
+
+    let updatedResults = { ...this.state.results };
 
     const updatedResultIndex = updatedResults.lines.findIndex(
       circle => circle.uid === category.uid,
     );
-    updatedResults.lines[updatedResultIndex] = newResults.lines[0];
+
+    // new TODO:
+    // Create separate array of cursors
+    // create array of list items which you push everything on to
+    // Only merge it with newest results after they have fully been sorted
+    // Then add new to old at end of array
+
+    // updatedResults.lines[updatedResultIndex].lines.map(query => {});
+
+    updatedResults.lines[updatedResultIndex] = oldQueryAndTheirResults;
+
+    // updatedResults.lines.push(oldQueryAndTheirResults);
 
     this.setState({
       results: updatedResults,

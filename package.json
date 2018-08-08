@@ -15,6 +15,7 @@
     "graphql-tag": "^2.9.2",
     "jss": "^9.8.6",
     "jss-nested": "^6.0.1",
+    "lodash": "^4.17.10",
     "lunr": "^2.3.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
