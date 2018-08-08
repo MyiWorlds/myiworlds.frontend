@@ -65,11 +65,11 @@ class Search extends React.Component {
     this.timeout = 0;
   }
 
-  // componentDidMount() {
-  //   this.setState({ searchFieldString: 'test' }, () => {
-  //     this.search();
-  //   });
-  // }
+  componentDidMount() {
+    this.setState({ searchFieldString: 'test' }, () => {
+      this.search();
+    });
+  }
 
   updateGridSize = () => {
     const gridOptionsLength = resultCategorySizes.length;
@@ -443,11 +443,14 @@ class Search extends React.Component {
     let results;
 
     category.lines = category.lines.map(query => {
-      // oldQueryAndTheirResults.push(query);
       query.lines = [];
 
       return query;
     });
+
+    category.lines = category.lines.filter(
+      query => query.settings.cursor.moreResults === 'MORE_RESULTS_AFTER_LIMIT',
+    );
 
     const query = this.createQueryContainer([category]);
     let newResults = await this.getData(query);
