@@ -66,7 +66,7 @@ class Search extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ searchFieldString: 'test' }, () => {
+    this.setState({ searchFieldString: 'test testing' }, () => {
       this.search();
     });
   }
@@ -135,14 +135,14 @@ class Search extends React.Component {
     return query;
   };
 
-  createQueryContainer = queries => {
-    const queryContainer = {
-      uid: 'queriesContainer',
-      type: 'LINES',
-      lines: queries,
+  buildCircle = circle => {
+    const defaultCircle = {
+      uid: _.uniqueId(),
+      type: '',
     };
+    circle = Object.assign({ defaultCircle, circle });
 
-    return queryContainer;
+    return circle;
   };
 
   buildSearchQuery = tagsToSearch => {
@@ -267,7 +267,11 @@ class Search extends React.Component {
       });
     }
 
-    const searchQuery = this.createQueryContainer(allQueries);
+    const searchQuery = {
+      uid: _.uniqueId(),
+      type: 'LINES',
+      lines: allQueries,
+    };
 
     return searchQuery;
   };
@@ -276,6 +280,9 @@ class Search extends React.Component {
     let results = oldResults;
     let combinedSearchResults = [];
 
+    // What needs to happen is new results get sorted, done there thing
+    // I think theyve already been through that
+    // Then just push them onto the back of the first array :)
     if (oldResults.lines.length) {
       newResults.lines.forEach(newResult => {
         const indexOfMatchingOldResult = oldResults.lines.findIndex(
@@ -316,10 +323,11 @@ class Search extends React.Component {
     return lines.filter(c => c.lines.length !== 0);
   };
 
-  removeCategoriesWithNoResults = lines => {
+  removeCategoriesWithNoResults = results => {
+    let lines = results.lines;
     if (!lines || lines.length <= 0) return [];
 
-    return lines.filter(result => {
+    lines = lines.filter(result => {
       let hasResults = false;
 
       result.lines.map(circle => {
@@ -328,6 +336,8 @@ class Search extends React.Component {
 
       return hasResults;
     });
+
+    return results;
   };
 
   removeUnusedSearchCategories = lines => {
@@ -337,30 +347,32 @@ class Search extends React.Component {
 
   trimUnusedSearchResultsAndQueries = (circle, currentSearchWords) => {
     // Remove ones that are not in current search
-    circle.lines = circle.lines.map(circle2 => {
-      let newResults = circle2;
+    circle.lines = circle.lines.map(category => {
+      let newResults = category;
 
-      newResults.lines = circle2.lines.map(circle3 => {
-        const updatedQueryResults = circle3.lines.filter(circle4 => {
-          // check to see if they contain any of the tags that was searched
-          const isRelevantSearchTerm = currentSearchWords.map(condition =>
-            circle4.tags.includes(condition),
-          );
-          return isRelevantSearchTerm.includes(true);
-        });
-        circle3.lines = updatedQueryResults;
-        return circle3;
+      newResults.lines = category.lines.map(results => {
+        if (results.type === 'LINES') {
+          const updatedQueryResults = results.lines.filter(circle4 => {
+            // check to see if they contain any of the tags that was searched
+            const isRelevantSearchTerm = currentSearchWords.map(condition =>
+              circle4.tags.includes(condition),
+            );
+            return isRelevantSearchTerm.includes(true);
+          });
+          results.lines = updatedQueryResults;
+          return results;
+        }
+        return null;
       });
 
       newResults.lines = newResults.lines.filter(cir => {
-        return cir.lines.length !== 0;
+        return cir && cir.lines && cir.lines.length !== 0;
       });
 
       return newResults;
     });
 
-    // circle.lines = this.removeEmptyCategories(circle.lines);
-    circle.lines = removeEmptyValuesFromArray(circle.lines);
+    circle.lines = _.compact(circle.lines);
 
     return circle;
   };
@@ -401,22 +413,14 @@ class Search extends React.Component {
     let newResults = false;
     let searchQuery = null;
 
-    if (results && results.lines.length) {
-      results.lines = this.removeCategoriesWithNoResults(results.lines);
-    }
-
     if (tagsToSearch.length) {
       searchQuery = this.buildSearchQuery(tagsToSearch);
       newResults = await this.getData(searchQuery);
-      // Needed to modify nested parts of the graph
-      newResults = JSON.parse(JSON.stringify(newResults));
+      newResults = _.cloneDeep(newResults);
+      newResults = this.compileResultsAndQueries(newResults);
+      newResults = this.removeCategoriesWithNoResults(newResults);
     }
 
-    if (results && results.lines.length) {
-      results.lines = this.removeCategoriesWithNoResults(results.lines);
-    }
-
-    // prevous last results were useless
     if (lastResults && newResults) {
       results = this.combineOldAndNewSearchResults(lastResults, newResults);
     } else if (!lastResults && newResults) {
@@ -424,7 +428,6 @@ class Search extends React.Component {
     }
 
     if (results && results.lines.length) {
-      results.lines = this.removeCategoriesWithNoResults(results.lines);
       results.lines = this.removeUnusedSearchCategories(results.lines);
       results.lines = this.orderCategoriesBasedOnQuery(
         results.lines,
@@ -436,6 +439,69 @@ class Search extends React.Component {
       lastSearchedTags: this.createSearchTags(this.state.searchFieldString),
       results: results,
     });
+  };
+
+  sortResults = results => {
+    // Remove Duplicates
+    // Order based on matching tags/titles/description
+
+    return results;
+  };
+
+  compileResultsAndQueries = results => {
+    let categories = {
+      uid: _.uniqueId(),
+      type: 'LINES',
+      lines: [],
+    };
+
+    results.lines.forEach(category => {
+      let searchResults = {
+        uid: _.uniqueId(),
+        type: 'LINES',
+        lines: [],
+      };
+
+      let showMoreQueries = {
+        uid: _.uniqueId(),
+        type: 'QUERIES',
+        lines: [],
+      };
+
+      category.lines.forEach(query => {
+        searchResults.lines = searchResults.lines.concat(query.lines);
+
+        // wipe categories results
+        // category.lines = [];
+
+        const thisHasMoreResults =
+          query.settings.cursor.moreResults === 'MORE_RESULTS_AFTER_LIMIT';
+
+        query.lines = [];
+
+        if (thisHasMoreResults) {
+          showMoreQueries.lines.push(query);
+          // Should i be pushing here, is this even working
+          // category.lines.push(searchResults);
+        }
+      });
+
+      // Remove all old queries/results
+      // Since we now have new array
+      category.lines = [];
+
+      searchResults.lines = _.uniqBy(searchResults.lines, 'uid');
+      searchResults = this.sortResults(searchResults);
+      category.lines.push(searchResults);
+
+      if (showMoreQueries.lines.length) {
+        category.lines.push(showMoreQueries);
+      }
+
+      categories.lines.push(category);
+    });
+
+    return categories;
   };
 
   showMoreResults = async category => {
@@ -452,10 +518,16 @@ class Search extends React.Component {
       query => query.settings.cursor.moreResults === 'MORE_RESULTS_AFTER_LIMIT',
     );
 
-    const query = this.createQueryContainer([category]);
+    const query = {
+      uid: _.uniqueId(),
+      type: 'LINES',
+      lines: [category],
+    };
+
     let newResults = await this.getData(query);
     newResults = _.cloneDeep(newResults);
 
+    // These should just be removed and not passed around the app
     oldQueryAndTheirResults.lines.forEach(query => {
       query.settings.cursor.moreResults = 'NO_MORE_RESULTS';
       query.settings.cursor.endCursor = '';
@@ -493,6 +565,10 @@ class Search extends React.Component {
       circle => circle.uid === category.uid,
     );
 
+    // ADDED: I can actually keep the same structure, just remove
+    // settings/cursors/delete all extra old queries
+    // add all results to one array
+    // then only queries that have curors will have them (no results as they will be pushed to the one array)
     // new TODO:
     // Create separate array of cursors
     // create array of list items which you push everything on to

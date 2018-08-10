@@ -43,15 +43,23 @@ const SearchCategoryResultList = ({
       <div className={classes.container}>
         <Grid container spacing={16}>
           {circle.lines.map(circle => {
-            const moreResultsCurors = circle.lines.filter(circle => {
-              return circle.settings.cursor.moreResults === CURSOR.moreResults;
-            });
+            let cursorQueries = circle.lines.find(
+              item => item.type === 'QUERIES',
+            );
 
-            let lines = [];
-            circle.lines.forEach(circle => {
+            {
+              /* const moreResultsCurors = circle.lines.filter(circle => {
+              return circle.settings.cursor.moreResults === CURSOR.moreResults;
+            }); */
+            }
+
+            let lines = circle.lines[0].lines || [];
+            {
+              /* circle.lines.forEach(circle => {
               lines = lines.concat(circle.lines);
             });
-            lines = mergeDuplicateCircles(lines);
+            lines = mergeDuplicateCircles(lines); */
+            }
 
             // lines = searchLinesFuse(lines, searchFieldString);
 
@@ -102,7 +110,7 @@ const SearchCategoryResultList = ({
                         className={classes.actions}
                         disableActionSpacing
                       >
-                        {moreResultsCurors.length ? (
+                        {cursorQueries ? (
                           <Button
                             style={{ flex: 1 }}
                             onClick={() => {
