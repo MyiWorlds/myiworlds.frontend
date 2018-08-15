@@ -1,74 +1,26 @@
 import React from 'react';
 
-import {
-  Avatar,
-  withStyles,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  Typography,
-  ExpansionPanelDetails,
-} from '@material-ui/core';
+import { withStyles, Typography } from '@material-ui/core';
 
 import DeleteUser from './DeleteUser';
 import EditUsername from './User/Mutations/EditUsername/EditUsername';
-import FontIcon from './Components/FontIcon';
+import EditUserProfilePic from './User/Mutations/EditUserProfilePic/EditUserProfilePic';
 
-const styles = theme => ({
+const styles = {
   container: {
     maxWidth: '100%',
     padding: 24,
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
-    flexShrink: 0,
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
-  },
-  avatar: {
-    height: 36,
-    width: 36,
-    margin: -8,
-  },
-});
+};
 
 const UserSettings = ({ user, classes }) => {
-  const avatarUrl = user.profileMedia
-    ? `${user.profileMedia.string.substring(
-        0,
-        user.profileMedia.string.length - 2,
-      )}200`
-    : null;
-
   return (
     <div className={classes.container}>
       <Typography variant="display3">Settings</Typography>
       <br />
       <br />
-      <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<FontIcon>expand_more</FontIcon>}>
-          <Typography className={classes.heading}>Profile Picture</Typography>
-          <div className={classes.secondaryHeading}>
-            {user.profileMedia ? (
-              <Avatar
-                alt={user.username}
-                src={avatarUrl}
-                className={classes.avatar}
-              />
-            ) : (
-              <FontIcon>account_circle</FontIcon>
-            )}
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>Add some upload/change profile picture stuff</Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-
+      <EditUserProfilePic user={user} />
       <EditUsername user={user} />
-
       <DeleteUser user={user} />
     </div>
   );

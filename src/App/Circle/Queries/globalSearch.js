@@ -17,6 +17,8 @@ export default gql`
           type
           settings
           lines {
+            # This is the search results query
+            # It must have settings in it to be able to refetch ?
             settings
             uid
             title

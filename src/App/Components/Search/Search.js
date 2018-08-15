@@ -1,16 +1,16 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+
 import { withStyles } from '@material-ui/core/styles';
 import SearchField from './Components/SearchField/SearchField';
 import client from '../../../apolloClient';
 
 import GLOBAL_SEARCH from '../../Circle/Queries/globalSearch';
-import { Divider } from '@material-ui/core';
-import removePermissionDenied from '../../functions/removePermissionDenied';
-import SearchSettings from './SearchSettings';
+import { Card } from '@material-ui/core';
+import SearchSettings from './Components/SearchSettings';
 import SearchCategoryResultsList from './Components/SearchResults/SearchCategoryResultsList';
-import removeEmptyValuesFromArray from '../../functions/removeEmptyValuesFromArray';
-import _ from 'lodash';
+import sortResults from '../../functions/sortArrayLunr';
 
 const styles = {
   cardContainers: {
@@ -21,38 +21,45 @@ const styles = {
 
 const resultCategorySizes = [
   {
+    xs: 12,
     sm: 12,
     md: 12,
     lg: 12,
+    xl: 12,
   },
   {
+    xs: 12,
     sm: 12,
     md: 6,
     lg: 6,
+    xl: 6,
   },
   {
+    xs: 12,
     sm: 12,
     md: 4,
     lg: 4,
+    xl: 4,
   },
   {
-    sm: 12,
+    xs: 6,
+    sm: 6,
     md: 4,
     lg: 3,
+    xl: 2,
   },
 ];
 
-// TODOS:
-// Needs to change the url when a search happens so you can go back to it
 // IMPORTANT: Issue with not having permissions when searching editable
 class Search extends React.Component {
-  // static propTypes = {
-  //   user: PropTypes.object,
-  // };
+  static propTypes = {
+    user: PropTypes.object,
+  };
 
   constructor(props) {
     super(props);
     this.state = {
+      isSearching: false,
       searchFieldString: '',
       lastSearchedTags: [],
       myCreations: true,
@@ -61,15 +68,42 @@ class Search extends React.Component {
       allResults: true,
       results: null,
       gridSize: 0,
+      resultsDense: false,
+      resultsShowSecondary: true,
     };
     this.timeout = 0;
   }
 
   componentDidMount() {
-    this.setState({ searchFieldString: 'test testing' }, () => {
-      this.search();
-    });
+    if (this.props.searchString) {
+      const searchString = this.props.searchString.replace('-', ' ');
+
+      this.setState(
+        {
+          searchFieldString: searchString,
+        },
+        () => {
+          this.search();
+        },
+      );
+    }
   }
+
+  // componentDidMount() {
+  //   this.setState({ searchFieldString: 'test' }, () => {
+  //     this.search();
+
+  //     // this.timeout = setTimeout(() => {
+  //     //   this.setState({ searchFieldString: 'test testing' }, async () => {
+  //     //     await this.search();
+  //     //   });
+  //     // }, 800);
+  //   });
+  // }
+
+  handleChange = object => {
+    this.setState(object);
+  };
 
   updateGridSize = () => {
     const gridOptionsLength = resultCategorySizes.length;
@@ -86,19 +120,31 @@ class Search extends React.Component {
   handleSearchFieldChange = event => {
     this.setState({
       searchFieldString: event.target.value,
+      isSearching: true,
     });
 
     if (event.target.value === '') {
       clearTimeout(this.timeout);
+      this.props.history.push(`/search`);
       this.setState({
-        lastSearchedTags: '',
+        isSearching: false,
       });
       return;
     }
 
-    if (event.key === 'Enter' || event.key === ' ' || event.key === ',') {
-      clearTimeout(this.timeout);
-      this.search();
+    if (
+      event.key === 'Enter' ||
+      event.key === ' ' ||
+      event.key === ',' ||
+      event.key === '-'
+    ) {
+      this.setState({ isSearching: true }, async () => {
+        // clearTimeout(this.timeout);
+        await this.search();
+        this.setState({
+          isSearching: false,
+        });
+      });
       return;
     }
 
@@ -108,18 +154,25 @@ class Search extends React.Component {
 
     this.timeout = setTimeout(async () => {
       await this.search();
-    }, 200);
+      this.setState({ isSearching: false });
+
+      const searchString = this.state.searchFieldString.replace('-', ' ');
+      this.props.history.push(`/search/${searchString}`);
+    }, 250);
   };
 
   createSearchTags = searchFieldString => {
     let tags = [];
     tags = searchFieldString.split(/[ ,]+/);
 
+    tags = tags.filter(tag => tag !== '');
+
     return tags;
   };
 
   createQuery = (filters, requestedNumberOfResults, cursor) => {
     const query = {
+      uid: _.uniqueId(),
       type: 'QUERY',
       settings: {
         kind: 'circles',
@@ -277,30 +330,67 @@ class Search extends React.Component {
   };
 
   combineOldAndNewSearchResults = (oldResults, newResults) => {
-    let results = oldResults;
-    let combinedSearchResults = [];
+    let results =
+      oldResults && oldResults.lines.length ? oldResults : newResults;
 
-    // What needs to happen is new results get sorted, done there thing
-    // I think theyve already been through that
-    // Then just push them onto the back of the first array :)
-    if (oldResults.lines.length) {
+    if (oldResults && oldResults.lines.length && newResults) {
       newResults.lines.forEach(newResult => {
         const indexOfMatchingOldResult = oldResults.lines.findIndex(
           oldResult => oldResult.uid === newResult.uid,
         );
 
         if (indexOfMatchingOldResult >= 0) {
-          combinedSearchResults = oldResults.lines[
-            indexOfMatchingOldResult
-          ].lines.concat(newResult.lines);
+          const newResultsObj = newResults.lines[indexOfMatchingOldResult];
+          const oldResultsObj = oldResults.lines[indexOfMatchingOldResult];
 
-          results.lines[indexOfMatchingOldResult].lines = combinedSearchResults;
+          let queries = [];
+
+          let lines = {
+            uid: _.uniqueId(),
+            type: 'LINES',
+            lines: [],
+          };
+
+          const lastResults = oldResultsObj.lines.find(
+            circle => circle.type === 'LINES',
+          );
+
+          if (lastResults && lastResults.lines) {
+            lines.lines = lines.lines.concat(lastResults.lines);
+          }
+
+          const results1 = newResultsObj.lines.find(
+            circle => circle.type === 'LINES',
+          );
+
+          if (results1 && results1.lines) {
+            lines.lines = lines.lines.concat(results1.lines);
+          }
+
+          const lastResultsCursors = oldResultsObj.lines.filter(
+            circle => circle.type === 'QUERY',
+          );
+
+          if (lastResultsCursors.length) {
+            queries = queries.concat(lastResultsCursors);
+          }
+
+          const newResultsCurors = newResultsObj.lines.filter(
+            circle => circle.type === 'QUERY',
+          );
+
+          if (newResultsCurors.length) {
+            queries = queries.concat(newResultsCurors);
+          }
+
+          lines.lines = _.uniqBy(lines.lines, 'uid');
+          let combinedResultBlock = [lines, ...queries];
+
+          results.lines[indexOfMatchingOldResult].lines = combinedResultBlock;
         } else {
           results.lines.push(newResult);
         }
       });
-    } else {
-      results.lines = newResults.lines;
     }
 
     return results;
@@ -324,18 +414,28 @@ class Search extends React.Component {
   };
 
   removeCategoriesWithNoResults = results => {
-    let lines = results.lines;
-    if (!lines || lines.length <= 0) return [];
+    if (results && results.lines) {
+      let lines = results.lines;
+      if (!lines || lines.length <= 0) {
+        results.lines = [];
+        return results;
+      }
 
-    lines = lines.filter(result => {
-      let hasResults = false;
+      lines = lines.filter(result => {
+        let hasResults = false;
 
-      result.lines.map(circle => {
-        return circle.lines.length ? (hasResults = true) : false;
-      }).length;
+        result.lines.forEach(circle => {
+          const isLines = circle.type === 'LINES' && circle.lines.length;
+          if (isLines) {
+            hasResults = true;
+          }
+        });
 
-      return hasResults;
-    });
+        return hasResults;
+      });
+
+      results.lines = lines;
+    }
 
     return results;
   };
@@ -345,36 +445,49 @@ class Search extends React.Component {
     return lines;
   };
 
-  trimUnusedSearchResultsAndQueries = (circle, currentSearchWords) => {
-    // Remove ones that are not in current search
-    circle.lines = circle.lines.map(category => {
-      let newResults = category;
+  trimUnusedSearchResultsAndQueries = (results, currentSearchWords) => {
+    if (results.lines) {
+      results.lines = results.lines.map(category => {
+        let newResults = category;
 
-      newResults.lines = category.lines.map(results => {
-        if (results.type === 'LINES') {
-          const updatedQueryResults = results.lines.filter(circle4 => {
-            // check to see if they contain any of the tags that was searched
-            const isRelevantSearchTerm = currentSearchWords.map(condition =>
-              circle4.tags.includes(condition),
-            );
-            return isRelevantSearchTerm.includes(true);
-          });
-          results.lines = updatedQueryResults;
-          return results;
-        }
-        return null;
+        newResults.lines = category.lines.map(results => {
+          if (results.type === 'LINES') {
+            const updatedQueryResults = results.lines.filter(circle4 => {
+              const isRelevantSearchTerm = currentSearchWords.map(condition =>
+                circle4.tags.includes(condition),
+              );
+              return isRelevantSearchTerm.includes(true);
+            });
+            results.lines = updatedQueryResults;
+            return results;
+          }
+
+          if (results.type === 'QUERY') {
+            const queries = currentSearchWords.map(searchWord => {
+              const containsMatch = results.settings.filters.searchConditions.find(
+                condition => condition.value === searchWord,
+              );
+
+              return containsMatch ? true : false;
+            });
+            const isRelevantQuery = queries.includes(true);
+
+            if (isRelevantQuery) {
+              return results;
+            }
+          }
+          return null;
+        });
+
+        newResults.lines = _.compact(newResults.lines);
+
+        return newResults;
       });
+    }
 
-      newResults.lines = newResults.lines.filter(cir => {
-        return cir && cir.lines && cir.lines.length !== 0;
-      });
+    results.lines = _.compact(results.lines);
 
-      return newResults;
-    });
-
-    circle.lines = _.compact(circle.lines);
-
-    return circle;
+    return results;
   };
 
   orderCategoriesBasedOnQuery = (categories, searchQuery) => {
@@ -398,7 +511,7 @@ class Search extends React.Component {
 
   search = async () => {
     const lastSearchedTags = this.state.lastSearchedTags;
-    let lastResults = JSON.parse(JSON.stringify(this.state.results));
+    let lastResults = _.cloneDeep(this.state.results);
     let tagsToSearch = this.createSearchTags(this.state.searchFieldString);
 
     if (lastSearchedTags.length) {
@@ -409,8 +522,12 @@ class Search extends React.Component {
       tagsToSearch = this.filterSearchTags(tagsToSearch, lastSearchedTags);
     }
 
-    let results = lastResults;
-    let newResults = false;
+    let results2 = lastResults;
+    let newResults = {
+      uid: _.uniqueId(),
+      type: 'LINES',
+      lines: [],
+    };
     let searchQuery = null;
 
     if (tagsToSearch.length) {
@@ -421,31 +538,24 @@ class Search extends React.Component {
       newResults = this.removeCategoriesWithNoResults(newResults);
     }
 
-    if (lastResults && newResults) {
-      results = this.combineOldAndNewSearchResults(lastResults, newResults);
-    } else if (!lastResults && newResults) {
-      results = newResults;
+    results2 = this.combineOldAndNewSearchResults(lastResults, newResults);
+
+    if (results2 && results2.lines.length) {
+      results2.lines = this.removeUnusedSearchCategories(results2.lines);
+      if (results2.lines.length) {
+        results2.lines = this.orderCategoriesBasedOnQuery(
+          results2.lines,
+          searchQuery,
+        );
+      }
     }
 
-    if (results && results.lines.length) {
-      results.lines = this.removeUnusedSearchCategories(results.lines);
-      results.lines = this.orderCategoriesBasedOnQuery(
-        results.lines,
-        searchQuery,
-      );
-    }
+    results2 = this.removeCategoriesWithNoResults(results2);
 
     this.setState({
       lastSearchedTags: this.createSearchTags(this.state.searchFieldString),
-      results: results,
+      results: results2,
     });
-  };
-
-  sortResults = results => {
-    // Remove Duplicates
-    // Order based on matching tags/titles/description
-
-    return results;
   };
 
   compileResultsAndQueries = results => {
@@ -462,40 +572,34 @@ class Search extends React.Component {
         lines: [],
       };
 
-      let showMoreQueries = {
-        uid: _.uniqueId(),
-        type: 'QUERIES',
-        lines: [],
-      };
+      let showMoreQueries = [];
 
       category.lines.forEach(query => {
-        searchResults.lines = searchResults.lines.concat(query.lines);
+        if (query.lines.length) {
+          searchResults.lines = searchResults.lines.concat(query.lines);
 
-        // wipe categories results
-        // category.lines = [];
+          const thisHasMoreResults =
+            query.settings.cursor.moreResults === 'MORE_RESULTS_AFTER_LIMIT';
 
-        const thisHasMoreResults =
-          query.settings.cursor.moreResults === 'MORE_RESULTS_AFTER_LIMIT';
+          query.lines = [];
 
-        query.lines = [];
-
-        if (thisHasMoreResults) {
-          showMoreQueries.lines.push(query);
-          // Should i be pushing here, is this even working
-          // category.lines.push(searchResults);
+          if (thisHasMoreResults) {
+            showMoreQueries.push(query);
+          }
         }
       });
 
-      // Remove all old queries/results
-      // Since we now have new array
       category.lines = [];
-
       searchResults.lines = _.uniqBy(searchResults.lines, 'uid');
-      searchResults = this.sortResults(searchResults);
+      searchResults.lines = sortResults(
+        searchResults.lines,
+        this.state.searchFieldString,
+      );
+
       category.lines.push(searchResults);
 
-      if (showMoreQueries.lines.length) {
-        category.lines.push(showMoreQueries);
+      if (showMoreQueries.length) {
+        category.lines = category.lines.concat(showMoreQueries);
       }
 
       categories.lines.push(category);
@@ -505,59 +609,47 @@ class Search extends React.Component {
   };
 
   showMoreResults = async category => {
-    let oldQueryAndTheirResults = _.cloneDeep(category);
-    let results;
+    const lastResults = category.lines.find(circle => circle.type === 'LINES');
+    let categoryClone = _.cloneDeep(category);
 
-    category.lines = category.lines.map(query => {
-      query.lines = [];
-
-      return query;
-    });
-
-    category.lines = category.lines.filter(
-      query => query.settings.cursor.moreResults === 'MORE_RESULTS_AFTER_LIMIT',
+    categoryClone.lines = category.lines.filter(
+      circle => circle.type === 'QUERY',
     );
 
     const query = {
-      uid: _.uniqueId(),
       type: 'LINES',
-      lines: [category],
+      lines: [categoryClone],
     };
 
     let newResults = await this.getData(query);
     newResults = _.cloneDeep(newResults);
+    newResults = this.compileResultsAndQueries(newResults);
 
-    // These should just be removed and not passed around the app
-    oldQueryAndTheirResults.lines.forEach(query => {
-      query.settings.cursor.moreResults = 'NO_MORE_RESULTS';
-      query.settings.cursor.endCursor = '';
-    });
+    categoryClone.lines = [];
 
-    oldQueryAndTheirResults.lines = oldQueryAndTheirResults.lines.concat(
-      newResults.lines[0].lines,
+    const newSearchResults = newResults.lines[0].lines.filter(
+      circle => circle.type === 'LINES',
     );
 
-    // DONT DO THIS
-    // Just add a new query object to the list so they go to the bottom
-    // Remove old cursor and set to no more results on the first ones
-    // newResults.lines = newResults.lines.map(category1 => {
-    //   category1.lines = category1.lines.map(query1 => {
-    //     const oldMatchingQueryResults = oldQueryAndTheirResults.find(
-    //       q =>
-    //         q.settings.filters.searchConditions[0].value ===
-    //           query1.settings.filters.searchConditions[0].value &&
-    //         q.settings.filters.searchConditions[1].value ===
-    //           query1.settings.filters.searchConditions[1].value,
-    //     );
-    //     if (oldMatchingQueryResults && oldMatchingQueryResults.lines.length) {
-    //       query1.lines.unshift(oldMatchingQueryResults.lines);
-    //     }
+    if (newSearchResults.length) {
+      let newCombinedSearchResults = lastResults.lines.concat(
+        newSearchResults[0].lines,
+      );
 
-    //     return query1;
-    //   });
+      // Double check every result shown is unique
+      newCombinedSearchResults = _.uniqBy(newCombinedSearchResults, 'uid');
 
-    //   return category1;
-    // });
+      lastResults.lines = newCombinedSearchResults;
+      categoryClone.lines.push(lastResults);
+    }
+
+    const newShowMoreQueries = newResults.lines[0].lines.filter(
+      circle => circle.type === 'QUERY',
+    );
+
+    if (newShowMoreQueries.length) {
+      categoryClone.lines = categoryClone.lines.concat(newShowMoreQueries);
+    }
 
     let updatedResults = { ...this.state.results };
 
@@ -565,21 +657,7 @@ class Search extends React.Component {
       circle => circle.uid === category.uid,
     );
 
-    // ADDED: I can actually keep the same structure, just remove
-    // settings/cursors/delete all extra old queries
-    // add all results to one array
-    // then only queries that have curors will have them (no results as they will be pushed to the one array)
-    // new TODO:
-    // Create separate array of cursors
-    // create array of list items which you push everything on to
-    // Only merge it with newest results after they have fully been sorted
-    // Then add new to old at end of array
-
-    // updatedResults.lines[updatedResultIndex].lines.map(query => {});
-
-    updatedResults.lines[updatedResultIndex] = oldQueryAndTheirResults;
-
-    // updatedResults.lines.push(oldQueryAndTheirResults);
+    updatedResults.lines[updatedResultIndex] = categoryClone;
 
     this.setState({
       results: updatedResults,
@@ -598,33 +676,64 @@ class Search extends React.Component {
     return results.data.globalSearch;
   };
 
-  updateSearchCategories = object => {
-    const categoryBeingDisabled = object[Object.keys(object)[0]] === false;
+  updateSearchCategories = category => {
+    const categoryBeingDisabled = category[Object.keys(category)[0]] === false;
     this.setState(
       {
-        ...object,
-        lastSearchedTags: categoryBeingDisabled
-          ? this.state.lastSearchedTags
-          : [],
+        ...category,
       },
-      () => {
+      async () => {
         // Todo: Protect searching when nothing to search
-        if (categoryBeingDisabled) {
+        if (this.state.results === null) {
+          return;
+        } else if (categoryBeingDisabled) {
           let results = this.state.results;
 
           results.lines = this.removeUnusedSearchCategories(results.lines);
 
           this.setState({ results });
           return;
-        }
+        } else if (
+          !categoryBeingDisabled &&
+          this.state.searchFieldString !== ''
+        ) {
+          const categoryName = Object.getOwnPropertyNames(category)[0];
 
-        this.search();
+          let newResults = _.cloneDeep(this.state.results);
+          let tagsToSearch = this.createSearchTags(
+            this.state.searchFieldString,
+          );
+          let singleCategoryQuery = this.buildSearchQuery(tagsToSearch);
+
+          singleCategoryQuery.lines = singleCategoryQuery.lines.filter(
+            category => category.uid === categoryName,
+          );
+
+          singleCategoryQuery = await this.getData(singleCategoryQuery);
+          singleCategoryQuery = _.cloneDeep(singleCategoryQuery);
+
+          singleCategoryQuery = this.compileResultsAndQueries(
+            singleCategoryQuery,
+          );
+
+          singleCategoryQuery = this.removeCategoriesWithNoResults(
+            singleCategoryQuery,
+          );
+
+          if (singleCategoryQuery.lines.length) {
+            newResults.lines.unshift(...singleCategoryQuery.lines);
+          }
+
+          this.setState({
+            results: newResults,
+          });
+        }
       },
     );
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     const {
       searchFieldString,
       myCreations,
@@ -632,29 +741,41 @@ class Search extends React.Component {
       myEditable,
       allResults,
       results,
+      isSearching,
+      resultsDense,
+      resultsShowSecondary,
     } = this.state;
 
     return (
       <div className={classes.container}>
-        <SearchField
-          searchFieldString={searchFieldString}
-          handleSearchFieldChange={this.handleSearchFieldChange}
-        />
-        <Divider />
-        <SearchSettings
-          updateSearchCategories={this.updateSearchCategories}
-          updateGridSize={this.updateGridSize}
-          myCreations={myCreations}
-          myViewable={myViewable}
-          myEditable={myEditable}
-          allResults={allResults}
-        />
-        <Divider />
+        <Card style={{ margin: 8 }}>
+          <SearchField
+            isSearching={isSearching}
+            searchFieldString={searchFieldString}
+            handleSearchFieldChange={this.handleSearchFieldChange}
+            search={this.search}
+          />
+          <SearchSettings
+            updateSearchCategories={this.updateSearchCategories}
+            updateGridSize={this.updateGridSize}
+            myCreations={myCreations}
+            myViewable={myViewable}
+            myEditable={myEditable}
+            allResults={allResults}
+            resultsDense={resultsDense}
+            resultsShowSecondary={resultsShowSecondary}
+            handleChange={this.handleChange}
+          />
+        </Card>
         <SearchCategoryResultsList
+          isSearching={isSearching}
+          user={user}
           circle={results}
           searchFieldString={searchFieldString}
           gridSize={resultCategorySizes[this.state.gridSize]}
           showMoreResults={this.showMoreResults}
+          resultsDense={resultsDense}
+          resultsShowSecondary={resultsShowSecondary}
         />
       </div>
     );

@@ -10,11 +10,9 @@ import {
 } from '@material-ui/core';
 import FolderIcon from '@material-ui/icons/Folder';
 
-const SearchResults = ({ lines }) => {
-  // lines = mergeDuplicateCircles(lines);
-
+const SearchResults = ({ lines, resultsDense, resultsShowSecondary }) => {
   return (
-    <List dense={true}>
+    <List dense={resultsDense}>
       {lines.map(circle => (
         <ListItem
           button
@@ -30,10 +28,10 @@ const SearchResults = ({ lines }) => {
           <ListItemText
             primary={circle.title}
             secondary={
-              true //TODO: change
+              resultsShowSecondary
                 ? circle.tags
                   ? circle.tags.map((tag, index) => (
-                      <span key={index}> {tag},</span>
+                      <span key={index}> {tag}</span>
                     ))
                   : null
                 : null
@@ -45,9 +43,15 @@ const SearchResults = ({ lines }) => {
   );
 };
 
+SearchResults.defaultProps = {
+  secondary: true,
+  dense: false,
+};
+
 SearchResults.protoTypes = {
-  circle: PropTypes.object,
-  gridSize: PropTypes.object,
+  lines: PropTypes.array,
+  resultsDense: PropTypes.bool,
+  resultsShowSecondary: PropTypes.bool,
 };
 
 export default SearchResults;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
+import { createBrowserHistory } from 'history';
 
 import CreateCircle from './Circle/Mutations/CreateCircle';
 import UpdateCircle from './Circle/Mutations/UpdateCircle';
@@ -15,6 +16,8 @@ import CopyCircle from './Circle/Components/CopyCircle';
 import UserSettings from './UserSettings';
 import PleaseLogin from './PleaseLogin';
 import Search from './Components/Search';
+
+const history = createBrowserHistory({ forceRefresh: false });
 
 const Routes = props => {
   const { user } = props;
@@ -34,15 +37,29 @@ const Routes = props => {
       />
       <Route
         exact
+        path="/search/:searchString"
+        history={history}
+        render={props => (
+          <Search
+            {...props}
+            searchString={props.match.params.searchString}
+            user={user}
+            isPrimaryContent={true}
+          />
+        )}
+      />
+      <Route
+        exact
         path="/search"
-        render={props => <CirclesByTags {...props} isPrimaryContent={true} />}
+        history={createBrowserHistory}
+        render={props => (
+          <Search {...props} user={user} isPrimaryContent={true} />
+        )}
       />
       <Route
         exact
         path="/search2"
-        render={props => (
-          <Search {...props} user={user} isPrimaryContent={true} />
-        )}
+        render={props => <CirclesByTags {...props} isPrimaryContent={true} />}
       />
       <Route
         exact

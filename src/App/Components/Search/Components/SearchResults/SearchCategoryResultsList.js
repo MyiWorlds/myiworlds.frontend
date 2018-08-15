@@ -3,22 +3,10 @@ import PropTypes from 'prop-types';
 
 import {
   Grid,
-  Grow,
-  Card,
-  Avatar,
-  Divider,
-  CardContent,
   withStyles,
-  CardHeader,
-  IconButton,
-  CardActions,
-  Button,
 } from '@material-ui/core';
-import FontIcon from '../../../FontIcon';
-import { CURSOR } from '../../../../../utils/constants/cursor';
-import mergeDuplicateCircles from '../../../../functions/mergeDuplicateCircles';
-import searchLinesFuse from '../../../../functions/searchLinesFuse';
-import SearchResults from './SearchResults';
+import NoMoreResults from '../../../../Components/NoMoreResults';
+import SearchCategory from '../SearchCategory';
 
 const styles = theme => ({
   container: {
@@ -32,112 +20,48 @@ const styles = theme => ({
 const SearchCategoryResultList = ({
   circle,
   classes,
-  dense,
   gridSize,
+  isSearching,
+  resultsDense,
+  resultsShowSecondary,
   searchFieldString,
-  secondary,
   showMoreResults,
+  user,
 }) => {
   if (circle && circle.lines && circle.lines.length) {
     return (
       <div className={classes.container}>
         <Grid container spacing={16}>
           {circle.lines.map(circle => {
-            let cursorQueries = circle.lines.find(
-              item => item.type === 'QUERIES',
-            );
-
-            {
-              /* const moreResultsCurors = circle.lines.filter(circle => {
-              return circle.settings.cursor.moreResults === CURSOR.moreResults;
-            }); */
-            }
-
-            let lines = circle.lines[0].lines || [];
-            {
-              /* circle.lines.forEach(circle => {
-              lines = lines.concat(circle.lines);
-            });
-            lines = mergeDuplicateCircles(lines); */
-            }
-
-            // lines = searchLinesFuse(lines, searchFieldString);
-
             return (
-              <Grid
+              <SearchCategory
                 key={circle.uid}
-                item
-                sm={gridSize.sm}
-                md={gridSize.md}
-                lg={gridSize.lg}
-              >
-                <Grow
-                  in={true}
-                  timeout={500}
-                  style={{ transformOrigin: '50% 0' }}
-                  // {...(true ? { timeout: 500 } : {})}
-                >
-                  <div>
-                    <Card className={classes.card}>
-                      <CardHeader
-                        avatar={
-                          <Avatar
-                            aria-label="Recipe"
-                            className={classes.avatar}
-                          >
-                            {(
-                              <FontIcon color="action">{circle.icon}</FontIcon>
-                            ) || <FontIcon>access_time</FontIcon>}
-                          </Avatar>
-                        }
-                        action={
-                          <div>
-                            <IconButton aria-label="More options">
-                              <FontIcon>more_vert</FontIcon>
-                            </IconButton>
-                          </div>
-                        }
-                        title={circle.title}
-                      />
-                      <Divider />
-
-                      <CardContent style={{ padding: 0 }}>
-                        {lines ? (
-                          <SearchResults lines={lines} index={Math.random()} />
-                        ) : null}
-                      </CardContent>
-                      <CardActions
-                        className={classes.actions}
-                        disableActionSpacing
-                      >
-                        {cursorQueries ? (
-                          <Button
-                            style={{ flex: 1 }}
-                            onClick={() => {
-                              showMoreResults(circle);
-                            }}
-                          >
-                            Show More
-                          </Button>
-                        ) : null}
-                      </CardActions>
-                    </Card>
-                  </div>
-                </Grow>
-              </Grid>
+                circle={circle}
+                gridSize={gridSize}
+                resultsDense={resultsDense}
+                resultsShowSecondary={resultsShowSecondary}
+                showMoreResults={showMoreResults}
+              />
             );
           })}
         </Grid>
       </div>
     );
+  } else if (searchFieldString === '' || isSearching) {
+    return null;
+  } else {
+    return <NoMoreResults user={user} />;
   }
-  return null;
 };
 
 SearchCategoryResultList.protoTypes = {
-  circle: PropTypes.object,
-  gridSize: PropTypes.object,
+  gridSize: PropTypes.object.isRequired,
+  isSearching: PropTypes.bool.isRequired,
   showMoreResults: PropTypes.func.isRequired,
+  circle: PropTypes.object,
+  resultsDense: PropTypes.bool,
+  resultsShowSecondary: PropTypes.bool,
+  user: PropTypes.object,
 };
 
 export default withStyles(styles)(SearchCategoryResultList);
