@@ -17,11 +17,16 @@ import FontIcon from '../../../FontIcon';
 import SearchResults from '../SearchResults/SearchResults';
 import Progress from '../../../Progress';
 
-const styles = {};
+const styles = {
+  cardContent: {
+    padding: 0,
+  },
+};
 
 class SearchCategory extends React.Component {
   static propTypes = {
     circle: PropTypes.object,
+    index: PropTypes.number.isRequired,
   };
 
   constructor(props) {
@@ -49,6 +54,7 @@ class SearchCategory extends React.Component {
     const {
       classes,
       gridSize,
+      index,
       resultsDense,
       resultsShowSecondary,
       showMoreResults,
@@ -60,6 +66,8 @@ class SearchCategory extends React.Component {
 
     let lines =
       circle.lines.find(circle => circle.type === 'LINES').lines || [];
+
+    const fadeInTime = index * 100 * 2 + 500;
 
     return (
       <Grid
@@ -74,7 +82,7 @@ class SearchCategory extends React.Component {
           in={true}
           timeout={500}
           style={{ transformOrigin: '50% 0' }}
-          // {...(true ? { timeout: 500 } : {})}
+          {...(true ? { timeout: fadeInTime } : {})}
         >
           <div>
             <Card className={classes.card}>
@@ -97,7 +105,7 @@ class SearchCategory extends React.Component {
               />
               <Divider />
 
-              <CardContent style={{ padding: 0 }}>
+              <CardContent className={classes.cardContent}>
                 {lines ? (
                   <SearchResults
                     lines={lines}
@@ -113,6 +121,7 @@ class SearchCategory extends React.Component {
                     style={{ position: 'relative', flex: 1, display: 'flex' }}
                   >
                     <Button
+                      variant="outlined"
                       style={{ flex: 1 }}
                       onClick={() => {
                         this.handleShowMore();

@@ -25,9 +25,7 @@ export default gql`
       media {
         uid
       }
-      icon {
-        uid
-      }
+      icon
       viewers {
         uid
       }

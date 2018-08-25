@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Grid,
-  withStyles,
-} from '@material-ui/core';
+import { Grid, withStyles } from '@material-ui/core';
 import NoMoreResults from '../../../../Components/NoMoreResults';
 import SearchCategory from '../SearchCategory';
 
@@ -32,10 +29,11 @@ const SearchCategoryResultList = ({
     return (
       <div className={classes.container}>
         <Grid container spacing={16}>
-          {circle.lines.map(circle => {
+          {circle.lines.map((circle, index) => {
             return (
               <SearchCategory
                 key={circle.uid}
+                index={index}
                 circle={circle}
                 gridSize={gridSize}
                 resultsDense={resultsDense}

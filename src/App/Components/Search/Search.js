@@ -50,7 +50,6 @@ const resultCategorySizes = [
   },
 ];
 
-// IMPORTANT: Issue with not having permissions when searching editable
 class Search extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -658,6 +657,7 @@ class Search extends React.Component {
     );
 
     updatedResults.lines[updatedResultIndex] = categoryClone;
+    updatedResults.lines = _.uniqBy(updatedResults.lines, 'uid');
 
     this.setState({
       results: updatedResults,

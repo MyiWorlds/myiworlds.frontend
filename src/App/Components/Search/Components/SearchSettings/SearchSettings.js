@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
   FormGroup,
-  FormControlLabel,
   Checkbox,
   Button,
   ExpansionPanel,
@@ -26,6 +25,13 @@ const styles = {
   primarySearchActions: {
     padding: 8,
   },
+  primarySearchActionsItem: {
+    marginRight: 8,
+  },
+  checkButton: {
+    padding: '0 16px 0px 0px',
+    marginRight: 8,
+  },
 };
 
 const SearchSettings = ({
@@ -44,11 +50,15 @@ const SearchSettings = ({
     <div>
       <Divider />
       <div className={classes.primarySearchActions}>
-        <Button>
+        <Button variant="outlined" className={classes.primarySearchActionsItem}>
           <FontIcon className={classes.btnIcon}>view_list</FontIcon>
           List Style
         </Button>
-        <Button onClick={() => updateGridSize()} style={{ cursor: 'pointer' }}>
+        <Button
+          variant="outlined"
+          onClick={() => updateGridSize()}
+          className={classes.primarySearchActionsItem}
+        >
           <FontIcon className={classes.btnIcon}>dashboard</FontIcon>
           Edit Layout
         </Button>
@@ -69,85 +79,83 @@ const SearchSettings = ({
             </Typography>
             <br />
             <FormGroup row>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={resultsShowSecondary}
-                    onChange={() =>
-                      handleChange({
-                        resultsShowSecondary: !resultsShowSecondary,
-                      })
-                    }
-                    value="dense"
-                  />
+              <Button
+                variant="outlined"
+                className={classes.checkButton}
+                onClick={() =>
+                  handleChange({
+                    resultsShowSecondary: !resultsShowSecondary,
+                  })
                 }
-                label="Show Secondary"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={resultsDense}
-                    onChange={() =>
-                      handleChange({ resultsDense: !resultsDense })
-                    }
-                    value="dense"
-                  />
+              >
+                <Checkbox
+                  color="primary"
+                  checked={resultsShowSecondary}
+                  value="dense"
+                />
+                Secondary Text
+              </Button>
+
+              <Button
+                variant="outlined"
+                className={classes.checkButton}
+                onClick={() =>
+                  handleChange({
+                    resultsDense: !resultsDense,
+                  })
                 }
-                label="Dense"
-              />
+              >
+                <Checkbox checked={resultsDense} value="dense" />
+                Dense
+              </Button>
             </FormGroup>
             <br />
             <Typography variant="subheading">Categories Displayed</Typography>
             <br />
             <FormGroup row>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={myCreations}
-                    onChange={() =>
-                      updateSearchCategories({ myCreations: !myCreations })
-                    }
-                    value="dense"
-                  />
+              <Button
+                variant="outlined"
+                className={classes.checkButton}
+                onClick={() =>
+                  updateSearchCategories({ myCreations: !myCreations })
                 }
-                label="My Creations"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={myEditable}
-                    onChange={() =>
-                      updateSearchCategories({ myEditable: !myEditable })
-                    }
-                    value="dense"
-                  />
+              >
+                <Checkbox color="primary" checked={myCreations} value="dense" />
+                My Creations
+              </Button>
+
+              <Button
+                variant="outlined"
+                className={classes.checkButton}
+                onClick={() =>
+                  updateSearchCategories({ myEditable: !myEditable })
                 }
-                label="My Editable"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={myViewable}
-                    onChange={() =>
-                      updateSearchCategories({ myViewable: !myViewable })
-                    }
-                    value="dense"
-                  />
+              >
+                <Checkbox color="primary" checked={myEditable} value="dense" />
+                My Editable
+              </Button>
+
+              <Button
+                variant="outlined"
+                className={classes.checkButton}
+                onClick={() =>
+                  updateSearchCategories({ myViewable: !myViewable })
                 }
-                label="My Viewable"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={allResults}
-                    onChange={() =>
-                      updateSearchCategories({ allResults: !allResults })
-                    }
-                    value="dense"
-                  />
+              >
+                <Checkbox color="primary" checked={myViewable} value="dense" />
+                My Viewable
+              </Button>
+
+              <Button
+                variant="outlined"
+                className={classes.checkButton}
+                onClick={() =>
+                  updateSearchCategories({ allResults: !allResults })
                 }
-                label="All Results"
-              />
+              >
+                <Checkbox color="primary" checked={allResults} value="dense" />
+                All Results
+              </Button>
             </FormGroup>
           </div>
         </ExpansionPanelDetails>
